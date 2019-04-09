@@ -1,16 +1,15 @@
 package fr.ul.miage.ProjetReseauxSocial.model.propriete;
 
 import java.util.Arrays;
-import java.util.Date;
 
 import fr.ul.miage.ProjetReseauxSocial.model.Propriete;
 
-public class Hired extends Propriete {
+public class Role extends Propriete {
 
-	private Date valeur;
+	private String valeur;
 	private final static String[] TYPE_POSSIBLE = {};
 	
-	public Hired(String attribut, Date valeur) {
+	public Role(String attribut, String valeur) {
 		super(attribut, Arrays.asList(TYPE_POSSIBLE));
 		this.valeur = valeur;
 	}

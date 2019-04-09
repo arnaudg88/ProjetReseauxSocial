@@ -7,7 +7,7 @@ import fr.ul.miage.ProjetReseauxSocial.model.entite.Noeud;
 public abstract class Lien {
 
 	private ArrayList<Propriete> proprietes;
-	private String sens; //0 > 1 < 2 <>
+	private String sens; //< ou > ou <>
 	private Noeud noeudDepart;
 	private Noeud noeudDestination;
 	
