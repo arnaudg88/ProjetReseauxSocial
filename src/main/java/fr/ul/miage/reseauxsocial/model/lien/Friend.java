@@ -1,12 +1,14 @@
-package fr.ul.miage.ProjetReseauxSocial.model.lien;
+package fr.ul.miage.reseauxsocial.model.lien;
 
-import fr.ul.miage.ProjetReseauxSocial.model.Lien;
-import fr.ul.miage.ProjetReseauxSocial.model.entite.Noeud;
+import fr.ul.miage.reseauxsocial.model.Lien;
 
 public class Friend extends Lien {
 
-	public Friend(Noeud noeudDepart, String sens, Noeud noeudDestination) {
-		super(noeudDepart, sens, noeudDestination);
+	public Friend(String nom, boolean sens, String nom2) {
+		super(nom, sens, nom2);
 	}
 
+	public Friend(String nom, String sens, String nom2) {
+		super(nom, sens, nom2);
+	}
 }

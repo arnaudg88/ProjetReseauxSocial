@@ -1,13 +1,13 @@
-package fr.ul.miage.ProjetReseauxSocial.model.propriete;
+package fr.ul.miage.reseauxsocial.model.propriete;
 
 import java.util.Arrays;
 
-import fr.ul.miage.ProjetReseauxSocial.model.Propriete;
+import fr.ul.miage.reseauxsocial.model.Propriete;
 
 public class Since extends Propriete {
 
 	private int valeur;
-	private final static String[] TYPE_POSSIBLE = {};
+	private static final String[] TYPE_POSSIBLE = {};
 	
 	public Since(String attribut, int valeur) {
 		super(attribut, Arrays.asList(TYPE_POSSIBLE));
