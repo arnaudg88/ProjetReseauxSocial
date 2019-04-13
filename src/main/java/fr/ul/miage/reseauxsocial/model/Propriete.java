@@ -1,6 +1,5 @@
-package fr.ul.miage.ProjetReseauxSocial.model;
+package fr.ul.miage.reseauxsocial.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Propriete {
