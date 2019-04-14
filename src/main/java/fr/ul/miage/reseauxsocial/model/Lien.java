@@ -18,13 +18,28 @@ public abstract class Lien {
 	public Lien(String noeudDepart, String sens, String noeudDestination) {
 		this(noeudDepart, sens.equals("<>"), noeudDestination);
 	}
+	
+	//Methode pour ConstructeurLien
+	public Lien(String nom, boolean sens, String nom2, ArrayList<Propriete> proprietes) {
+		this(nom, sens, nom2);
+		this.proprietes=proprietes;
+	}
 
 	public void addPropriete(Propriete p) {
+		if(proprietes == null) {
+			proprietes = new ArrayList<Propriete>();
+		}
 		proprietes.add(p);
 	}
 
 	public ArrayList<Propriete> getProprietes() {
 		return proprietes;
+	}
+
+	@Override
+	public String toString() {
+		return "Lien [proprietes=" + proprietes + ", doubleSens=" + doubleSens + ", noeudDepart=" + noeudDepart
+				+ ", noeudDestination=" + noeudDestination + "]";
 	}
 
 	public void setProprietes(ArrayList<Propriete> proprietes) {
