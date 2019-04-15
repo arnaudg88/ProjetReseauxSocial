@@ -8,7 +8,7 @@ public class Since extends Propriete {
 
 	@Override
 	public String toString() {
-		return "Since [valeur=" + valeur + "]";
+		return "Since=" + valeur;
 	}
 
 	@Override

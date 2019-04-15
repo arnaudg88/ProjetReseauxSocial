@@ -34,7 +34,7 @@ public class Share extends Propriete {
 
 	@Override
 	public String toString() {
-		return "Share [valeur=" + valeur + "]";
+		return "Share=" + valeur;
 	}
 
 	private List<String> valeur;

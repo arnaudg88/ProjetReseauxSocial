@@ -42,7 +42,7 @@ public class Hired extends Propriete {
 
 	@Override
 	public String toString() {
-		return "Hired [valeur=" + valeur + "]";
+		return "Hired=" + valeur;
 	}
 	
 	

@@ -8,7 +8,7 @@ public class Role extends Propriete {
 
 	@Override
 	public String toString() {
-		return "Role [valeur=" + valeur + "]";
+		return "Role=" + valeur;
 	}
 
 	private String valeur;
