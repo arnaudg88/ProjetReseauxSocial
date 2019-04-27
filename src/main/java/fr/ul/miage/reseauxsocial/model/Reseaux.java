@@ -17,14 +17,48 @@ public class Reseaux {
 		String depart = l.getNoeudDepart();
 		String destination = l.getNoeudDestination();
 		if(!paireExist(depart, destination))
-			initialisePaire(depart, destination);
+			initialisePaire(depart, destination); //initialise la paire
 		
 		getLiens(depart, destination).add(l);
+		if(l.isDoubleSens()) {
+			if(!paireExist(destination, depart))
+				initialisePaire(destination, depart);
+			getLiens(destination, depart).add(l.getLienInverse());
+		}
+		
 		if(!noeudExist(depart))
-			noeuds.put(depart, new Noeud(depart));
+			noeuds.put(depart, new Noeud(depart)); //ajoute le noeud depart
 		
 		if(!noeudExist(destination))
-			noeuds.put(destination, new Noeud(destination));
+			noeuds.put(destination, new Noeud(destination)); //ajoute le noeud destination
+	}
+	
+	public int getDistEntreDeuxNoeuds(String noeud1, String noeud2) {
+		if(noeud1.equals(noeud2)) {
+			return 0;
+		}
+		ArrayList<String> fils = getFils(noeud1);
+		int tmpMinimum = Integer.MAX_VALUE;
+		for(String f:fils) {
+			int tmp = getDistEntreDeuxNoeuds(f, noeud2);
+			if(tmp!=-1 && tmp<tmpMinimum) {
+				tmpMinimum = tmp;
+			}
+		}
+		if(tmpMinimum != Integer.MAX_VALUE)
+			return 1+tmpMinimum;
+		else
+			return -1;
+	}
+	
+	public ArrayList<String> getFils(String noeud) {
+		ArrayList<String> result = new ArrayList<String>();
+		for(String n:noeuds.keySet()) {
+			if(paireExist(noeud, n)) {
+				result.add(n);
+			}
+		}
+		return result;
 	}
 	
 	public void initialisePaire(String noeud1, String noeud2) {

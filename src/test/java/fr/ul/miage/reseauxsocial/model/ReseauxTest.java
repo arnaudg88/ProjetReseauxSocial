@@ -91,4 +91,72 @@ class ReseauxTest {
 	void noeudExistFaux() {
 		assertFalse(reseaux0.noeudExist("noeudnull"));
 	}
+	
+	@Test
+	void distEntreDeuxMemeNoeud() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sara", false, "Roger"));
+		assertEquals(0, reseaux.getDistEntreDeuxNoeuds("Sara", "Sara"));
+	}
+	
+	@Test
+	void distEntreDeuxNoeudExistePas() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sara", false, "Roger"));
+		assertEquals(-1, reseaux.getDistEntreDeuxNoeuds("Google", "Apple"));
+	}
+	
+	@Test
+	void distEntreDeuxNoeudFils() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sara", false, "Roger"));
+		assertEquals(1, reseaux.getDistEntreDeuxNoeuds("Sara", "Roger"));
+	}
+	
+	@Test
+	void distEntreDeuxNoeud2() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sara", false, "Nicole"));
+		reseaux.addLien(new Friend("Nicole", false, "Roger"));
+		reseaux.addLien(new Friend("Sara", false, "Roger"));
+		reseaux.addLien(new Friend("Roger", false, "Patrice"));
+		assertEquals(2, reseaux.getDistEntreDeuxNoeuds("Sara", "Patrice"));
+	}
+	
+	@Test
+	void distEntreDeuxNoeud3() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sara", false, "Nicole"));
+		reseaux.addLien(new Friend("Nicole", false, "Roger"));
+		reseaux.addLien(new Friend("Roger", false, "Flo"));
+		reseaux.addLien(new Friend("Flo", false, "Patrice"));
+		reseaux.addLien(new Friend("Sara", false, "Patrice"));
+		assertEquals(1, reseaux.getDistEntreDeuxNoeuds("Sara", "Patrice"));
+	}
+	
+	@Test
+	void getFils() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sara", false, "Roger"));
+		reseaux.addLien(new Friend("Sara", false, "Nicole"));
+		reseaux.addLien(new Friend("Nicole", false, "Roger"));
+		reseaux.addLien(new Friend("Roger", false, "Patrice"));
+		ArrayList<Noeud> expect = new ArrayList<>();
+		expect.add(new Noeud("Roger"));
+		expect.add(new Noeud("Nicole"));
+		assertEquals(expect.size(), reseaux.getFils("Sara").size());
+	}
+	
+	@Test
+	void getFilsDoubleSens() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sara", true, "Roger"));
+		reseaux.addLien(new Friend("Sara", false, "Nicole"));
+		reseaux.addLien(new Friend("Nicole", false, "Roger"));
+		reseaux.addLien(new Friend("Roger", false, "Patrice"));
+		ArrayList<Noeud> expect = new ArrayList<>();
+		expect.add(new Noeud("Sara"));
+		expect.add(new Noeud("Patrice"));
+		assertEquals(expect.size(), reseaux.getFils("Roger").size());
+	}
 }

@@ -18,4 +18,9 @@ public class Friend extends Lien {
 	public Friend(String nom, boolean sens, String nom2, ArrayList<Propriete> proprietes) {
 		super(nom, sens, nom2, proprietes);
 	}
+
+	@Override
+	public Lien getLienInverse() {
+		return new Friend(this.getNoeudDestination(), this.isDoubleSens(), getNoeudDepart(), this.getProprietes());
+	}
 }

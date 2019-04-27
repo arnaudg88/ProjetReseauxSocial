@@ -43,4 +43,9 @@ public class Noeud {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Noeud [nom=" + nom + "]";
+	}
 }

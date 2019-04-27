@@ -16,9 +16,11 @@ public class EmployeeOf extends Lien {
 	}
 
 	public EmployeeOf(String nom, boolean sens, String nom2, ArrayList<Propriete> proprietes) {
-		// TODO Auto-generated constructor stub
 		super(nom, sens, nom2, proprietes);
 	}
-	
-	
+
+	@Override
+	public Lien getLienInverse() {
+		return new EmployeeOf(this.getNoeudDestination(), this.isDoubleSens(), this.getNoeudDepart(), this.getProprietes());
+	}
 }

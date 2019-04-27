@@ -24,6 +24,8 @@ public abstract class Lien {
 		this(nom, sens, nom2);
 		this.proprietes=proprietes;
 	}
+	
+	public abstract Lien getLienInverse();
 
 	public void addPropriete(Propriete p) {
 		if(proprietes == null) {
