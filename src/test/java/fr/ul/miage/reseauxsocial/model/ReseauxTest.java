@@ -159,4 +159,127 @@ class ReseauxTest {
 		expect.add(new Noeud("Patrice"));
 		assertEquals(expect.size(), reseaux.getFils("Roger").size());
 	}
+	
+	
+	@Test
+	void supprimerNoeudSimpleLienSimple() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sarah", false, "Roger"));
+		reseaux.addLien(new Friend("Sarah", false, "Nicole"));
+		reseaux.addLien(new Friend("Nicole", false, "Roger"));
+		reseaux.addLien(new Friend("Roger", false, "Patrice"));
+		HashMap<String, Noeud> noeudsTemp = new HashMap<String, Noeud>();
+		noeudsTemp.put("Sarah", new Noeud("Sarah"));
+		noeudsTemp.put("Roger", new Noeud("Roger"));
+		noeudsTemp.put("Nicole",new Noeud("Nicole"));
+		noeudsTemp.put("Patrice", new Noeud("Patrice"));
+		reseaux0.setNoeuds(noeudsTemp);
+		
+		reseaux.supprimerNoeud("Patrice");
+		
+		assertTrue(reseaux.getNoeuds().containsKey("Sarah"));
+		assertTrue(reseaux.getNoeuds().containsKey("Nicole"));
+		assertTrue(reseaux.getNoeuds().containsKey("Roger"));
+		assertFalse(reseaux.getNoeuds().containsKey("Patrice"));
+		
+	}
+	
+	@Test
+	void supprimerNoeudSimpleLienDouble() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sarah", false, "Roger"));
+		reseaux.addLien(new Friend("Sarah", false, "Nicole"));
+		reseaux.addLien(new Friend("Nicole", false, "Roger"));
+		reseaux.addLien(new Friend("Roger", true, "Patrice"));
+		HashMap<String, Noeud> noeudsTemp = new HashMap<String, Noeud>();
+		noeudsTemp.put("Sarah", new Noeud("Sarah"));
+		noeudsTemp.put("Roger", new Noeud("Roger"));
+		noeudsTemp.put("Nicole",new Noeud("Nicole"));
+		noeudsTemp.put("Patrice", new Noeud("Patrice"));
+		reseaux0.setNoeuds(noeudsTemp);
+		
+		reseaux.supprimerNoeud("Patrice");
+		
+		assertTrue(reseaux.getNoeuds().containsKey("Sarah"));
+		assertTrue(reseaux.getNoeuds().containsKey("Nicole"));
+		assertTrue(reseaux.getNoeuds().containsKey("Roger"));
+		assertFalse(reseaux.getNoeuds().containsKey("Patrice"));
+		
+	}
+	
+	@Test
+	void supprimerNoeudRepercussion() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sarah", false, "Roger"));
+		reseaux.addLien(new Friend("Sarah", false, "Nicole"));
+		reseaux.addLien(new Friend("Nicole", false, "Roger"));
+		reseaux.addLien(new Friend("Roger", false, "Patrice"));
+		HashMap<String, Noeud> noeudsTemp = new HashMap<String, Noeud>();
+		noeudsTemp.put("Sarah", new Noeud("Sarah"));
+		noeudsTemp.put("Roger", new Noeud("Roger"));
+		noeudsTemp.put("Nicole",new Noeud("Nicole"));
+		noeudsTemp.put("Patrice", new Noeud("Patrice"));
+		reseaux0.setNoeuds(noeudsTemp);
+		
+		reseaux.supprimerNoeud("Roger");
+		
+		
+		assertTrue(reseaux.getNoeuds().containsKey("Sarah"));
+		assertTrue(reseaux.getNoeuds().containsKey("Nicole"));
+		assertFalse(reseaux.getNoeuds().containsKey("Roger"));
+		assertFalse(reseaux.getNoeuds().containsKey("Patrice"));
+		
+	}
+	
+	@Test
+	void supprimerNoeudAll() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sarah", false, "Roger"));
+		reseaux.addLien(new Friend("Sarah", true, "Nicole"));
+		reseaux.addLien(new Friend("Nicole", false, "Roger"));
+		reseaux.addLien(new Friend("Roger", false, "Patrice"));
+		HashMap<String, Noeud> noeudsTemp = new HashMap<String, Noeud>();
+		noeudsTemp.put("Sarah", new Noeud("Sarah"));
+		noeudsTemp.put("Roger", new Noeud("Roger"));
+		noeudsTemp.put("Nicole",new Noeud("Nicole"));
+		noeudsTemp.put("Patrice", new Noeud("Patrice"));
+		reseaux0.setNoeuds(noeudsTemp);
+		
+		reseaux.supprimerNoeud("Nicole");
+
+		reseaux.supprimerNoeud("Roger");
+		
+		assertFalse(reseaux.getNoeuds().containsKey("Sarah"));
+		assertFalse(reseaux.getNoeuds().containsKey("Nicole"));
+		assertFalse(reseaux.getNoeuds().containsKey("Roger"));
+		assertFalse(reseaux.getNoeuds().containsKey("Patrice"));
+		
+	}
+	
+	
+	@Test
+	void supprimerNoeudCreationSousReseau() {
+		Reseaux reseaux = new Reseaux();
+		reseaux.addLien(new Friend("Sarah", false, "Roger"));
+		reseaux.addLien(new Friend("Sarah", false, "Nicole"));
+		reseaux.addLien(new Friend("Nicole", false, "Roger"));
+		reseaux.addLien(new Friend("Roger", false, "Patrice"));
+		reseaux.addLien(new Friend("Ana", false, "Patrice"));
+		HashMap<String, Noeud> noeudsTemp = new HashMap<String, Noeud>();
+		noeudsTemp.put("Sarah", new Noeud("Sarah"));
+		noeudsTemp.put("Roger", new Noeud("Roger"));
+		noeudsTemp.put("Nicole",new Noeud("Nicole"));
+		noeudsTemp.put("Patrice", new Noeud("Patrice"));
+		noeudsTemp.put("Ana", new Noeud("Ana"));
+		reseaux0.setNoeuds(noeudsTemp);
+		
+		reseaux.supprimerNoeud("Roger");
+		
+		assertTrue(reseaux.getNoeuds().containsKey("Sarah"));
+		assertTrue(reseaux.getNoeuds().containsKey("Nicole"));
+		assertFalse(reseaux.getNoeuds().containsKey("Roger"));
+		assertTrue(reseaux.getNoeuds().containsKey("Patrice"));
+		assertTrue(reseaux.getNoeuds().containsKey("Ana"));
+		
+	}
 }

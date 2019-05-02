@@ -3,6 +3,8 @@ package fr.ul.miage.reseauxsocial.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.util.Pair;
+
 public class Reseaux {
 
 	private HashMap<Paire, ArrayList<Lien>> reseau;
@@ -33,6 +35,7 @@ public class Reseaux {
 			noeuds.put(destination, new Noeud(destination)); //ajoute le noeud destination
 	}
 	
+	
 	public int getDistEntreDeuxNoeuds(String noeud1, String noeud2) {
 		if(noeud1.equals(noeud2)) {
 			return 0;
@@ -59,6 +62,59 @@ public class Reseaux {
 			}
 		}
 		return result;
+	}
+	
+	//@Charles
+	//a tester
+	//voir si péter le noeud suffit ou s'il faut egalement defoncer le lien ou les liens associés au noeud
+	public void supprimerNoeud(String noeud) {
+		ArrayList<String> listeLien = new ArrayList<String>();
+		ArrayList<String> listTemp = new ArrayList<String>();
+		listTemp.add(noeud);
+		
+		listeLien.addAll(getParents(noeud));
+		listeLien.addAll(getFils(noeud));
+		for(String n:listeLien) {
+			if(nombreDeLien(n)==1) {
+				//noeuds.remove(n);
+				listTemp.add(n);
+			}
+		}
+		
+		for(String s:listTemp) {
+			for(String n: noeuds.keySet()) {
+				if(paireExist(s, n)) {
+					reseau.remove(new Paire(s,n));
+				}
+				if(paireExist(n, s)) {
+					reseau.remove(new Paire(n,s));
+				}
+			}
+		}
+		
+		for(String s: listTemp) {
+			noeuds.remove(s);
+		}
+		
+	}
+	
+	
+	//@Charles
+	//a tester
+	public ArrayList<String> getParents(String noeud) {
+		ArrayList<String> result = new ArrayList<String>();
+		for(String n:noeuds.keySet()) {
+			if(paireExist(n, noeud)) {
+				result.add(n);
+			}
+		}
+		return result;
+	}
+	
+	//@Charles
+	//a tester
+	public int nombreDeLien(String noeud) {
+		return getParents(noeud).size() + getFils(noeud).size();
 	}
 	
 	public void initialisePaire(String noeud1, String noeud2) {
