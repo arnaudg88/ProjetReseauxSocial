@@ -16,7 +16,6 @@ import fr.ul.miage.reseauxsocial.model.Paire;
 import fr.ul.miage.reseauxsocial.model.Reseaux;
 import fr.ul.miage.reseauxsocial.model.lien.EmployeeOf;
 import fr.ul.miage.reseauxsocial.model.lien.Friend;
-import javafx.util.Pair;
 
 class ReseauxTest {
 

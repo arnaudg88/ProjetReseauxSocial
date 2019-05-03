@@ -29,9 +29,6 @@ class LienTest {
 		lien1.addPropriete(h1);
 		lien1.addPropriete(r1);
 		
-		System.out.println(employeur.getNoeudDestination());
-		System.out.println(employeur.toString());
-		System.out.println(lien1.toString());
 		assertEquals(lien1, employeur);
 	}
 	
