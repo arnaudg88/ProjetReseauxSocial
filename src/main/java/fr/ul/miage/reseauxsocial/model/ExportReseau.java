@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class ExportReseau {
 	
@@ -18,7 +17,7 @@ public class ExportReseau {
 	}
 
 	public String exportReseau() {
-		String exemple = "(Barbara --friend[since=1999]--> Carol)";
+		//String exemple = "(Barbara --friend[since=1999]--> Carol)";
 		HashMap<Paire, ArrayList<Lien>> valReseaux = this.reseaux.getReseau();
 		String tmp = "";
 		String sens = "";
