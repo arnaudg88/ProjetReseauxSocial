@@ -27,7 +27,6 @@ public class ConstructeurLien {
 		}
 		
 		for(Propriete p:args) {
-			System.out.println(p.getAttribut());
 			this.proprietes.add(p);
 		}
 		
