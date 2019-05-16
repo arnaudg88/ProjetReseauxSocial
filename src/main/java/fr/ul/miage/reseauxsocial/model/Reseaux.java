@@ -64,6 +64,18 @@ public class Reseaux {
 		return result;
 	}
 	
+	public ArrayList<String> getVoisins(String noeud) {
+		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<String> listeNoeudsFils = getFils(noeud);
+		result.addAll(getParents(noeud));
+		for(String n:listeNoeudsFils) {
+			if(!result.contains(n)) {
+				result.add(noeud);
+			}
+		}
+		return result;
+	}
+	
 	//@Charles
 	//a tester
 	//voir si péter le noeud suffit ou s'il faut egalement defoncer le lien ou les liens associés au noeud
@@ -72,8 +84,7 @@ public class Reseaux {
 		ArrayList<String> listTemp = new ArrayList<String>();
 		listTemp.add(noeud);
 		
-		listeLien.addAll(getParents(noeud));
-		listeLien.addAll(getFils(noeud));
+		listeLien.addAll(getVoisins(noeud));
 		for(String n:listeLien) {
 			if(nombreDeLien(n)==1) {
 				//noeuds.remove(n);
