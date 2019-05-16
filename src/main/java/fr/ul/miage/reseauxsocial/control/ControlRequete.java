@@ -45,17 +45,36 @@ public class ControlRequete {
 	}
 
 	public Requete parcoursRequeteProfondeurNoeudGlobal(Requete requeteCourante) {
-		ArrayList<String> voisins = reseaux.getVoisins(requeteCourante.getNoeudDepart());
-		for (String noeudVoisin : voisins) {
+		ArrayList<String> voisins;
+		if(requeteCourante.getNiveau() == -1) { // gestion des niveaux
+			voisins = new ArrayList<>();
+		} else {
+			voisins = reseaux.getVoisins(requeteCourante.getNoeudDepart());
+		}
+		
+		for (String noeudVoisin : voisins) { //parcours ses voisins
 			if (possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin, requete.getLiensAParcourir())
-					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin)) {
+					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin)
+					&& !estDejaParcouru(noeudVoisin, requeteCourante.getDejaParcouruNoeud()))
+			{ //filtrage et direction vers les liens voulus 
+				
 				requeteCourante.getResultat().add(noeudVoisin);
 				requeteCourante.getDejaParcouruNoeud().add(noeudVoisin);
 				
-				Requete sousRequete = requeteCourante.requeteDuVoisin(noeudVoisin);
-				sousRequete = parcoursRequeteProfondeurNoeudGlobal(sousRequete);
+				Requete sousRequete = parcoursRequeteProfondeurNoeudGlobal(requeteCourante.requeteDuVoisin(noeudVoisin)); //execution de la requete vers les voisins 
 				
-				//remettre les donnÃ©es de sousRequete dans requeteCourante
+				// recuperation des données pour les sous requetes suivantes
+				for(String noeudParcouru:sousRequete.getDejaParcouruNoeud()) {
+					if(!requeteCourante.getDejaParcouruNoeud().contains(noeudParcouru)) {
+						requeteCourante.getDejaParcouruNoeud().add(noeudParcouru);
+					}
+				}
+				
+				for(String noeudResultat:sousRequete.getResultat()) {
+					if(!requeteCourante.getResultat().contains(noeudResultat)) {
+						requeteCourante.getResultat().add(noeudResultat);
+					}
+				}
 			}
 		}
 		return requeteCourante;
@@ -91,5 +110,9 @@ public class ControlRequete {
 
 	public boolean filtrageDesliens(String noeudDepart, String noeudArrive) {
 		return true;
+	}
+	
+	public boolean estDejaParcouru(String noeud, ArrayList<String> dejaParcouru) {
+		return dejaParcouru.contains(noeud);
 	}
 }
