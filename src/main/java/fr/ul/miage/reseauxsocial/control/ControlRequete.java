@@ -45,6 +45,7 @@ public class ControlRequete {
 	}
 
 	public Requete parcoursRequeteProfondeurNoeudGlobal(Requete requeteCourante) {
+<<<<<<< HEAD
 		ArrayList<String> voisins;
 		if(requeteCourante.getNiveau() == -1) { // gestion des niveaux
 			voisins = new ArrayList<>();
@@ -75,6 +76,19 @@ public class ControlRequete {
 						requeteCourante.getResultat().add(noeudResultat);
 					}
 				}
+=======
+		ArrayList<String> voisins = reseaux.getVoisins(requeteCourante.getNoeudDepart());
+		for (String noeudVoisin : voisins) {
+			if (possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin, requete.getLiensAParcourir())
+					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin)) {
+				requeteCourante.getResultat().add(noeudVoisin);
+				requeteCourante.getDejaParcouruNoeud().add(noeudVoisin);
+				
+				Requete sousRequete = requeteCourante.requeteDuVoisin(noeudVoisin);
+				sousRequete = parcoursRequeteProfondeurNoeudGlobal(sousRequete);
+				
+				//remettre les données de sousRequete dans requeteCourante
+>>>>>>> 9a90486... ajout du parcours en profondeur avec unicité sur les nœuds non testé et manque la remonte des données dans la fonction
 			}
 		}
 		return requeteCourante;
@@ -111,8 +125,11 @@ public class ControlRequete {
 	public boolean filtrageDesliens(String noeudDepart, String noeudArrive) {
 		return true;
 	}
+<<<<<<< HEAD
 	
 	public boolean estDejaParcouru(String noeud, ArrayList<String> dejaParcouru) {
 		return dejaParcouru.contains(noeud);
 	}
+=======
+>>>>>>> 9a90486... ajout du parcours en profondeur avec unicité sur les nœuds non testé et manque la remonte des données dans la fonction
 }
