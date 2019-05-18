@@ -9,7 +9,10 @@ public class Requete {
 	private int niveau;
 	private int unicite; //0 noeudGlobal, 1 lienGlobal
 	private ArrayList<String> liensAParcourir;
-	//manque filtre
+	
+	private ArrayList<String> listeFiltres;
+	
+	
 	private ArrayList<String> resultat;
 	private ArrayList<String> dejaParcouruNoeud;
 	private ArrayList<Integer> dejaParcouruLien;
@@ -23,9 +26,11 @@ public class Requete {
 		this.resultat = new ArrayList<>();
 		this.dejaParcouruNoeud = new ArrayList<>();
 		this.dejaParcouruLien = new ArrayList<>();
+		
+		this.listeFiltres = new ArrayList<>();
 	}
 	
-	public Requete(String noeudDepart, int mode, int niveau, int unicite, ArrayList<String> liensAParcourir, ArrayList<String> resultat, ArrayList<String> dejaParcouruNoeud, ArrayList<Integer> dejaParcouruLien) {
+	public Requete(String noeudDepart, int mode, int niveau, int unicite, ArrayList<String> liensAParcourir, ArrayList<String> resultat, ArrayList<String> dejaParcouruNoeud, ArrayList<Integer> dejaParcouruLien, ArrayList<String> filtres) {
 		this.noeudDepart = noeudDepart;
 		this.mode = mode;
 		this.niveau = niveau;
@@ -34,10 +39,20 @@ public class Requete {
 		this.resultat = resultat;
 		this.dejaParcouruNoeud = dejaParcouruNoeud;
 		this.dejaParcouruLien = dejaParcouruLien;
+		
+		this.listeFiltres = filtres;
 	}
 	
+	public ArrayList<String> getListeFiltres() {
+		return listeFiltres;
+	}
+
+	public void setListeFiltres(ArrayList<String> listeFiltres) {
+		this.listeFiltres = listeFiltres;
+	}
+
 	public Requete requeteDuVoisin(String noeudVoisin) {
-		return new Requete(noeudVoisin, this.getMode(), this.getNiveau()-1, this.getUnicite(), this.getLiensAParcourir(), this.getResultat(), this.getDejaParcouruNoeud(), this.getDejaParcouruLien()); 
+		return new Requete(noeudVoisin, this.getMode(), this.getNiveau()-1, this.getUnicite(), this.getLiensAParcourir(), this.getResultat(), this.getDejaParcouruNoeud(), this.getDejaParcouruLien(), this.listeFiltres); 
 	}
 
 	public ArrayList<Integer> getDejaParcouruLien() {

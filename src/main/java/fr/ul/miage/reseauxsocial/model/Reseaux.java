@@ -111,7 +111,6 @@ public class Reseaux {
 	
 	
 	//@Charles
-	//a tester
 	public ArrayList<String> getParents(String noeud) {
 		ArrayList<String> result = new ArrayList<String>();
 		for(String n:noeuds.keySet()) {
@@ -123,7 +122,6 @@ public class Reseaux {
 	}
 	
 	//@Charles
-	//a tester
 	public int nombreDeLien(String noeud) {
 		return getParents(noeud).size() + getFils(noeud).size();
 	}
