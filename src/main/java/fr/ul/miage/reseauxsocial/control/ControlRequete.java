@@ -158,11 +158,10 @@ public class ControlRequete {
 				}
 				break;
 			default :
-
+				
 			}
-			return res;
 		}
-		
+		return res;
 	}
 
 	public boolean estDejaParcouru(String noeud, ArrayList<String> dejaParcouru) {
