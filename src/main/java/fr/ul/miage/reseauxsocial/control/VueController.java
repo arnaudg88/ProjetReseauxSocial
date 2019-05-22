@@ -2,6 +2,7 @@ package fr.ul.miage.reseauxsocial.control;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import fr.ul.miage.reseauxsocial.model.ConstructeurLien;
@@ -10,9 +11,15 @@ import fr.ul.miage.reseauxsocial.model.ImportReseau;
 import fr.ul.miage.reseauxsocial.model.Paire;
 import fr.ul.miage.reseauxsocial.model.Propriete;
 import fr.ul.miage.reseauxsocial.model.Reseaux;
+import fr.ul.miage.reseauxsocial.model.lien.Author;
+import fr.ul.miage.reseauxsocial.model.lien.Category;
 import fr.ul.miage.reseauxsocial.model.lien.EmployeeOf;
+import fr.ul.miage.reseauxsocial.model.lien.Friend;
+import fr.ul.miage.reseauxsocial.model.lien.Likes;
 import fr.ul.miage.reseauxsocial.model.propriete.Hired;
 import fr.ul.miage.reseauxsocial.model.propriete.Role;
+import fr.ul.miage.reseauxsocial.model.propriete.Share;
+import fr.ul.miage.reseauxsocial.model.propriete.Since;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -57,6 +64,12 @@ public class VueController {
 	@FXML
 	private TextField roleInput;
 	
+	@FXML
+	private TextField sinceInput;
+	
+	@FXML
+	private TextField shareInput;
+	
 	Reseaux reseaux;
 	
 	@FXML
@@ -91,50 +104,98 @@ public class VueController {
 	}
 	
 	public void ajouterLien() {
+		ArrayList<Propriete> myProps = new ArrayList<Propriete>();
 		Boolean error = false;
 		String choice = this.choiceLien.getValue();
 		switch(choice) {
 		case "EmployeeOf" : 
-			ArrayList<Propriete> myProps = new ArrayList<Propriete>();
 			if(this.hiredBool.isSelected()) {
-				Date date = Date.from(this.hiredInput.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-				Hired h = new Hired("Hired",date);
-				myProps.add(h);
+				if(this.hiredInput.getValue() == null) {
+					error = true;
+				}else {
+					Date date = Date.from(this.hiredInput.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+					Hired h = new Hired("Hired",date);
+					myProps.add(h);
+				}
 			}
 			if(this.roleBool.isSelected()) {
 				String role = this.roleInput.getText();
-				if(role == "") {
+				if(role == null) {
 					error = true;
 				}else {
 					Role r = new Role("Role",role);
 					myProps.add(r);
 				}
 			}
-			if(this.noeudSource.getText() != "" && this.noeudDestination.getText() != "" && error == false) {
+			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null) && error == false) {
 				Propriete[] myPropsArray = new Propriete[myProps.size()];
 				myPropsArray = myProps.toArray(myPropsArray);
-				Paire p = new Paire(this.noeudSource.getText(),this.noeudDestination.getText());
-				EmployeeOf e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildEmployee();
-			}	
+				EmployeeOf e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).BuildEmployee();
+				this.reseaux.addLien(e);
+				listview.getItems().add("Lien ajouté !");
+			}else {
+				listview.getItems().add("Vérifiez vos paramètres !");
+			}
 		break;
 		case "Friend" :
-			
+			if(this.sinceBool.isSelected()) {
+				int since = Integer.parseInt(this.sinceInput.getText());
+				Since r = new Since("Since",since);
+				myProps.add(r);
+			}
+			if(this.shareBool.isSelected()) {
+				String share = this.shareInput.getText();
+				if(share == null) {
+					error = false;
+				}else {
+					Share s = new Share("Share",Arrays.asList(share.split(";")));
+					myProps.add(s);
+				}
+			}
+			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null) && error == false) {
+				Propriete[] myPropsArray = new Propriete[myProps.size()];
+				myPropsArray = myProps.toArray(myPropsArray);
+				Friend e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).BuildFriend();
+				this.reseaux.addLien(e);
+				listview.getItems().add("Lien ajouté !");
+			}else {
+				listview.getItems().add("Vérifiez vos paramètres !");
+			}
 		break;
 		case "Author" :
-			
+			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null)) {
+				Author a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildAuthor();
+				this.reseaux.addLien(a);
+				listview.getItems().add("Lien ajouté !");
+			}else {
+				listview.getItems().add("Vérifiez vos paramètres !");
+			}
 		break;
 		
 		case "Likes" :
-			
+			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null)) {
+				Likes a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildLikes();
+				this.reseaux.addLien(a);
+				listview.getItems().add("Lien ajouté !");
+			}else {
+				listview.getItems().add("Vérifiez vos paramètres !");
+			}
 		break;
 		case "Category" :
-			
+			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null)) {
+				Category c = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildCategory();
+				this.reseaux.addLien(c);
+				listview.getItems().add("Lien ajouté !");
+			}else {
+				listview.getItems().add("Vérifiez vos paramètres !");
+			}
 		break;
 		}
 	}
 	
 	public void afficherReseau() {
-		
+		ExportReseau er = new ExportReseau(this.reseaux);
+		listview.getItems().add(er.exportReseau());
 	}
 	
 	public void importReseau() {

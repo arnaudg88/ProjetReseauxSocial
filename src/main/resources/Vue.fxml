@@ -38,8 +38,8 @@
             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Selectionner le fichier" GridPane.columnIndex="2" GridPane.rowIndex="6" />
             <TextField fx:id="noeudSource" promptText="Noeud source" />
             <TextField fx:id="noeudDestination" promptText="Noeud destination" GridPane.columnIndex="1" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Ajouter la relation" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             <CheckBox fx:id="doubleSensBool" mnemonicParsing="false" text="Relation double sens" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#ajouterLien" text="Ajouter la relation" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Supprimer le noeud" GridPane.columnIndex="3" GridPane.rowIndex="5" />
             <TextField promptText="Noeud à supprimer" GridPane.columnIndex="2" GridPane.rowIndex="5" />
             <ChoiceBox fx:id="choiceLien" maxWidth="1.7976931348623157E308" onAction="#newRelationChoice" prefWidth="150.0" GridPane.columnIndex="2" />
@@ -51,6 +51,7 @@
             <TextField fx:id="sinceInput" promptText="Annee" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <DatePicker fx:id="hiredInput" maxWidth="1.7976931348623157E308" promptText="Date" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <TextField fx:id="shareInput" promptText="separateur ;" GridPane.rowIndex="2" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#afficherReseau" text="Afficher le reseau" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </bottom>

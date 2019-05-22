@@ -1,2 +1,8 @@
 (Thomas <--Friend[Since=2000]--> Arnaud)
+(Thomas <--Friend[Since=2016,Share=[Sexe, Maison]]--> Manon)
+(Manon <--Friend[Since=2016,Share=[Sexe, Maison]]--> Thomas)
+(SexeEntreAmis --Author[]--> Manon)
+(SexeEntreAmis --Category[]--> Manon)
+(SexeEntreAmis --Likes[]--> Manon)
 (Thomas --Friend[Since=2000]--> Charles)
+(Arnaud <--Friend[Since=2000]--> Thomas)
