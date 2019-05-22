@@ -2,8 +2,11 @@ package fr.ul.miage.reseauxsocial.model;
 
 import java.util.ArrayList;
 
+import fr.ul.miage.reseauxsocial.model.lien.Author;
+import fr.ul.miage.reseauxsocial.model.lien.Category;
 import fr.ul.miage.reseauxsocial.model.lien.EmployeeOf;
 import fr.ul.miage.reseauxsocial.model.lien.Friend;
+import fr.ul.miage.reseauxsocial.model.lien.Likes;
 
 public class ConstructeurLien {
 
@@ -13,7 +16,7 @@ public class ConstructeurLien {
 	private ArrayList<Propriete> proprietes;
 
 
-	ConstructeurLien withParam(String nom, boolean sens, String nom2) {
+	public ConstructeurLien withParam(String nom, boolean sens, String nom2) {
 		this.depart=nom;
 		this.sens = sens;
 		this.destination = nom2;
@@ -21,7 +24,7 @@ public class ConstructeurLien {
 	}
 
 
-	ConstructeurLien withPropriete(Propriete... args) {
+	public ConstructeurLien withPropriete(Propriete... args) {
 		if(proprietes == null) {
 			proprietes = new ArrayList<Propriete>();
 		}
@@ -37,12 +40,23 @@ public class ConstructeurLien {
 
 
 
-	EmployeeOf BuildEmployee() {
+	public EmployeeOf BuildEmployee() {
 		return new EmployeeOf(depart, sens, destination, proprietes );
 	}
 
-	Friend BuildFriend() {
+	public Friend BuildFriend() {
 		return new Friend(depart, sens, destination, proprietes);
 	}
+	
+	public Author BuildAuthor() {
+		return new Author(depart, sens, destination, proprietes);
+	}
 
+	public Category BuildCategory() {
+		return new Category(depart, sens, destination, proprietes);
+	}
+	
+	public Likes BuildLikes() {
+		return new Likes(depart, sens, destination, proprietes);
+	}
 }

@@ -2,15 +2,17 @@ package fr.ul.miage.reseauxsocial.model;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import fr.ul.miage.reseauxsocial.model.lien.Author;
+import fr.ul.miage.reseauxsocial.model.lien.Category;
 import fr.ul.miage.reseauxsocial.model.lien.EmployeeOf;
 import fr.ul.miage.reseauxsocial.model.lien.Friend;
+import fr.ul.miage.reseauxsocial.model.lien.Likes;
 import fr.ul.miage.reseauxsocial.model.propriete.Hired;
 import fr.ul.miage.reseauxsocial.model.propriete.Role;
 import fr.ul.miage.reseauxsocial.model.propriete.Since;
@@ -22,16 +24,18 @@ public class ImportReseau {
 	public ImportReseau(String reseau) {
 		this.reseau = reseau;
 	}
+	
+	public ImportReseau() {
+		this.reseau = "";
+	}
 
 	public Reseaux importReseau() {
 		String[] relations = this.reseau.split("\n");
 		Reseaux reseaux = new Reseaux();
-		HashMap<Paire, ArrayList<Lien>> valReseaux = new HashMap<>();
 		for (int i = 0; i < relations.length; i++) {
 			relations[i] = relations[i].trim();
 			if (relations[i] != "") {
 				// INIT
-				ArrayList<Lien> listeLien = new ArrayList<Lien>();
 				Boolean direction = false;
 
 				String firstNoeud = relations[i].substring(relations[i].indexOf("(") + 1, relations[i].indexOf(" "));
@@ -83,42 +87,37 @@ public class ImportReseau {
 				Propriete[] myPropsArray = new Propriete[myProps.size()];
 				myPropsArray = myProps.toArray(myPropsArray);
 
-				Paire p = new Paire(firstNoeud, secondNoeud);
-
 				switch (lien) {
 				case "Friend":
-					Friend f = new ConstructeurLien().withParam(firstNoeud, direction, secondNoeud)
+					Friend friend = new ConstructeurLien().withParam(firstNoeud, direction, secondNoeud)
 							.withPropriete(myPropsArray).BuildFriend();
-					if (valReseaux.containsKey(p)) {
-						listeLien = valReseaux.get(p);
-						listeLien.add(f);
-						valReseaux.put(p, listeLien);
-					} else {
-						listeLien.add(f);
-						valReseaux.put(p, listeLien);
-					}
+					reseaux.addLien(friend);
 					break;
 				case "EmployeeOf":
-					EmployeeOf e = new ConstructeurLien().withParam(firstNoeud, direction, secondNoeud).BuildEmployee();
-					if (valReseaux.containsKey(p)) {
-						listeLien = valReseaux.get(p);
-						listeLien.add(e);
-						valReseaux.put(p, listeLien);
-					} else {
-						listeLien.add(e);
-						valReseaux.put(p, listeLien);
-					}
+					EmployeeOf e = new ConstructeurLien().withParam(firstNoeud, direction, secondNoeud).withPropriete(myPropsArray).BuildEmployee();
+					reseaux.addLien(e);
+					break;
+				case "Author":
+					Author author = new ConstructeurLien().withParam(firstNoeud, direction, secondNoeud).withPropriete(myPropsArray).BuildAuthor();
+					reseaux.addLien(author);
+					break;
+				case "Category":
+					Category category = new ConstructeurLien().withParam(firstNoeud, direction, secondNoeud).withPropriete(myPropsArray).BuildCategory();
+					reseaux.addLien(category);
+					break;
+				case "Likes":
+					Likes likes = new ConstructeurLien().withParam(firstNoeud, direction, secondNoeud).withPropriete(myPropsArray).BuildLikes();
+					reseaux.addLien(likes);
 					break;
 				default:
 					// code block
 				}
 			}
 		}
-		reseaux.setReseau(valReseaux);
 		return reseaux;
 	}
 
-	public String importFile(String filename) {
+	public void importFile(String filename) {
 		String dataReseau = "";
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(new File(filename)));
@@ -132,6 +131,6 @@ public class ImportReseau {
 			e.printStackTrace();
 		}
 
-		return dataReseau;
+		reseau = dataReseau;
 	}
 }
