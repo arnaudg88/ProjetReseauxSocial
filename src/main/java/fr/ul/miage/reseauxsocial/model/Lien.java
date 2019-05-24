@@ -87,29 +87,28 @@ public abstract class Lien {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null || getClass() != obj.getClass())
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
 			return false;
 		Lien other = (Lien) obj;
 		if (doubleSens != other.doubleSens)
 			return false;
-		if (noeudDepart == null && other.noeudDepart != null) {
-			return false;
-		} else {
-			if (!noeudDepart.equals(other.noeudDepart))
+		if (noeudDepart == null) {
+			if (other.noeudDepart != null)
 				return false;
-		}
-		if (noeudDestination == null && other.noeudDestination != null) {
+		} else if (!noeudDepart.equals(other.noeudDepart))
 			return false;
-		} else {
-			if (!noeudDestination.equals(other.noeudDestination))
+		if (noeudDestination == null) {
+			if (other.noeudDestination != null)
 				return false;
-		}
-		if (proprietes == null && other.proprietes != null) {
+		} else if (!noeudDestination.equals(other.noeudDestination))
 			return false;
-		} else {
-			if (!proprietes.equals(other.proprietes))
+		if (proprietes == null) {
+			if (other.proprietes != null)
 				return false;
-		}
+		} else if (!proprietes.equals(other.proprietes))
+			return false;
 		return true;
 	}
 
