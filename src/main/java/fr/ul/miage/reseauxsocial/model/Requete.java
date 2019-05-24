@@ -10,7 +10,9 @@ public class Requete {
 	private int unicite; //0 noeudGlobal, 1 lienGlobal
 	private ArrayList<String> liensAParcourir;
 	
-	private ArrayList<String> listeFiltres;
+	private ArrayList<String[]> listeTypesFiltres;
+	
+	private ArrayList<String[]> listeProprietes;
 	
 	
 	private ArrayList<String> resultat;
@@ -26,11 +28,14 @@ public class Requete {
 		this.resultat = new ArrayList<>();
 		this.dejaParcouruNoeud = new ArrayList<>();
 		this.dejaParcouruLien = new ArrayList<>();
+
 		
-		this.listeFiltres = new ArrayList<>();
+		this.listeTypesFiltres = new ArrayList<>();
+		this.listeProprietes = new ArrayList<>();
 	}
 	
-	public Requete(String noeudDepart, int mode, int niveau, int unicite, ArrayList<String> liensAParcourir, ArrayList<String> resultat, ArrayList<String> dejaParcouruNoeud, ArrayList<Integer> dejaParcouruLien, ArrayList<String> filtres) {
+	public Requete(String noeudDepart, int mode, int niveau, int unicite, ArrayList<String> liensAParcourir, ArrayList<String> resultat, ArrayList<String> dejaParcouruNoeud, ArrayList<Integer> dejaParcouruLien, ArrayList<String[]> filtres) {
+
 		this.noeudDepart = noeudDepart;
 		this.mode = mode;
 		this.niveau = niveau;
@@ -39,20 +44,21 @@ public class Requete {
 		this.resultat = resultat;
 		this.dejaParcouruNoeud = dejaParcouruNoeud;
 		this.dejaParcouruLien = dejaParcouruLien;
+
 		
-		this.listeFiltres = filtres;
+		this.listeTypesFiltres = filtres;
 	}
 	
-	public ArrayList<String> getListeFiltres() {
-		return listeFiltres;
+	public ArrayList<String[]> getListeFiltres() {
+		return listeTypesFiltres;
 	}
 
-	public void setListeFiltres(ArrayList<String> listeFiltres) {
-		this.listeFiltres = listeFiltres;
+	public void setListeFiltres(ArrayList<String[]> listeFiltres) {
+		this.listeTypesFiltres = listeFiltres;
 	}
 
 	public Requete requeteDuVoisin(String noeudVoisin) {
-		return new Requete(noeudVoisin, this.getMode(), this.getNiveau()-1, this.getUnicite(), this.getLiensAParcourir(), this.getResultat(), this.getDejaParcouruNoeud(), this.getDejaParcouruLien(), this.listeFiltres); 
+		return new Requete(noeudVoisin, this.getMode(), this.getNiveau()-1, this.getUnicite(), this.getLiensAParcourir(), this.getResultat(), this.getDejaParcouruNoeud(), this.getDejaParcouruLien(), this.listeTypesFiltres); 
 	}
 
 	public ArrayList<Integer> getDejaParcouruLien() {
@@ -118,5 +124,24 @@ public class Requete {
 	public void setResultat(ArrayList<String> resulat) {
 		this.resultat = resulat;
 	}
+
+
+	public ArrayList<String[]> getListeTypesFiltres() {
+		return listeTypesFiltres;
+	}
+
+	public void setListeTypesFiltres(ArrayList<String[]> listeTypesFiltres) {
+		this.listeTypesFiltres = listeTypesFiltres;
+	}
+
+	public ArrayList<String[]> getListeProprietes() {
+		return listeProprietes;
+	}
+
+	public void setListeProprietes(ArrayList<String[]> listeProprietes) {
+		this.listeProprietes = listeProprietes;
+	}
+	
+
 	
 }
