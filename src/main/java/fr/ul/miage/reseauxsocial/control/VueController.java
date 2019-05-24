@@ -315,9 +315,10 @@ public class VueController {
 		if(this.choiceMode.getValue() == "Lien Global") {
 			unicite = 1;
 		}
-		String props = this.props.getText();
+		String props = this.props.getText().trim();
 		String filtres = this.filter.getText().trim();
 		
 		Requete.splitLiens(filtres);
+		Requete.splitProprietes(props);
 	}
 }
