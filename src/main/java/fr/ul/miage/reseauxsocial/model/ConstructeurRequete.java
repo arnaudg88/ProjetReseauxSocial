@@ -11,6 +11,7 @@ public class ConstructeurRequete {
 	private ArrayList<String> liensAParcourir = new ArrayList<>();
 	private ArrayList<String[]> listeTypeLien = new ArrayList<>();
 	private ArrayList<String[]> listeFiltres = new ArrayList<>();
+	private ArrayList<String[]> listeProprietes = new ArrayList<>();
 	private ArrayList<String> resultat = new ArrayList<>();
 	private ArrayList<String> dejaParcouruNoeud = new ArrayList<>();
 	private ArrayList<Integer> dejaParcouruLien = new ArrayList<>();
@@ -62,13 +63,13 @@ public class ConstructeurRequete {
 		return this;
 	}
 	
-	public ConstructeurRequete withFiltre(ArrayList<String[]> filtres) {
-		this.listeFiltres = filtres;
+	public ConstructeurRequete withLiens(ArrayList<String[]> liens) {
+		this.listeFiltres = liens;
 		return this;
 	}
 	
-	public ConstructeurRequete withLien(ArrayList<String[]> liens) {
-		this.listeTypeLien = liens;
+	public ConstructeurRequete withPropriete(ArrayList<String[]> props) {
+		this.listeProprietes = props;
 		return this;
 	}
 
@@ -89,6 +90,6 @@ public class ConstructeurRequete {
 
 
 	public Requete BuildRequete() {
-		return new Requete(noeudDepart, mode, niveau, unicite, liensAParcourir, resultat, dejaParcouruNoeud, dejaParcouruLien, listeFiltres);
+		return new Requete(noeudDepart, mode, niveau, unicite, liensAParcourir, resultat, dejaParcouruNoeud, dejaParcouruLien, listeFiltres, listeProprietes);
 	}
 }
