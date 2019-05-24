@@ -142,6 +142,42 @@ public class Requete {
 		this.listeProprietes = listeProprietes;
 	}
 	
-
+	public static ArrayList<String[]> splitLiens(String filtre) {
+		ArrayList<String[]> liensResultat = new ArrayList<>();
+		
+		if(filtre.length() > 0) {
+			String[] liens = filtre.split(";"); //split sur ;
+			for(String lien:liens) { //pour chaque liens
+				String[] infosLien = lien.trim().split(" "); //split sur espace
+				String[] nomLien = new String[2];
+				if(infosLien.length == 1) { // dans cas juste lien
+					nomLien[0] = infosLien[0];
+					nomLien[1] = "";
+				} else if(infosLien.length == 2) { //dans cas lien avec direction
+					nomLien[0] = infosLien[0];
+					nomLien[1] = infosLien[1];
+				}
+				liensResultat.add(nomLien);
+			}
+		}
+		return liensResultat;
+	}
+	
+	public static ArrayList<String[]> splitProprietes(String filtre) {
+		ArrayList<String[]> proprietesResultat = new ArrayList<>();
+		
+		if(filtre.length() > 0) {
+			String[] proprietes = filtre.split(";"); //split sur ;
+			for(String propriete:proprietes) { //pour chaque liens
+				String[] infosPropriete = propriete.trim().split("="); //split sur espace
+				String[] nomPropriete = new String[2];
+				nomPropriete[0] = infosPropriete[0];
+				nomPropriete[1] = infosPropriete[1];
+				
+				proprietesResultat.add(nomPropriete);
+			}
+		}
+		return proprietesResultat;
+	}
 	
 }

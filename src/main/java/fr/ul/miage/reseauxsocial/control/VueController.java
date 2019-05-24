@@ -10,6 +10,7 @@ import fr.ul.miage.reseauxsocial.model.ExportReseau;
 import fr.ul.miage.reseauxsocial.model.ImportReseau;
 import fr.ul.miage.reseauxsocial.model.Paire;
 import fr.ul.miage.reseauxsocial.model.Propriete;
+import fr.ul.miage.reseauxsocial.model.Requete;
 import fr.ul.miage.reseauxsocial.model.Reseaux;
 import fr.ul.miage.reseauxsocial.model.lien.Author;
 import fr.ul.miage.reseauxsocial.model.lien.Category;
@@ -291,6 +292,8 @@ public class VueController {
 		if(this.choiceMode.getValue() == "Lien Global") {
 			unicite = 1;
 		}
-		String filtres = this.filter.getText();
+		String filtres = this.filter.getText().trim();
+		
+		Requete.splitLiens(filtres);
 	}
 }
