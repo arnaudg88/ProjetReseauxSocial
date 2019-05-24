@@ -16,11 +16,16 @@ import fr.ul.miage.reseauxsocial.model.Requete;
 public class ControlRequeteTest {
 
 	ImportReseau irSujet;
+	ImportReseau irPropriete;
 	
 	@BeforeEach
 	void avantChaque() {
+		irPropriete = new ImportReseau();
+		irPropriete.importFile("src/test/ressource/reseauSujet");
 		irSujet = new ImportReseau();
 		irSujet.importFile("src/test/ressource/reseauSujetRequete");
+		
+		
 	}
 	
 	@Test
@@ -149,5 +154,15 @@ public class ControlRequeteTest {
 		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).withFiltre(str).BuildRequete();
 		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
 		assertFalse(controlRequeteSujet.filtrageDesliens("Carol", "Dawn", lienFiltre, new ArrayList<>()));
+	}
+	
+	@Test
+	void testProprieteSimple() {
+		String[] str = {"Friend",""};
+		ArrayList<String[]> proprieteFiltre = new ArrayList<>();
+		proprieteFiltre.add(str);
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Barbara").withNiveau(1).withFiltre(str).BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irPropriete.importReseau(), requete);
+		assertTrue(controlRequeteSujet.filtrageDesliens("Barbara", "Carol", new ArrayList<>(), proprieteFiltre));
 	}
 }
