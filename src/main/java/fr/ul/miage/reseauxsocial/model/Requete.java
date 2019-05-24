@@ -52,14 +52,6 @@ public class Requete {
 		this.listeTypesFiltres = filtres;
 		this.listeProprietes = proprietes;
 	}
-	
-	public ArrayList<String[]> getListeFiltres() {
-		return listeTypesFiltres;
-	}
-
-	public void setListeFiltres(ArrayList<String[]> listeFiltres) {
-		this.listeTypesFiltres = listeFiltres;
-	}
 
 	public Requete requeteDuVoisin(String noeudVoisin) {
 		return new Requete(noeudVoisin, this.getMode(), this.getNiveau()-1, this.getUnicite(), this.getLiensAParcourir(), this.getNoeudsAParcourir(), this.getResultat(), this.getDejaParcouruNoeud(), this.getDejaParcouruLien(), this.listeTypesFiltres, this.listeProprietes); 
@@ -158,9 +150,9 @@ public class Requete {
 		ArrayList<String[]> liensResultat = new ArrayList<>();
 		
 		if(filtre.length() > 0) {
-			String[] liens = filtre.split(";"); //split sur ;
-			for(String lien:liens) { //pour chaque liens
-				String[] infosLien = lien.trim().split(" "); //split sur espace
+			String[] liens = filtre.split(";");
+			for(String lien:liens) {
+				String[] infosLien = lien.trim().split(" ");
 				String[] nomLien = new String[2];
 				if(infosLien.length == 1) { // dans cas juste lien
 					nomLien[0] = infosLien[0];

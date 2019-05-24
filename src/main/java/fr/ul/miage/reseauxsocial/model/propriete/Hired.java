@@ -5,10 +5,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import fr.ul.miage.reseauxsocial.model.Propriete;
 
 public class Hired extends Propriete {
+	
+	private static final Logger LOG = Logger.getLogger(Hired.class.getName());
 
 	private Date valeur;
 	private static final String[] TYPE_POSSIBLE = {};
@@ -50,8 +53,7 @@ public class Hired extends Propriete {
 			Date date = dateFormat.parse(dateFormat.format(valeur));
 			return "Hired=" + dateFormat.format(date);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.severe(e.getMessage());
 		}
 		return "Hired=" + valeur;
 	}

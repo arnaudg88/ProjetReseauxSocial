@@ -29,7 +29,7 @@ public abstract class Lien {
 
 	public void addPropriete(Propriete p) {
 		if(proprietes == null) {
-			proprietes = new ArrayList<Propriete>();
+			proprietes = new ArrayList<>();
 		}
 		proprietes.add(p);
 	}
@@ -87,30 +87,25 @@ public abstract class Lien {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Lien other = (Lien) obj;
 		if (doubleSens != other.doubleSens)
 			return false;
-		if (noeudDepart == null) {
-			if (other.noeudDepart != null)
-				return false;
+		if (noeudDepart == null && other.noeudDepart != null) {
+			return false;
 		} else {
 			if (!noeudDepart.equals(other.noeudDepart))
 				return false;
 		}
-		if (noeudDestination == null) {
-			if (other.noeudDestination != null)
-				return false;
+		if (noeudDestination == null && other.noeudDestination != null) {
+			return false;
 		} else {
 			if (!noeudDestination.equals(other.noeudDestination))
 				return false;
 		}
-		if (proprietes == null) {
-			if (other.proprietes != null)
-				return false;
+		if (proprietes == null && other.proprietes != null) {
+			return false;
 		} else {
 			if (!proprietes.equals(other.proprietes))
 				return false;

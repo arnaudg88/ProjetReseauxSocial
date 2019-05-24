@@ -22,7 +22,7 @@ class LienTest {
 	@Test
 	void testContructeurLienEmployee() {
 		Date date = new Date();
-		EmployeeOf employeur = (new ConstructeurLien().withParam("Charles",false,"CHRU").withPropriete((new Hired("Oui",date)),(new Role("Oui","Dev")))).BuildEmployee();
+		EmployeeOf employeur = (new ConstructeurLien().withParam("Charles",false,"CHRU").withPropriete((new Hired("Oui",date)),(new Role("Oui","Dev")))).buildEmployee();
 		EmployeeOf lien1 = new EmployeeOf("Charles",false,"CHRU");
 		Hired h1 = new Hired("Oui",date);
 		Role r1 = new Role("Oui","Dev");
@@ -36,7 +36,7 @@ class LienTest {
 	void testContructeurLienFriend() {
 		List<String> liste = Arrays.asList("Sport");
 		
-		Friend ami = (new ConstructeurLien().withParam("Charles",false,"Arnaud").withPropriete(new Share("Oui",liste),new Since("Oui",1))).BuildFriend();
+		Friend ami = (new ConstructeurLien().withParam("Charles",false,"Arnaud").withPropriete(new Share("Oui",liste),new Since("Oui",1))).buildFriend();
 		Friend lien1 = new Friend("Charles",false,"Arnaud");
 		Share h1 = new Share("Oui",liste);
 		Since r1 = new Since("Oui",1);

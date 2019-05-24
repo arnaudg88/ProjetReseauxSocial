@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class ExportReseau {
 	
+	private static final Logger LOG = Logger.getLogger(ExportReseau.class.getName());
 	Reseaux reseaux;
 	
 	public ExportReseau(Reseaux reseaux) {
@@ -18,17 +20,15 @@ public class ExportReseau {
 	
 	public ExportReseau(Reseaux reseaux, String filename) {
 		this.reseaux = reseaux;
-		this.saveInFile("filename");
+		this.saveInFile(filename);
 	}
 
 	public String exportReseau() {
-		//String exemple = "(Barbara --friend[since=1999]--> Carol)";
 		HashMap<Paire, ArrayList<Lien>> valReseaux = this.reseaux.getReseau();
 		String tmp = "";
 		String sens = "";
 		String prop = "";
 		for(Map.Entry<Paire, ArrayList<Lien>> entry : valReseaux.entrySet()) {
-			Paire key = entry.getKey();
 			ArrayList<Lien> value = entry.getValue();
 			for (Lien lien : value) {
 				sens = "";
@@ -52,15 +52,16 @@ public class ExportReseau {
 	}
 	
 	public void saveInFile(String filename) {
-		    String str = this.exportReseau();
-		    BufferedWriter writer;
+		String str = this.exportReseau();
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 			try {
-				writer = new BufferedWriter(new FileWriter(filename));
 				writer.write(str);
-			    writer.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-		}    
+			} finally {
+				writer.close();
+			}
+		} catch (IOException e) {
+			LOG.severe(e.getMessage());
+		}
 	}
 }

@@ -34,7 +34,7 @@ public class Share extends Propriete {
 
 	@Override
 	public String toString() {
-		return "Share=" + String.join(";", (CharSequence[]) valeur.toArray());
+		return "Share=" + String.join(";", valeur.toArray(new CharSequence[0]));
 	}
 
 	private List<String> valeur;

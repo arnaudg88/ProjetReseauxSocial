@@ -39,7 +39,7 @@ class ImportTest {
 	@Test
 	void importationSimple() {
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).buildFriend();
 		this.listeLien.add(ami);
 		
 		this.listeNoeuds.put("Thomas", new Noeud("Thomas"));
@@ -59,7 +59,7 @@ class ImportTest {
 	void importationShare() {
 		List<String> liste = Arrays.asList("Sport","Cinema");
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Share("share",liste)).BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Share("share",liste)).buildFriend();
 		this.listeLien.add(ami);
 		
 		this.listeNoeuds.put("Thomas", new Noeud("Thomas"));
@@ -81,7 +81,7 @@ class ImportTest {
 		Date date = dateFormat.parse(dateFormat.format(new Date()));
 		String strDate = dateFormat.format(date);  
 		Paire paire = new Paire("Thomas","Charles");
-		EmployeeOf ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete((new Hired("Hired",date)),(new Role("Role","Dev"))).BuildEmployee();
+		EmployeeOf ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete((new Hired("Hired",date)),(new Role("Role","Dev"))).buildEmployee();
 		this.listeLien.add(ami);
 		this.listeNoeuds.put("Thomas", new Noeud("Thomas"));
 		this.listeNoeuds.put("Charles", new Noeud("Charles"));
@@ -100,7 +100,7 @@ class ImportTest {
 	void importationDoublePropriete() {
 		List<String> liste = Arrays.asList("Sport","Cinema");
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Share("Share",liste)).withPropriete(new Since("Since",2000)).BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Share("Share",liste)).withPropriete(new Since("Since",2000)).buildFriend();
 		this.listeLien.add(ami);
 		
 		this.listeNoeuds.put("Thomas", new Noeud("Thomas"));
@@ -119,17 +119,17 @@ class ImportTest {
 	@Test
 	void importationDouble() {
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).buildFriend();
 		this.listeLien.add(ami);
 		this.valReseaux.put(paire, this.listeLien);
 		
 		Paire paire2 = new Paire("Thomas","Arnaud");
-		Friend ami2 = new ConstructeurLien().withParam("Thomas",true,"Arnaud").withPropriete(new Since("Ami",2000)).BuildFriend();
+		Friend ami2 = new ConstructeurLien().withParam("Thomas",true,"Arnaud").withPropriete(new Since("Ami",2000)).buildFriend();
 		this.listeLien = new ArrayList<Lien>();
 		this.listeLien.add(ami2);
 		this.valReseaux.put(paire2, this.listeLien);
 		Paire paire3 = new Paire("Arnaud","Thomas");
-		Friend ami3 = new ConstructeurLien().withParam("Arnaud",true,"Thomas").withPropriete(new Since("Ami",2000)).BuildFriend();
+		Friend ami3 = new ConstructeurLien().withParam("Arnaud",true,"Thomas").withPropriete(new Since("Ami",2000)).buildFriend();
 		this.listeLien = new ArrayList<Lien>();
 		this.listeLien.add(ami3);
 		this.valReseaux.put(paire3, this.listeLien);

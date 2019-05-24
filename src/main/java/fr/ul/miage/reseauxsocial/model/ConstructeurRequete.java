@@ -73,23 +73,7 @@ public class ConstructeurRequete {
 		return this;
 	}
 
-	/*ConstructeurLien withLien(String... args) {
-		if(proprietes == null) {
-			proprietes = new ArrayList<Propriete>();
-		}
-		
-		for(Propriete p:args) {
-			this.proprietes.add(p);
-		}
-		
-
-		return this;
-
-	}*/
-
-
-
-	public Requete BuildRequete() {
+	public Requete buildRequete() {
 		return new Requete(noeudDepart, mode, niveau, unicite, liensAParcourir, noeudsAParcourir, resultat, dejaParcouruNoeud, dejaParcouruLien, listeFiltres, listeProprietes);
 	}
 }

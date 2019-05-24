@@ -34,7 +34,7 @@ class ExportTest {
 	@Test
 	void reseauSansProprieteSimpleUnidirectionnel() {
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").buildFriend();
 		this.listeLien.add(ami);
 		this.valReseaux.put(paire, this.listeLien);
 		this.reseaux.setReseau(this.valReseaux);
@@ -48,7 +48,7 @@ class ExportTest {
 	void reseauAvecProprieteSimpleUnidirectionnel() {
 		Date date = new Date();
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).buildFriend();
 		this.listeLien.add(ami);
 		this.valReseaux.put(paire, this.listeLien);
 		this.reseaux.setReseau(this.valReseaux);
@@ -64,7 +64,7 @@ class ExportTest {
 		Date date = dateFormat.parse(dateFormat.format(new Date()));
 		String strDate = dateFormat.format(date);  
 		Paire paire = new Paire("Thomas","Charles");
-		EmployeeOf ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete((new Hired("Oui",date)),(new Role("Oui","Dev"))).BuildEmployee();
+		EmployeeOf ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete((new Hired("Oui",date)),(new Role("Oui","Dev"))).buildEmployee();
 		this.listeLien.add(ami);
 		this.valReseaux.put(paire, this.listeLien);
 		this.reseaux.setReseau(this.valReseaux);
@@ -77,7 +77,7 @@ class ExportTest {
 	@Test
 	void reseauSansProprieteSimpleBidirectionnel() {
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",true,"Charles").BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",true,"Charles").buildFriend();
 		this.listeLien.add(ami);
 		this.valReseaux.put(paire, this.listeLien);
 		this.reseaux.setReseau(this.valReseaux);
@@ -91,7 +91,7 @@ class ExportTest {
 	void reseauAvecProprieteSimpleBidirectionnel() {
 		Date date = new Date();
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",true,"Charles").withPropriete(new Since("Ami",2000)).BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",true,"Charles").withPropriete(new Since("Ami",2000)).buildFriend();
 		this.listeLien.add(ami);
 		this.valReseaux.put(paire, this.listeLien);
 		this.reseaux.setReseau(this.valReseaux);
@@ -104,8 +104,8 @@ class ExportTest {
 	@Test
 	void reseauSansProprieteMultiple() {
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").BuildFriend();
-		Friend ami2 = new ConstructeurLien().withParam("Thomas",false,"Arnaud").BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").buildFriend();
+		Friend ami2 = new ConstructeurLien().withParam("Thomas",false,"Arnaud").buildFriend();
 		this.listeLien.add(ami);
 		this.listeLien.add(ami2);
 		this.valReseaux.put(paire, this.listeLien);
@@ -119,8 +119,8 @@ class ExportTest {
 	@Test
 	void reseauAvecProprieteMultiple() {
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).BuildFriend();
-		Friend ami2 = new ConstructeurLien().withParam("Thomas",true,"Arnaud").withPropriete(new Since("Ami",2000)).BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).buildFriend();
+		Friend ami2 = new ConstructeurLien().withParam("Thomas",true,"Arnaud").withPropriete(new Since("Ami",2000)).buildFriend();
 		this.listeLien.add(ami);
 		this.listeLien.add(ami2);
 		this.valReseaux.put(paire, this.listeLien);
