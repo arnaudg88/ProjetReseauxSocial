@@ -70,7 +70,7 @@ public class Reseaux {
 		result.addAll(getParents(noeud));
 		for(String n:listeNoeudsFils) {
 			if(!result.contains(n)) {
-				result.add(noeud);
+				result.add(n);
 			}
 		}
 		return result;
@@ -85,8 +85,9 @@ public class Reseaux {
 		listTemp.add(noeud);
 		
 		listeLien.addAll(getVoisins(noeud));
+		System.out.println(listeLien.toString());
 		for(String n:listeLien) {
-			if(nombreDeLien(n)==1) {
+			if(nombreDeLien(n)<=1) {
 				//noeuds.remove(n);
 				listTemp.add(n);
 			}

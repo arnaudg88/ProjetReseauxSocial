@@ -223,6 +223,7 @@ class ReseauxTest {
 		reseaux.supprimerNoeud("Roger");
 		
 		
+		
 		assertTrue(reseaux.getNoeuds().containsKey("Sarah"));
 		assertTrue(reseaux.getNoeuds().containsKey("Nicole"));
 		assertFalse(reseaux.getNoeuds().containsKey("Roger"));
@@ -243,6 +244,7 @@ class ReseauxTest {
 		noeudsTemp.put("Nicole",new Noeud("Nicole"));
 		noeudsTemp.put("Patrice", new Noeud("Patrice"));
 		reseaux0.setNoeuds(noeudsTemp);
+		
 		
 		reseaux.supprimerNoeud("Nicole");
 

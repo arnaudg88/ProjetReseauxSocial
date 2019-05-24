@@ -9,7 +9,6 @@ public class ConstructeurRequete {
 	private int niveau = Integer.MAX_VALUE;
 	private int unicite = 0; //0 noeudGlobal, 1 lienGlobal
 	private ArrayList<String> liensAParcourir = new ArrayList<>();
-	private ArrayList<String[]> listeTypeLien = new ArrayList<>();
 	private ArrayList<String[]> listeFiltres = new ArrayList<>();
 	private ArrayList<String[]> listeProprietes = new ArrayList<>();
 	private ArrayList<String> resultat = new ArrayList<>();
