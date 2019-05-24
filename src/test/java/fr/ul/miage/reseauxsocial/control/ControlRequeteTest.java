@@ -42,7 +42,9 @@ public class ControlRequeteTest {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
 		resultatPrevu.add("Dawn");
 		resultatPrevu.add("Barbara");
-		
-		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).BuildRequete();
+		String[] str = {"Friend",""};
+		ArrayList<String[]> lienFiltre = new ArrayList<>();
+		lienFiltre.add(str);
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).withFiltre().BuildRequete();
 	}
 }
