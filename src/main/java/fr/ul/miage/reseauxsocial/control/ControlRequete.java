@@ -136,7 +136,7 @@ public class ControlRequete {
 				
 				if (listeLienDA != null) {
 					for (Lien l : listeLienDA) {
-						if (filtre[0].equals(getClass().getSimpleName())) {
+						if (filtre[0].equals(l.getClass().getSimpleName())) {
 				
 							ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
 
