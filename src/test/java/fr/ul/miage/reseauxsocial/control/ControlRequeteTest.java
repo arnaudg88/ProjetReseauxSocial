@@ -45,6 +45,9 @@ public class ControlRequeteTest {
 		String[] str = {"Friend",""};
 		ArrayList<String[]> lienFiltre = new ArrayList<>();
 		lienFiltre.add(str);
-		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).withFiltre().BuildRequete();
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).withFiltre(str).BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		ArrayList<String> actual = controlRequeteSujet.executeRequete();
+		assertEquals(resultatPrevu, actual);
 	}
 }

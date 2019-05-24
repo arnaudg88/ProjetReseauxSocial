@@ -123,53 +123,71 @@ public class ControlRequete {
 
 	public boolean filtrageDesliens(String noeudDepart, String noeudArrive, ArrayList<String[]> listeTypeLien, ArrayList<String[]> listeProprietes) {
 		boolean res = false;
-		ArrayList<Lien> listeLienDA = reseaux.getReseau().get(new Paire(noeudDepart, noeudArrive));
-
-		ArrayList<Lien> listeLienAD = reseaux.getReseau().get(new Paire(noeudArrive, noeudDepart));
+		if(listeTypeLien.size()==0) {
+			res=true;
+		}else {
+			
 		
-		for(String[] filtre:listeTypeLien) {
+			ArrayList<Lien> listeLienDA = reseaux.getReseau().get(new Paire(noeudDepart, noeudArrive));
+	
+			ArrayList<Lien> listeLienAD = reseaux.getReseau().get(new Paire(noeudArrive, noeudDepart));
 			
-			for(Lien l:listeLienDA) {
-				if(filtre[0]== l.getClass().getSimpleName()) {
+			for(String[] filtre:listeTypeLien) {
+				
+				for(Lien l:listeLienDA) {
+					if(filtre[0]== l.getClass().getSimpleName()) {
+						ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
+						
+						if((filtre[1] == ">") || (filtre[1] == "")){
+							if(listeProprietes.size()==0) {
+								res=true;
+							}else {
+								for(String[] proprietes:listeProprietes) {
+									for(Propriete p:listeProprietesTemp) {
+										if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
+											res = true;
+										}
+									}
+								}
+							}
+							
+						}else if((filtre[1] == "<>")){
+							
+							if(listeProprietes.size()==0) {
+								res=true;
+							}else {
+								for(String[] proprietes:listeProprietes) {
+									for(Propriete p:listeProprietesTemp) {
+										if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
+											res = true;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				for(Lien l : listeLienAD) {
 					ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
-					
-					if((filtre[1] == ">") || (filtre[1] == "")){
-						
-						for(String[] proprietes:listeProprietes) {
-							for(Propriete p:listeProprietesTemp) {
-								if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
-									res = true;
-								}
-							}
-						}
-						
-					}else if((filtre[1] == "<>")){
-						for(String[] proprietes:listeProprietes) {
-							for(Propriete p:listeProprietesTemp) {
-								if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
-									res = true;
-								}
-							}
-						}
-						
-					}
-				}
-			}
-			for(Lien l : listeLienAD) {
-				ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
-				if(filtre[0]== l.getClass().getSimpleName()) {
-					if((filtre[1] == "<") ){
-						for(String[] proprietes:listeProprietes) {
-							for(Propriete p:listeProprietesTemp) {
-								if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
-									res = true;
+					if(filtre[0]== l.getClass().getSimpleName()) {
+						if((filtre[1] == "<") ){
+							
+							if(listeProprietes.size()==0) {
+								res=true;
+							}else {
+								for(String[] proprietes:listeProprietes) {
+									for(Propriete p:listeProprietesTemp) {
+										if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
+											res = true;
+										}
+									}
 								}
 							}
 						}
 					}
 				}
+				
 			}
-			
 		}
 		return res;
 	}
