@@ -123,7 +123,7 @@ public class ImportReseau {
 
 			String line = null;
 			while ((line = br.readLine()) != null) {
-				dataReseau += line;
+				dataReseau += line+"\n";
 			}
 			br.close();
 		} catch (IOException e) {
