@@ -21,13 +21,19 @@ import fr.ul.miage.reseauxsocial.model.propriete.Role;
 import fr.ul.miage.reseauxsocial.model.propriete.Share;
 import fr.ul.miage.reseauxsocial.model.propriete.Since;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class VueController {
 
@@ -36,6 +42,12 @@ public class VueController {
 	
 	@FXML
 	private ChoiceBox<String> choiceLien;
+	
+	@FXML
+	private ChoiceBox<String> choiceMode;
+	
+	@FXML
+	private ChoiceBox<String> choiceUnicite;
 	
 	@FXML
 	private CheckBox sinceBool;
@@ -70,17 +82,44 @@ public class VueController {
 	@FXML
 	private TextField shareInput;
 	
+	@FXML
+	private TextField suppInput;
+	
+	@FXML
+	private TextField noeudSource1;
+	
+	@FXML
+	private TextField filter;
+	
+	@FXML 
+	private BorderPane window;
+	
+	@FXML 
+	private Spinner<Integer> spinner;
+	
 	Reseaux reseaux;
+	
+	String filepath;
 	
 	@FXML
     public void initialize() {
-		listview.getItems().add("Affichage du reseau :");
+		this.filepath = "";
+		listview.getItems().add("Reseau :");
 		ImportReseau ir = new ImportReseau("(Thomas --Friend[Since=2000]--> Charles)\n(Thomas <--Friend[Since=2000]--> Arnaud)\n");
 		this.reseaux = ir.importReseau();
 		ExportReseau er = new ExportReseau(this.reseaux);
 		listview.getItems().add(er.exportReseau());
 		this.choiceLien.setItems(FXCollections.observableArrayList("EmployeeOf", "Friend","Author","Category","Likes"));
 		this.choiceLien.getSelectionModel().selectFirst();
+		SpinnerValueFactory<Integer> valueFactory = //
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0);
+ 
+        spinner.setValueFactory(valueFactory);
+        this.choiceMode.setItems(FXCollections.observableArrayList("Profondeur", "Largeur"));
+        this.choiceMode.getSelectionModel().selectFirst();
+        this.choiceUnicite.setItems(FXCollections.observableArrayList("Noeud Global", "Lien Global"));
+        this.choiceUnicite.getSelectionModel().selectFirst();
+		
 		this.newRelationChoice();
 	}
 	
@@ -193,16 +232,65 @@ public class VueController {
 		}
 	}
 	
+	public void supprimerNoeud() {
+		if(this.suppInput.getText() != null) {
+			this.reseaux.supprimerNoeud(this.suppInput.getText());
+			listview.getItems().add("Noeud supprimé !");
+			this.afficherReseau();
+		}else {
+			listview.getItems().add("Vérifiez vos paramètres !");
+		}
+	}
+	
 	public void afficherReseau() {
+		listview.getItems().add("Reseau :");
 		ExportReseau er = new ExportReseau(this.reseaux);
 		listview.getItems().add(er.exportReseau());
 	}
 	
+	public void searchFile(ActionEvent e) {
+		Stage stage = (Stage) window.getScene().getWindow();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter(".txt", "*.txt")
+         );
+		fileChooser.setTitle("Selectionnez votre fichier");
+		try {
+			this.filepath = fileChooser.showOpenDialog(stage).getAbsolutePath();
+		}catch(NullPointerException e1) {
+			listview.getItems().add("Erreur lors de la sélection du fichier");
+		}
+	}
+	
 	public void importReseau() {
-		
+		if(this.filepath != "") {
+			ImportReseau ir = new ImportReseau();
+			ir.importFile(this.filepath);
+			this.reseaux = ir.importReseau();
+			listview.getItems().add("Importation terminée !");
+			this.afficherReseau();
+		}else {
+			listview.getItems().add("Aucun fichier selectionné");
+		}
 	}
 	
 	public void exportReseau() {
-		
+		ExportReseau er = new ExportReseau(this.reseaux);
+		listview.getItems().add("Exportation terminée !");
+	}
+	
+	public void lancerRequete() {
+		boolean error = false;
+		String source = this.noeudSource1.getText();
+		int mode = 0;
+		if(this.choiceMode.getValue() == "Largeur") {
+			mode = 1;
+		}
+		int niveau = this.spinner.getValue();
+		int unicite = 0;
+		if(this.choiceMode.getValue() == "Lien Global") {
+			unicite = 1;
+		}
+		String filtres = this.filter.getText();
 	}
 }
