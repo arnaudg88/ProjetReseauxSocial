@@ -203,7 +203,7 @@ public class ControlRequeteTest {
 
 		String[] filtre1 = {"Friend", ""};
 
-		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withProfondeurMode().withFiltre(filtre1).withUnicite(1).BuildRequete();
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withProfondeurMode().withFiltre(filtre1).withUnicite(1).buildRequete();
 		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);
@@ -218,7 +218,7 @@ public class ControlRequeteTest {
 		
 		String[] filtre1 = {"Friend", ""};
 
-		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withFiltre(filtre1).withNiveau(1).BuildRequete();
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withFiltre(filtre1).withNiveau(1).buildRequete();
 		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);

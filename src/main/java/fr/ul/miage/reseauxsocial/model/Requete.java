@@ -36,7 +36,7 @@ public class Requete {
 		this.listeProprietes = new ArrayList<>();
 	}
 	
-	public Requete(String noeudDepart, int mode, int niveau, int unicite, ArrayList<String> liensAParcourir, ArrayList<String> noeudsAParcourir, ArrayList<String> resultat, ArrayList<String> dejaParcouruNoeud, ArrayList<Integer> dejaParcouruLien, ArrayList<String[]> filtres, ArrayList<String[]> proprietes) {
+	public Requete(String noeudDepart, int mode, int niveau, int unicite, ArrayList<String> liensAParcourir, ArrayList<String> noeudsAParcourir, ArrayList<String> resultat, ArrayList<String> dejaParcouruNoeud, ArrayList<Lien> dejaParcouruLien, ArrayList<String[]> filtres, ArrayList<String[]> proprietes) {
 
 		this.noeudDepart = noeudDepart;
 		this.mode = mode;

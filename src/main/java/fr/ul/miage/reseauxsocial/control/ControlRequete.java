@@ -42,29 +42,19 @@ public class ControlRequete {
 		if (requete.getMode() == 0) {
 			if(requete.getUnicite()==0) {
 				return parcoursRequeteProfondeurNoeudGlobal(requete).getResultat();
-			}else {
+			} else {
 				return parcoursRequeteProfondeurLienGlobal(requete).getResultat();
 			}
-		}else if (requete.getMode() == 1) {
-			return parcoursRequeteLargeur(requete).getResultat();
-		}else {
+		} else if (requete.getMode() == 1) {
+			if(requete.getUnicite() == 0) {
+				return parcoursRequeteLargeurNoeudGlobal(requete).getResultat();
+			} else  {
+				return parcoursRequeteLargeurLienGlobal(requete).getResultat();
+			}
+		} else {
 			return new ArrayList<String>();
 
 		}
-//		if (requete.getMode() == 0) {
-//			if(requete.getUnicite() == 0) {
-//				return parcoursRequeteProfondeurNoeudGlobal(requete).getResultat();
-//			} else {
-//				return parcoursRequeteProfondeurLienGlobal(requete).getResultat();
-//			}
-//		}else if (requete.getMode() == 1) {
-//			if(requete.getUnicite() == 0) {
-//				return parcoursRequeteLargeurNoeudGlobal(requete).getResultat();
-//			} else  {
-//				return parcoursRequeteLargeurLienGlobal(requete).getResultat();
-//			}
-//		} else
-//			return new ArrayList<String>();
 	}
 
 	public Requete parcoursRequeteProfondeurNoeudGlobal(Requete requeteCourante) {
@@ -77,7 +67,7 @@ public class ControlRequete {
 		}
 
 		for (String noeudVoisin : voisins) { //parcours ses voisins
-			if (possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin, requete.getLiensAParcourir())
+			if (possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin)
 					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeTypesFiltres(), requeteCourante.getListeProprietes())
 					&& !estDejaParcouru(noeudVoisin, requeteCourante.getDejaParcouruNoeud()))
 			{ //filtrage et direction vers les liens voulus 
@@ -118,7 +108,7 @@ public class ControlRequete {
 			
 			String typeLienTemp = possedeLiensAParcourirLienGlobal(requeteCourante.getNoeudDepart(), noeudVoisin);
 			if (typeLienTemp != null ) {
-				if(filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeFiltres(), requeteCourante.getListeProprietes())) {
+				if(filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeTypesFiltres(), requeteCourante.getListeProprietes())) {
 					
 					requeteCourante.getResultat().add(noeudVoisin);
 
@@ -170,7 +160,7 @@ public class ControlRequete {
 		noeudsAParcourir.addAll(requeteCourante.getNoeudsAParcourir());
 
 		for (String noeudVoisin : noeudsAParcourir) { //parcours ses voisins
-			if (possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin, requete.getLiensAParcourir())
+			if (possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin)
 					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeTypesFiltres(), requeteCourante.getListeProprietes())
 					&& !estDejaParcouru(noeudVoisin, requeteCourante.getDejaParcouruNoeud()))
 			{ //filtrage et direction vers les liens voulus 
