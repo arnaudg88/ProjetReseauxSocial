@@ -10,9 +10,7 @@ public class Requete {
 	private int unicite; //0 noeudGlobal, 1 lienGlobal
 	private ArrayList<String> liensAParcourir;
 	
-	private ArrayList<String[]> listeTypesFiltres;
-	
-	private ArrayList<String[]> listeProprietes;
+	private ArrayList<String> listeFiltres;
 	
 	
 	private ArrayList<String> resultat;
@@ -28,14 +26,11 @@ public class Requete {
 		this.resultat = new ArrayList<>();
 		this.dejaParcouruNoeud = new ArrayList<>();
 		this.dejaParcouruLien = new ArrayList<>();
-
 		
-		this.listeTypesFiltres = new ArrayList<>();
-		this.listeProprietes = new ArrayList<>();
+		this.listeFiltres = new ArrayList<>();
 	}
 	
-	public Requete(String noeudDepart, int mode, int niveau, int unicite, ArrayList<String> liensAParcourir, ArrayList<String> resultat, ArrayList<String> dejaParcouruNoeud, ArrayList<Integer> dejaParcouruLien, ArrayList<String[]> filtres) {
-
+	public Requete(String noeudDepart, int mode, int niveau, int unicite, ArrayList<String> liensAParcourir, ArrayList<String> resultat, ArrayList<String> dejaParcouruNoeud, ArrayList<Integer> dejaParcouruLien, ArrayList<String> filtres) {
 		this.noeudDepart = noeudDepart;
 		this.mode = mode;
 		this.niveau = niveau;
@@ -44,21 +39,20 @@ public class Requete {
 		this.resultat = resultat;
 		this.dejaParcouruNoeud = dejaParcouruNoeud;
 		this.dejaParcouruLien = dejaParcouruLien;
-
 		
-		this.listeTypesFiltres = filtres;
+		this.listeFiltres = filtres;
 	}
 	
-	public ArrayList<String[]> getListeFiltres() {
-		return listeTypesFiltres;
+	public ArrayList<String> getListeFiltres() {
+		return listeFiltres;
 	}
 
-	public void setListeFiltres(ArrayList<String[]> listeFiltres) {
-		this.listeTypesFiltres = listeFiltres;
+	public void setListeFiltres(ArrayList<String> listeFiltres) {
+		this.listeFiltres = listeFiltres;
 	}
 
 	public Requete requeteDuVoisin(String noeudVoisin) {
-		return new Requete(noeudVoisin, this.getMode(), this.getNiveau()-1, this.getUnicite(), this.getLiensAParcourir(), this.getResultat(), this.getDejaParcouruNoeud(), this.getDejaParcouruLien(), this.listeTypesFiltres); 
+		return new Requete(noeudVoisin, this.getMode(), this.getNiveau()-1, this.getUnicite(), this.getLiensAParcourir(), this.getResultat(), this.getDejaParcouruNoeud(), this.getDejaParcouruLien(), this.listeFiltres); 
 	}
 
 	public ArrayList<Integer> getDejaParcouruLien() {
@@ -123,61 +117,6 @@ public class Requete {
 
 	public void setResultat(ArrayList<String> resulat) {
 		this.resultat = resulat;
-	}
-
-
-	public ArrayList<String[]> getListeTypesFiltres() {
-		return listeTypesFiltres;
-	}
-
-	public void setListeTypesFiltres(ArrayList<String[]> listeTypesFiltres) {
-		this.listeTypesFiltres = listeTypesFiltres;
-	}
-
-	public ArrayList<String[]> getListeProprietes() {
-		return listeProprietes;
-	}
-
-	public void setListeProprietes(ArrayList<String[]> listeProprietes) {
-		this.listeProprietes = listeProprietes;
-	}
-	
-	public static ArrayList<String[]> splitLiens(String filtre) {
-		ArrayList<String[]> liensResultat = new ArrayList<>();
-		
-		if(filtre.length() > 0) {
-			String[] liens = filtre.split(";"); //split sur ;
-			for(String lien:liens) { //pour chaque liens
-				String[] infosLien = lien.trim().split(" "); //split sur espace
-				String[] nomLien = new String[2];
-				if(infosLien.length == 1) { // dans cas juste lien
-					nomLien[0] = infosLien[0];
-					nomLien[1] = "";
-				} else if(infosLien.length == 2) { //dans cas lien avec direction
-					nomLien[0] = infosLien[0];
-					nomLien[1] = infosLien[1];
-				}
-				liensResultat.add(nomLien);
-			}
-		}
-		return liensResultat;
-	}
-	
-	public static ArrayList<String[]> splitProprietes(String filtre) {
-		ArrayList<String[]> proprietesResultat = new ArrayList<>();
-		
-		if(filtre.length() > 0) {
-			String[] proprietes = filtre.split(";"); //split sur ;
-			for(String propriete:proprietes) { //pour chaque liens
-				String[] infosPropriete = propriete.trim().split("="); //split sur espace
-				String[] nomPropriete = new String[2];
-				nomPropriete[0] = infosPropriete[0];
-				nomPropriete[1] = infosPropriete[1];
-				
-				proprietesResultat.add(nomPropriete);
-			}
-		}
-		return proprietesResultat;
 	}
 	
 }

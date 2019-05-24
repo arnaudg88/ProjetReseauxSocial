@@ -9,6 +9,7 @@ public class ConstructeurRequete {
 	private int niveau = Integer.MAX_VALUE;
 	private int unicite = 0; //0 noeudGlobal, 1 lienGlobal
 	private ArrayList<String> liensAParcourir = new ArrayList<>();
+	private ArrayList<String[]> listeTypeLien = new ArrayList<>();
 	private ArrayList<String[]> listeFiltres = new ArrayList<>();
 	private ArrayList<String> resultat = new ArrayList<>();
 	private ArrayList<String> dejaParcouruNoeud = new ArrayList<>();
@@ -58,6 +59,16 @@ public class ConstructeurRequete {
 		for(String[] filtre:filtres) {
 			this.listeFiltres.add(filtre);
 		}
+		return this;
+	}
+	
+	public ConstructeurRequete withFiltre(ArrayList<String[]> filtres) {
+		this.listeFiltres = filtres;
+		return this;
+	}
+	
+	public ConstructeurRequete withLien(ArrayList<String[]> liens) {
+		this.listeTypeLien = liens;
 		return this;
 	}
 

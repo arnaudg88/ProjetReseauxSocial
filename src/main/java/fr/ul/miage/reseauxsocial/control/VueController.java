@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.ul.miage.reseauxsocial.model.ConstructeurLien;
+import fr.ul.miage.reseauxsocial.model.ConstructeurRequete;
 import fr.ul.miage.reseauxsocial.model.ExportReseau;
 import fr.ul.miage.reseauxsocial.model.ImportReseau;
 import fr.ul.miage.reseauxsocial.model.Noeud;
@@ -320,5 +321,8 @@ public class VueController {
 		
 		Requete.splitLiens(filtres);
 		Requete.splitProprietes(props);
+		
+		ConstructeurRequete cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite).withFiltre(props);
+		 
 	}
 }
