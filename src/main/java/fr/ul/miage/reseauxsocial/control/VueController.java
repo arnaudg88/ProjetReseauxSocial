@@ -1,6 +1,12 @@
 package fr.ul.miage.reseauxsocial.control;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -118,7 +124,8 @@ public class VueController {
     public void initialize() {
 		this.filepath = "";
 		listview.getItems().add("Reseau :");
-		ImportReseau ir = new ImportReseau("(Thomas --Friend[Since=2000]--> Charles)\n(Thomas <--Friend[Since=2000]--> Arnaud)\n");
+		ImportReseau ir = new ImportReseau();
+		ir.importFile("test");
 		this.reseaux = ir.importReseau();
 		ExportReseau er = new ExportReseau(this.reseaux);
 		listview.getItems().add(er.exportReseau());
@@ -165,9 +172,19 @@ public class VueController {
 				if(this.hiredInput.getValue() == null) {
 					error = true;
 				}else {
-					Date date = Date.from(this.hiredInput.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-					Hired h = new Hired("Hired",date);
-					myProps.add(h);
+					
+					try {
+						LocalDate localDate = this.hiredInput.getValue();
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+						String date = localDate.format(formatter);
+						SimpleDateFormat formatter2=new SimpleDateFormat("dd/MM/yyyy"); 
+						Date date1 = formatter2.parse(date);
+						Hired h = new Hired("Hired",date1);
+						myProps.add(h);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 			if(this.roleBool.isSelected()) {

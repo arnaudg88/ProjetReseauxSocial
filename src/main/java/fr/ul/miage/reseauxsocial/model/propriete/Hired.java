@@ -1,5 +1,8 @@
 package fr.ul.miage.reseauxsocial.model.propriete;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -42,9 +45,14 @@ public class Hired extends Propriete {
 
 	@Override
 	public String toString() {
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			Date date = dateFormat.parse(dateFormat.format(valeur));
+			return "Hired=" + dateFormat.format(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "Hired=" + valeur;
 	}
-	
-	
-
 }
