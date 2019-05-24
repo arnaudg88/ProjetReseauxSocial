@@ -2,8 +2,10 @@ package fr.ul.miage.reseauxsocial.control;
 
 import java.util.ArrayList;
 
+import fr.ul.miage.reseauxsocial.model.Paire;
 import fr.ul.miage.reseauxsocial.model.Lien;
 import fr.ul.miage.reseauxsocial.model.Paire;
+import fr.ul.miage.reseauxsocial.model.Propriete;
 import fr.ul.miage.reseauxsocial.model.Requete;
 import fr.ul.miage.reseauxsocial.model.Reseaux;
 
@@ -57,7 +59,7 @@ public class ControlRequete {
 
 		for (String noeudVoisin : voisins) { //parcours ses voisins
 			if (possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin, requete.getLiensAParcourir())
-					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeFiltres())
+					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeFiltres(), requeteCourante.getListeProprietes())
 					&& !estDejaParcouru(noeudVoisin, requeteCourante.getDejaParcouruNoeud()))
 			{ //filtrage et direction vers les liens voulus 
 
@@ -88,7 +90,7 @@ public class ControlRequete {
 		ArrayList<String> voisins = reseaux.getVoisins(requeteCourante.getNoeudDepart());
 		for (String noeudVoisin : voisins) {
 			if (possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin, requete.getLiensAParcourir())
-					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeFiltres())) {
+					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeFiltres(), requeteCourante.getListeProprietes())) {
 				requeteCourante.getResultat().add(noeudVoisin);
 				// ajout du lien dans deja parcouru
 				Requete sousRequete = requeteCourante.requeteDuVoisin(noeudVoisin);
@@ -110,56 +112,64 @@ public class ControlRequete {
 		// regarde les liensAParcourir avec ceux enregistré dans le réseaux
 		// si l'un correspond on renvoie vrai
 		boolean res = false;
-
 		if(reseaux.paireExist(noeudDepart, noeudArrive)) {
 			res=true;
 		}
 		if(reseaux.paireExist(noeudArrive, noeudDepart)) {
 			res=true;
 		}
-
 		return res;
 	}
 
-	public boolean filtrageDesliens(String noeudDepart, String noeudArrive, ArrayList<String> typeFiltre) {
-		boolean res = true;
-		ArrayList<Lien> listeLien = reseaux.getReseau().get(new Paire(noeudDepart, noeudArrive));
-		for(String filtre:typeFiltre) {
-			switch(filtre) {
+	public boolean filtrageDesliens(String noeudDepart, String noeudArrive, ArrayList<String[]> listeTypeLien, ArrayList<String[]> listeProprietes) {
+		boolean res = false;
+		ArrayList<Lien> listeLienDA = reseaux.getReseau().get(new Paire(noeudDepart, noeudArrive));
 
-			case "friend" : 
-				for(Lien l:listeLien) {
-					if(!(l.getClass().getSimpleName()=="Friend")) {
-						res = false;
+		ArrayList<Lien> listeLienAD = reseaux.getReseau().get(new Paire(noeudArrive, noeudDepart));
+		
+		for(String[] filtre:listeTypeLien) {
+			
+			for(Lien l:listeLienDA) {
+				if(filtre[0]== l.getClass().getSimpleName()) {
+					ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
+					
+					if((filtre[1] == ">") || (filtre[1] == "")){
+						
+						for(String[] proprietes:listeProprietes) {
+							for(Propriete p:listeProprietesTemp) {
+								if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
+									res = true;
+								}
+							}
+						}
+						
+					}else if((filtre[1] == "<>")){
+						for(String[] proprietes:listeProprietes) {
+							for(Propriete p:listeProprietesTemp) {
+								if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
+									res = true;
+								}
+							}
+						}
+						
 					}
 				}
-				break;
-			case "hire" :
-				for(Lien l:listeLien) {
-					if(!(l.getClass().getSimpleName()=="EmployeeOf")) {
-						res = false;
-					}
-				}
-				break;
-
-			case ">" :
-				for(Lien l:listeLien) {
-					if(l.isDoubleSens()) {
-						res = false;
-					}
-				}
-				break;
-
-			case "<>" :
-				for(Lien l:listeLien) {
-					if(!(l.isDoubleSens())) {
-						res = false;
-					}
-				}
-				break;
-			default :
-				
 			}
+			for(Lien l : listeLienAD) {
+				ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
+				if(filtre[0]== l.getClass().getSimpleName()) {
+					if((filtre[1] == "<") ){
+						for(String[] proprietes:listeProprietes) {
+							for(Propriete p:listeProprietesTemp) {
+								if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
+									res = true;
+								}
+							}
+						}
+					}
+				}
+			}
+			
 		}
 		return res;
 	}

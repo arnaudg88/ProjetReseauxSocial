@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -15,6 +16,7 @@ import fr.ul.miage.reseauxsocial.model.lien.Friend;
 import fr.ul.miage.reseauxsocial.model.lien.Likes;
 import fr.ul.miage.reseauxsocial.model.propriete.Hired;
 import fr.ul.miage.reseauxsocial.model.propriete.Role;
+import fr.ul.miage.reseauxsocial.model.propriete.Share;
 import fr.ul.miage.reseauxsocial.model.propriete.Since;
 
 public class ImportReseau {
@@ -39,25 +41,21 @@ public class ImportReseau {
 				Boolean direction = false;
 
 				String firstNoeud = relations[i].substring(relations[i].indexOf("(") + 1, relations[i].indexOf(" "));
-				// System.out.println(firstNoeud);
 				relations[i] = relations[i].substring(relations[i].indexOf(" ") + 1, relations[i].indexOf(")") + 1);
-				// System.out.println("New string : " + relations[i]);
 				if (relations[i].charAt(0) == '<') {
 					direction = true;
-					System.out.println("direction true");
 				}
 				relations[i] = relations[i].replace("<", "");
 				relations[i] = relations[i].replace(">", "");
 				relations[i] = relations[i].replace("-", "");
-				// System.out.println("New string : " + relations[i]);
+	
 				String secondNoeud = relations[i].substring(relations[i].indexOf(" ") + 1, relations[i].indexOf(")"));
-				// System.out.println(secondNoeud);
+				
 				relations[i] = relations[i].substring(0, relations[i].indexOf(" "));
-				// System.out.println("New string : " + relations[i]);
+				
 				String lien = relations[i].substring(0, relations[i].indexOf("["));
 				relations[i] = relations[i].substring(relations[i].indexOf("[") + 1, relations[i].indexOf("]"));
-				// System.out.println(lien);
-				// System.out.println("New string : " + relations[i]);
+				
 				String[] properties = relations[i].split(",");
 
 				ArrayList<Propriete> myProps = new ArrayList<Propriete>();
@@ -75,7 +73,8 @@ public class ImportReseau {
 						myProps.add(r);
 						break;
 					case "Share":
-						// Share sh = new Share("Share",value);
+						Share sh = new Share("Share",Arrays.asList(value.split(";")));
+						myProps.add(sh);
 						break;
 					case "Since":
 						Since si = new Since("Since", Integer.parseInt(value));

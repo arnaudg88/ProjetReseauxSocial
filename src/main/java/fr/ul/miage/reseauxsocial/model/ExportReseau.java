@@ -15,6 +15,11 @@ public class ExportReseau {
 		this.reseaux = reseaux;
 		this.saveInFile("test");
 	}
+	
+	public ExportReseau(Reseaux reseaux, String filename) {
+		this.reseaux = reseaux;
+		this.saveInFile("filename");
+	}
 
 	public String exportReseau() {
 		//String exemple = "(Barbara --friend[since=1999]--> Carol)";

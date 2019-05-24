@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.ul.miage.reseauxsocial.control.VueController">
+   <bottom>
+      <GridPane prefHeight="296.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportReseau" text="Exporter le reseau" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#importReseau" text="Importer le reseau" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#searchFile" text="Selectionner le fichier" GridPane.rowIndex="8" />
+            <TextField fx:id="noeudSource" promptText="Noeud source" />
+            <TextField fx:id="noeudDestination" promptText="Noeud destination" GridPane.columnIndex="1" />
+            <CheckBox fx:id="doubleSensBool" mnemonicParsing="false" text="Relation double sens" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#ajouterLien" text="Ajouter la relation" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#supprimerNoeud" text="Supprimer le noeud" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+            <TextField fx:id="suppInput" promptText="Noeud à supprimer" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <ChoiceBox fx:id="choiceLien" maxWidth="1.7976931348623157E308" onAction="#newRelationChoice" prefWidth="150.0" GridPane.columnIndex="2" />
+            <CheckBox fx:id="shareBool" mnemonicParsing="false" text="Share" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <CheckBox fx:id="sinceBool" mnemonicParsing="false" text="Since" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <CheckBox fx:id="hiredBool" mnemonicParsing="false" text="Hired" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <CheckBox fx:id="roleBool" mnemonicParsing="false" text="Role" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <TextField fx:id="roleInput" promptText="Role" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <TextField fx:id="sinceInput" promptText="Annee" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <DatePicker fx:id="hiredInput" maxWidth="1.7976931348623157E308" promptText="Date" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <TextField fx:id="shareInput" promptText="separateur ;" GridPane.rowIndex="2" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#afficherReseau" text="Afficher le reseau" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportReseau" text="Lancer la requete" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <ChoiceBox fx:id="choiceMode" maxWidth="1.7976931348623157E308" onAction="#newRelationChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Spinner fx:id="spinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <ChoiceBox fx:id="choiceUnicite" maxWidth="1.7976931348623157E308" onAction="#newRelationChoice" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <TextField fx:id="filter" promptText="Lien à parcourir" GridPane.rowIndex="5" />
+            <ChoiceBox fx:id="choiceNode" maxWidth="1.7976931348623157E308" onAction="#newRelationChoice" prefWidth="150.0" GridPane.rowIndex="4" />
+            <TextField fx:id="props" promptText="Propriétés" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+         </children>
+      </GridPane>
+   </bottom>
+   <center>
+      <ListView fx:id="listview" prefHeight="352.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
