@@ -23,15 +23,16 @@ public class ControlRequeteTest {
 		irSujet.importFile("src/test/ressource/reseauSujetRequete");
 	}
 	
-	//@Test
+	@Test
 	void requeteExemple1() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
-		resultatPrevu.add("Barbara");
-		resultatPrevu.add("Anna");
+
 		resultatPrevu.add("Carol");
 		resultatPrevu.add("Dawn");
-		resultatPrevu.add("Elizabeth");
 		resultatPrevu.add("Jill");
+		resultatPrevu.add("Elizabeth");
+		resultatPrevu.add("Barbara");
+		resultatPrevu.add("Anna");
 		
 		String[] filtre1 = {"Likes", "<"};
 		String[] filtre2 = {"Friend", ""};
@@ -43,10 +44,23 @@ public class ControlRequeteTest {
 	}
 	
 	@Test
+	void requeteExemple3() {
+		ArrayList<String> resultatPrevu = new ArrayList<>();
+
+		resultatPrevu.add("Dawn");
+		resultatPrevu.add("Jill");
+		String[] filtre2 = {"Friend", ">"};
+		
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(2).withFiltre(filtre2).BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		ArrayList<String> actual = controlRequeteSujet.executeRequete();
+		assertEquals(resultatPrevu, actual);
+	}
+	
+	@Test
 	void filtreTypeFriend() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
 		resultatPrevu.add("Dawn");
-		resultatPrevu.add("Barbara");
 		String[] str = {"Friend",""};
 		ArrayList<String[]> lienFiltre = new ArrayList<>();
 		lienFiltre.add(str);
@@ -60,7 +74,6 @@ public class ControlRequeteTest {
 	void filtreTypeFriendSensDroite() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
 		resultatPrevu.add("Dawn");
-		resultatPrevu.add("Barbara");
 		String[] str = {"Friend",""};
 		ArrayList<String[]> lienFiltre = new ArrayList<>();
 		lienFiltre.add(str);
