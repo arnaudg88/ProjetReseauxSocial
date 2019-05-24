@@ -2,15 +2,23 @@ package fr.ul.miage.reseauxsocial.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fr.ul.miage.reseauxsocial.model.lien.EmployeeOf;
 import fr.ul.miage.reseauxsocial.model.lien.Friend;
+import fr.ul.miage.reseauxsocial.model.propriete.Hired;
+import fr.ul.miage.reseauxsocial.model.propriete.Role;
 import fr.ul.miage.reseauxsocial.model.propriete.Share;
 import fr.ul.miage.reseauxsocial.model.propriete.Since;
 
@@ -63,6 +71,27 @@ class ImportTest {
 		this.reseaux.setReseau(this.valReseaux);
 		
 		ImportReseau importRes = new ImportReseau("(Thomas --Friend[Share=Sport;Cinema]--> Charles)");
+		Reseaux resTemp = importRes.importReseau();
+		
+		assertEquals(this.reseaux, resTemp);
+	}
+	
+	@Test
+	void importationHired() throws ParseException {
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = dateFormat.parse(dateFormat.format(new Date()));
+		String strDate = dateFormat.format(date);  
+		Paire paire = new Paire("Thomas","Charles");
+		EmployeeOf ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete((new Hired("Hired",date)),(new Role("Role","Dev"))).BuildEmployee();
+		this.listeLien.add(ami);
+		this.listeNoeuds.put("Thomas", new Noeud("Thomas"));
+		this.listeNoeuds.put("Charles", new Noeud("Charles"));
+		this.reseaux.setNoeuds(listeNoeuds);
+		
+		this.valReseaux.put(paire, this.listeLien);
+		this.reseaux.setReseau(this.valReseaux);
+		
+		ImportReseau importRes = new ImportReseau("(Thomas --EmployeeOf[Hired="+ strDate +",Role=Dev]--> Charles)");
 		Reseaux resTemp = importRes.importReseau();
 		
 		assertEquals(this.reseaux, resTemp);

@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -65,11 +68,17 @@ public class ImportReseau {
 					if(relations[i].indexOf("=") != -1)
 					propertie = properties[y].substring(0, properties[y].indexOf("="));
 					String value = properties[y].substring(properties[y].indexOf("=") + 1, properties[y].length());
-					
 					switch (propertie) {
 					case "Hired":
-						Hired h = new Hired("Hired", new Date(value));
-						myProps.add(h);
+						SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyy"); 
+						try {
+							Date date1 =formatter.parse(value);
+							Hired h = new Hired("Hired", date1);
+							myProps.add(h);
+						} catch (ParseException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}  
 						break;
 					case "Role":
 						Role r = new Role("Role", value);
