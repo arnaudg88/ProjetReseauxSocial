@@ -196,7 +196,8 @@ public class VueController {
 					myProps.add(r);
 				}
 			}
-			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null) && error == false) {
+			
+			if(!(this.noeudSource.getText().equals("")) && !(this.noeudDestination.getText().equals("")) && error == false) {
 				Propriete[] myPropsArray = new Propriete[myProps.size()];
 				myPropsArray = myProps.toArray(myPropsArray);
 				EmployeeOf e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).BuildEmployee();
@@ -221,7 +222,7 @@ public class VueController {
 					myProps.add(s);
 				}
 			}
-			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null) && error == false) {
+			if(!(this.noeudSource.getText().equals("")) && !(this.noeudDestination.getText().equals("")) && error == false) {
 				Propriete[] myPropsArray = new Propriete[myProps.size()];
 				myPropsArray = myProps.toArray(myPropsArray);
 				Friend e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).BuildFriend();
@@ -232,7 +233,7 @@ public class VueController {
 			}
 		break;
 		case "Author" :
-			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null)) {
+			if(!(this.noeudSource.getText().equals("")) && !(this.noeudDestination.getText().equals(""))) {
 				Author a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildAuthor();
 				this.reseaux.addLien(a);
 				listview.getItems().add("Lien ajouté !");
@@ -242,7 +243,7 @@ public class VueController {
 		break;
 		
 		case "Likes" :
-			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null)) {
+			if(!(this.noeudSource.getText().equals("")) && !(this.noeudDestination.getText().equals(""))) {
 				Likes a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildLikes();
 				this.reseaux.addLien(a);
 				listview.getItems().add("Lien ajouté !");
@@ -251,7 +252,7 @@ public class VueController {
 			}
 		break;
 		case "Category" :
-			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null)) {
+			if(!(this.noeudSource.getText().equals("")) && !(this.noeudDestination.getText().equals(""))) {
 				Category c = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildCategory();
 				this.reseaux.addLien(c);
 				listview.getItems().add("Lien ajouté !");
@@ -263,7 +264,7 @@ public class VueController {
 	}
 	
 	public void supprimerNoeud() {
-		if(this.suppInput.getText() != null) {
+		if(!this.suppInput.getText().equals("")) {
 			this.reseaux.supprimerNoeud(this.suppInput.getText());
 			listview.getItems().add("Noeud supprimé !");
 			this.afficherReseau();
