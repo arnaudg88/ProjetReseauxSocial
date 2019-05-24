@@ -51,7 +51,7 @@ public class ControlRequete {
 	public Requete parcoursRequeteProfondeurNoeudGlobal(Requete requeteCourante) {
 
 		ArrayList<String> voisins;
-		if(requeteCourante.getNiveau() == -1) { // gestion des niveaux
+		if(requeteCourante.getNiveau() == 0) { // gestion des niveaux
 			voisins = new ArrayList<>();
 		} else {
 			voisins = reseaux.getVoisins(requeteCourante.getNoeudDepart());
@@ -134,32 +134,36 @@ public class ControlRequete {
 			
 			for(String[] filtre:listeTypeLien) {
 				
-				for(Lien l:listeLienDA) {
-					if(filtre[0]== l.getClass().getSimpleName()) {
-						ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
-						
-						if((filtre[1] == ">") || (filtre[1] == "")){
-							if(listeProprietes.size()==0) {
-								res=true;
-							}else {
-								for(String[] proprietes:listeProprietes) {
-									for(Propriete p:listeProprietesTemp) {
-										if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
-											res = true;
+				if (listeLienDA != null) {
+					for (Lien l : listeLienDA) {
+						if (filtre[0] == l.getClass().getSimpleName()) {
+							ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
+
+							if ((filtre[1] == ">") || (filtre[1] == "")) {
+								if (listeProprietes.size() == 0) {
+									res = true;
+								} else {
+									for (String[] proprietes : listeProprietes) {
+										for (Propriete p : listeProprietesTemp) {
+											if (proprietes[0] == p.getClass().getSimpleName()
+													&& proprietes[1] == p.getAttribut()) {
+												res = true;
+											}
 										}
 									}
 								}
-							}
-							
-						}else if((filtre[1] == "<>")){
-							
-							if(listeProprietes.size()==0) {
-								res=true;
-							}else {
-								for(String[] proprietes:listeProprietes) {
-									for(Propriete p:listeProprietesTemp) {
-										if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
-											res = true;
+
+							} else if ((filtre[1] == "<>")) {
+
+								if (listeProprietes.size() == 0) {
+									res = true;
+								} else {
+									for (String[] proprietes : listeProprietes) {
+										for (Propriete p : listeProprietesTemp) {
+											if (proprietes[0] == p.getClass().getSimpleName()
+													&& proprietes[1] == p.getAttribut()) {
+												res = true;
+											}
 										}
 									}
 								}
@@ -167,18 +171,21 @@ public class ControlRequete {
 						}
 					}
 				}
-				for(Lien l : listeLienAD) {
-					ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
-					if(filtre[0]== l.getClass().getSimpleName()) {
-						if((filtre[1] == "<") ){
-							
-							if(listeProprietes.size()==0) {
-								res=true;
-							}else {
-								for(String[] proprietes:listeProprietes) {
-									for(Propriete p:listeProprietesTemp) {
-										if(proprietes[0]==p.getClass().getSimpleName() && proprietes[1]==p.getAttribut()) {
-											res = true;
+				if (listeLienAD != null) {
+					for (Lien l : listeLienAD) {
+						ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
+						if (filtre[0] == l.getClass().getSimpleName()) {
+							if ((filtre[1] == "<")) {
+
+								if (listeProprietes.size() == 0) {
+									res = true;
+								} else {
+									for (String[] proprietes : listeProprietes) {
+										for (Propriete p : listeProprietesTemp) {
+											if (proprietes[0] == p.getClass().getSimpleName()
+													&& proprietes[1] == p.getAttribut()) {
+												res = true;
+											}
 										}
 									}
 								}

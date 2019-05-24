@@ -61,7 +61,9 @@ public class ImportReseau {
 				ArrayList<Propriete> myProps = new ArrayList<Propriete>();
 
 				for (int y = 0; y < properties.length; y++) {
-					String propertie = properties[y].substring(0, relations[i].indexOf("="));
+					String propertie = "";
+					if(relations[i].indexOf("=") != -1)
+						propertie = properties[y].substring(0, relations[i].indexOf("="));
 					String value = properties[y].substring(relations[i].indexOf("=") + 1, relations[i].length());
 					switch (propertie) {
 					case "Hired":
