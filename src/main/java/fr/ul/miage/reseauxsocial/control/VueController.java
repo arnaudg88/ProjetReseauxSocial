@@ -4,10 +4,13 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import fr.ul.miage.reseauxsocial.model.ConstructeurLien;
 import fr.ul.miage.reseauxsocial.model.ExportReseau;
 import fr.ul.miage.reseauxsocial.model.ImportReseau;
+import fr.ul.miage.reseauxsocial.model.Noeud;
 import fr.ul.miage.reseauxsocial.model.Paire;
 import fr.ul.miage.reseauxsocial.model.Propriete;
 import fr.ul.miage.reseauxsocial.model.Requete;
@@ -51,6 +54,9 @@ public class VueController {
 	private ChoiceBox<String> choiceUnicite;
 	
 	@FXML
+	private ChoiceBox<String> choiceNode;
+	
+	@FXML
 	private CheckBox sinceBool;
 	
 	@FXML
@@ -92,6 +98,9 @@ public class VueController {
 	@FXML
 	private TextField filter;
 	
+	@FXML
+	private TextField props;
+	
 	@FXML 
 	private BorderPane window;
 	
@@ -120,7 +129,7 @@ public class VueController {
         this.choiceMode.getSelectionModel().selectFirst();
         this.choiceUnicite.setItems(FXCollections.observableArrayList("Noeud Global", "Lien Global"));
         this.choiceUnicite.getSelectionModel().selectFirst();
-		
+		this.selectNoeud();
 		this.newRelationChoice();
 	}
 	
@@ -238,6 +247,7 @@ public class VueController {
 			this.reseaux.supprimerNoeud(this.suppInput.getText());
 			listview.getItems().add("Noeud supprimé !");
 			this.afficherReseau();
+			this.selectNoeud();
 		}else {
 			listview.getItems().add("Vérifiez vos paramètres !");
 		}
@@ -270,6 +280,7 @@ public class VueController {
 			this.reseaux = ir.importReseau();
 			listview.getItems().add("Importation terminée !");
 			this.afficherReseau();
+			this.selectNoeud();
 		}else {
 			listview.getItems().add("Aucun fichier selectionné");
 		}
@@ -280,9 +291,21 @@ public class VueController {
 		listview.getItems().add("Exportation terminée !");
 	}
 	
+	public void selectNoeud() {
+		HashMap<String, Noeud> noeuds = this.reseaux.getNoeuds();
+		ArrayList<String> listeNoeuds = new ArrayList<String>();
+		for(Map.Entry<String, Noeud> entry : noeuds.entrySet()) {
+		    String key = entry.getKey();
+		    Noeud value = entry.getValue();
+		    listeNoeuds.add(entry.getKey());
+		}
+		this.choiceNode.setItems(FXCollections.observableArrayList(listeNoeuds));
+        this.choiceNode.getSelectionModel().selectFirst();
+	}
+	
 	public void lancerRequete() {
 		boolean error = false;
-		String source = this.noeudSource1.getText();
+		String source = this.choiceNode.getValue();
 		int mode = 0;
 		if(this.choiceMode.getValue() == "Largeur") {
 			mode = 1;
@@ -292,6 +315,7 @@ public class VueController {
 		if(this.choiceMode.getValue() == "Lien Global") {
 			unicite = 1;
 		}
+		String props = this.props.getText();
 		String filtres = this.filter.getText().trim();
 		
 		Requete.splitLiens(filtres);
