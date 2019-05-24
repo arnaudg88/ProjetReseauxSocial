@@ -36,4 +36,13 @@ public class ControlRequeteTest {
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);
 	}
+	
+	@Test
+	void filtreTypeFriend() {
+		ArrayList<String> resultatPrevu = new ArrayList<>();
+		resultatPrevu.add("Dawn");
+		resultatPrevu.add("Barbara");
+		
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).BuildRequete();
+	}
 }
