@@ -138,7 +138,6 @@ public class VueController {
 		this.choiceLien.getSelectionModel().selectFirst();
 		SpinnerValueFactory<Integer> valueFactory = //
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0);
- 
         spinner.setValueFactory(valueFactory);
         this.choiceMode.setItems(FXCollections.observableArrayList("Profondeur", "Largeur"));
         this.choiceMode.getSelectionModel().selectFirst();
@@ -168,99 +167,22 @@ public class VueController {
 	}
 	
 	public void ajouterLien() {
-		ArrayList<Propriete> myProps = new ArrayList<>();
-		Boolean error = false;
 		String choice = this.choiceLien.getValue();
 		switch(choice) {
 		case "EmployeeOf" : 
-			if(this.hiredBool.isSelected()) {
-				if(this.hiredInput.getValue() == null) {
-					error = true;
-				}else {
-					
-					try {
-						LocalDate localDate = this.hiredInput.getValue();
-						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-						String date = localDate.format(formatter);
-						SimpleDateFormat formatter2=new SimpleDateFormat("dd/MM/yyyy"); 
-						Date date1 = formatter2.parse(date);
-						Hired h = new Hired("Hired",date1);
-						myProps.add(h);
-					} catch (ParseException e) {
-						LOG.severe(e.getMessage());
-					}
-				}
-			}
-			if(this.roleBool.isSelected()) {
-				String role = this.roleInput.getText();
-				if(role == null) {
-					error = true;
-				}else {
-					Role r = new Role("Role",role);
-					myProps.add(r);
-				}
-			}
-			
-			if(!(this.noeudSource.getText().equals("")) && !(this.noeudDestination.getText().equals("")) && !error) {
-				Propriete[] myPropsArray = new Propriete[myProps.size()];
-				myPropsArray = myProps.toArray(myPropsArray);
-				EmployeeOf e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).buildEmployee();
-				this.reseaux.addLien(e);
-				listview.getItems().add(lienAjoute);
-			}else {
-				listview.getItems().add(verifieVosParametre);
-			}
+			this.ajouterLienEmployeeOf();
 		break;
 		case "Friend" :
-			if(this.sinceBool.isSelected()) {
-				int since = Integer.parseInt(this.sinceInput.getText());
-				Since r = new Since("Since",since);
-				myProps.add(r);
-			}
-			if(this.shareBool.isSelected()) {
-				String share = this.shareInput.getText();
-				if(share != null) {
-					Share s = new Share("Share",Arrays.asList(share.split(";")));
-					myProps.add(s);
-				}
-			}
-			if(!(this.noeudSource.getText().equals("")) && !(this.noeudDestination.getText().equals(""))) {
-				Propriete[] myPropsArray = new Propriete[myProps.size()];
-				myPropsArray = myProps.toArray(myPropsArray);
-				Friend e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).buildFriend();
-				this.reseaux.addLien(e);
-				listview.getItems().add(lienAjoute);
-			}else {
-				listview.getItems().add(verifieVosParametre);
-			}
+			this.ajouterLienFriend();
 		break;
 		case "Author" :
-			if(!(this.noeudSource.getText().equals("")) && !(this.noeudDestination.getText().equals(""))) {
-				Author a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).buildAuthor();
-				this.reseaux.addLien(a);
-				listview.getItems().add(lienAjoute);
-			}else {
-				listview.getItems().add(verifieVosParametre);
-			}
+			this.ajouterLienAuthor();
 		break;
-		
 		case "Likes" :
-			if(!(this.noeudSource.getText().equals("")) && !(this.noeudDestination.getText().equals(""))) {
-				Likes a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).buildLikes();
-				this.reseaux.addLien(a);
-				listview.getItems().add(lienAjoute);
-			}else {
-				listview.getItems().add(verifieVosParametre);
-			}
+			this.ajouterLienLikes();
 		break;
 		case "Category" :
-			if(!(this.noeudSource.getText().equals("")) && !(this.noeudDestination.getText().equals(""))) {
-				Category c = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).buildCategory();
-				this.reseaux.addLien(c);
-				listview.getItems().add(lienAjoute);
-			}else {
-				listview.getItems().add(verifieVosParametre);
-			}
+			this.ajouterLienCategory();
 		break;
 		default:
 			break;
@@ -277,6 +199,115 @@ public class VueController {
 			this.selectNoeud();
 		}else {
 			listview.getItems().add(verifieVosParametre);
+		}
+	}
+	
+	public boolean checkNodes(String source, String destination) {
+		if(source.equals("") || destination.equals("")){
+			return false;
+		}
+		return true;
+	}
+	
+	public void ajouterLienCategory() {
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText())) {
+			Category c = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildCategory();
+			this.reseaux.addLien(c);
+			listview.getItems().add("Lien ajouté !");
+		}else {
+			listview.getItems().add("Vérifiez vos paramètres !");
+		}
+	}
+	
+	public void ajouterLienAuthor() {
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText())) {
+			Author a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildAuthor();
+			this.reseaux.addLien(a);
+			listview.getItems().add("Lien ajouté !");
+		}else {
+			listview.getItems().add("Vérifiez vos paramètres !");
+		}
+	}
+	
+	public void ajouterLienLikes() {
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText())) {
+			Likes a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildLikes();
+			this.reseaux.addLien(a);
+			listview.getItems().add("Lien ajouté !");
+		}else {
+			listview.getItems().add("Vérifiez vos paramètres !");
+		}
+	}
+	
+	public void ajouterLienFriend() {
+		ArrayList<Propriete> myProps = new ArrayList<Propriete>();
+		Boolean error = false;
+		if(this.sinceBool.isSelected()) {
+			int since = Integer.parseInt(this.sinceInput.getText());
+			Since r = new Since("Since",since);
+			myProps.add(r);
+		}
+		if(this.shareBool.isSelected()) {
+			String share = this.shareInput.getText();
+			if(share == null) {
+				error = false;
+			}else {
+				Share s = new Share("Share",Arrays.asList(share.split(";")));
+				myProps.add(s);
+			}
+		}
+		
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText()) && error == false) {
+			Propriete[] myPropsArray = new Propriete[myProps.size()];
+			myPropsArray = myProps.toArray(myPropsArray);
+			Friend e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).BuildFriend();
+			this.reseaux.addLien(e);
+			listview.getItems().add("Lien ajouté !");
+		}else {
+			listview.getItems().add("Vérifiez vos paramètres !");
+		}
+	}
+	
+	public void ajouterLienEmployeeOf() {
+		ArrayList<Propriete> myProps = new ArrayList<Propriete>();
+		Boolean error = false;
+		if(this.hiredBool.isSelected()) {
+			if(this.hiredInput.getValue() == null) {
+				error = true;
+			}else {
+				
+				try {
+					LocalDate localDate = this.hiredInput.getValue();
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+					String date = localDate.format(formatter);
+					SimpleDateFormat formatter2=new SimpleDateFormat("dd/MM/yyyy"); 
+					Date date1 = formatter2.parse(date);
+					Hired h = new Hired("Hired",date1);
+					myProps.add(h);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		if(this.roleBool.isSelected()) {
+			String role = this.roleInput.getText();
+			if(role == null) {
+				error = true;
+			}else {
+				Role r = new Role("Role",role);
+				myProps.add(r);
+			}
+		}
+		
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText()) && error == false) {
+			Propriete[] myPropsArray = new Propriete[myProps.size()];
+			myPropsArray = myProps.toArray(myPropsArray);
+			EmployeeOf e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).BuildEmployee();
+			this.reseaux.addLien(e);
+			listview.getItems().add("Lien ajouté !");
+		}else {
+			listview.getItems().add("Vérifiez vos paramètres !");
 		}
 	}
 	
