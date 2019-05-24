@@ -53,11 +53,12 @@
             <TextField fx:id="shareInput" promptText="separateur ;" GridPane.rowIndex="2" />
             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#afficherReseau" text="Afficher le reseau" GridPane.columnIndex="2" GridPane.rowIndex="8" />
             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportReseau" text="Lancer la requete" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-            <TextField fx:id="noeudSource1" promptText="Noeud source" GridPane.rowIndex="4" />
             <ChoiceBox fx:id="choiceMode" maxWidth="1.7976931348623157E308" onAction="#newRelationChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Spinner fx:id="spinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <ChoiceBox fx:id="choiceUnicite" maxWidth="1.7976931348623157E308" onAction="#newRelationChoice" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
             <TextField fx:id="filter" promptText="Lien à parcourir" GridPane.rowIndex="5" />
+            <ChoiceBox fx:id="choiceNode" maxWidth="1.7976931348623157E308" onAction="#newRelationChoice" prefWidth="150.0" GridPane.rowIndex="4" />
+            <TextField fx:id="props" promptText="Propriétés" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </bottom>
