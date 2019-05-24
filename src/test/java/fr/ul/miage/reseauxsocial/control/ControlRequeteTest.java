@@ -54,12 +54,11 @@ public class ControlRequeteTest {
 	@Test
 	void requeteExemple1Largeur() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
-
 		resultatPrevu.add("Carol");
-		resultatPrevu.add("Dawn");
-		resultatPrevu.add("Jill");
 		resultatPrevu.add("Elizabeth");
 		resultatPrevu.add("Barbara");
+		resultatPrevu.add("Dawn");
+		resultatPrevu.add("Jill");
 		resultatPrevu.add("Anna");
 
 		String[] filtre1 = {"Likes", "<"};
@@ -80,6 +79,20 @@ public class ControlRequeteTest {
 		String[] filtre2 = {"Friend", ">"};
 		
 		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(2).withFiltre(filtre2).BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		ArrayList<String> actual = controlRequeteSujet.executeRequete();
+		assertEquals(resultatPrevu, actual);
+	}
+	
+	@Test
+	void requeteExemple3Largeur() {
+		ArrayList<String> resultatPrevu = new ArrayList<>();
+
+		resultatPrevu.add("Dawn");
+		resultatPrevu.add("Jill");
+		String[] filtre2 = {"Friend", ">"};
+		
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(2).withFiltre(filtre2).withUnicite(1).BuildRequete();
 		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);
