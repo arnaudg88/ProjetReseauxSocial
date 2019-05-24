@@ -189,6 +189,19 @@ public class Reseaux {
 		}
 		return true;
 	}
+	
+	public Lien findLien(String depart, String lienClass, String arrive) {
+		ArrayList<Lien> listeLien = this.getLiens(depart, arrive);
+		if(listeLien!=null) {
+			for(Lien l:listeLien) {
+				if(l.getClass().getSimpleName().equals(lienClass)) {
+					return l;
+				}
+			}
+		}
+		
+		return null;
+	}
 
 	@Override
 	public String toString() {

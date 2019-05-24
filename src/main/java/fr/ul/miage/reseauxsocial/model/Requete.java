@@ -18,7 +18,7 @@ public class Requete {
 	
 	private ArrayList<String> resultat;
 	private ArrayList<String> dejaParcouruNoeud;
-	private ArrayList<Integer> dejaParcouruLien;
+	private ArrayList<Lien> dejaParcouruLien;
 	
 	public Requete(String noeudDepart) {
 		this.noeudDepart = noeudDepart;
@@ -57,11 +57,11 @@ public class Requete {
 		return new Requete(noeudVoisin, this.getMode(), this.getNiveau()-1, this.getUnicite(), this.getLiensAParcourir(), this.getNoeudsAParcourir(), this.getResultat(), this.getDejaParcouruNoeud(), this.getDejaParcouruLien(), this.listeTypesFiltres, this.listeProprietes); 
 	}
 
-	public ArrayList<Integer> getDejaParcouruLien() {
+	public ArrayList<Lien> getDejaParcouruLien() {
 		return dejaParcouruLien;
 	}
 
-	public void setDejaParcouruLien(ArrayList<Integer> dejaParcouruLien) {
+	public void setDejaParcouruLien(ArrayList<Lien> dejaParcouruLien) {
 		this.dejaParcouruLien = dejaParcouruLien;
 	}
 

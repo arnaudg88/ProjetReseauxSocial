@@ -33,15 +33,12 @@ public class ControlRequeteTest {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
 
 		resultatPrevu.add("Carol");
-		resultatPrevu.add("Dawn");
-		resultatPrevu.add("Jill");
-		resultatPrevu.add("Elizabeth");
 		resultatPrevu.add("Barbara");
+		resultatPrevu.add("Elizabeth");
+		resultatPrevu.add("Jill");
 		resultatPrevu.add("Anna");
+		resultatPrevu.add("Dawn");
 		
-		
-		
-
 		String[] filtre1 = {"Likes", "<"};
 		String[] filtre2 = {"Friend", ""};
 
@@ -101,6 +98,7 @@ public class ControlRequeteTest {
 	@Test
 	void filtreTypeFriend() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
+		resultatPrevu.add("Barbara");
 		resultatPrevu.add("Dawn");
 		String[] str = {"Friend",""};
 		ArrayList<String[]> lienFiltre = new ArrayList<>();
@@ -115,7 +113,7 @@ public class ControlRequeteTest {
 	void filtreTypeFriendSensDroite() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
 		resultatPrevu.add("Dawn");
-		String[] str = {"Friend",""};
+		String[] str = {"Friend",">"};
 		ArrayList<String[]> lienFiltre = new ArrayList<>();
 		lienFiltre.add(str);
 		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).withFiltre(str).buildRequete();
@@ -196,15 +194,16 @@ public class ControlRequeteTest {
 	void requeteExemple21() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
 		resultatPrevu.add("Barbara");
-		resultatPrevu.add("Anna");
-		resultatPrevu.add("Carol");
-		resultatPrevu.add("Dawn");
 		resultatPrevu.add("Elizabeth");
 		resultatPrevu.add("Jill");
+		resultatPrevu.add("Dawn");
+		resultatPrevu.add("Carol");
+		resultatPrevu.add("Anna");
+		
 
 		String[] filtre1 = {"Friend", ""};
 
-		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withFiltre(filtre1).withUnicite(1).withProfondeurMode().buildRequete();
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withProfondeurMode().withFiltre(filtre1).withUnicite(1).BuildRequete();
 		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);
@@ -214,12 +213,12 @@ public class ControlRequeteTest {
 	void requeteExemple22() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
 		
-		resultatPrevu.add("Dawn");
 		resultatPrevu.add("Barbara");
+		resultatPrevu.add("Dawn");
 		
 		String[] filtre1 = {"Friend", ""};
 
-		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withFiltre(filtre1).withNiveau(1).withUnicite(1).withProfondeurMode().buildRequete();
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withFiltre(filtre1).withNiveau(1).BuildRequete();
 		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);

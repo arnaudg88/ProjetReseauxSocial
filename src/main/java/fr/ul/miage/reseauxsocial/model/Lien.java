@@ -8,6 +8,8 @@ public abstract class Lien {
 	private boolean doubleSens; // true <>, false >
 	private String noeudDepart;
 	private String noeudDestination;
+	
+	private String idLien; 
 
 	public Lien(String noeudDepart, boolean sens, String noeudDestination) {
 		this.doubleSens = sens;

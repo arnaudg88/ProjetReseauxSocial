@@ -14,7 +14,7 @@ public class ConstructeurRequete {
 	private ArrayList<String[]> listeProprietes = new ArrayList<>();
 	private ArrayList<String> resultat = new ArrayList<>();
 	private ArrayList<String> dejaParcouruNoeud = new ArrayList<>();
-	private ArrayList<Integer> dejaParcouruLien = new ArrayList<>();
+	private ArrayList<Lien> dejaParcouruLien = new ArrayList<>();
 
 	public ConstructeurRequete withNoeudDepart(String noeud) {
 		noeudDepart = noeud;
