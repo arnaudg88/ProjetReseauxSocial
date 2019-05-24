@@ -1,6 +1,7 @@
 package fr.ul.miage.reseauxsocial.control;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class ControlRequeteTest {
 		assertEquals(resultatPrevu, actual);
 	}
 	
-	//@Test
+	@Test
 	void filtreTypeFriend() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
 		resultatPrevu.add("Dawn");
@@ -83,4 +84,57 @@ public class ControlRequeteTest {
 	}
 	
 	
+	
+	@Test
+	void testFiltreSimple() {
+		String[] str = {"Friend",""};
+		ArrayList<String[]> lienFiltre = new ArrayList<>();
+		lienFiltre.add(str);
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).withFiltre(str).BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		assertTrue(controlRequeteSujet.filtrageDesliens("Carol", "Dawn", lienFiltre, new ArrayList<>()));
+	}
+	
+	@Test
+	void testFiltreLienExistePas() {
+		String[] str = {"Likes",""};
+		ArrayList<String[]> lienFiltre = new ArrayList<>();
+		lienFiltre.add(str);
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).withFiltre(str).BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		assertFalse(controlRequeteSujet.filtrageDesliens("Carol", "Dawn", lienFiltre, new ArrayList<>()));
+	}
+	
+	@Test
+	void testDoubleFiltre() {
+		String[] str2 = {"Friend", ""};
+		String[] str = {"Likes",""};
+		
+		ArrayList<String[]> lienFiltre = new ArrayList<>();
+		lienFiltre.add(str);
+		lienFiltre.add(str2);
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).withFiltre(str).BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		assertTrue(controlRequeteSujet.filtrageDesliens("Carol", "Dawn", lienFiltre, new ArrayList<>()));
+	}
+	
+	@Test
+	void testFiltreDirection() {
+		String[] str = {"Friend",">"};
+		ArrayList<String[]> lienFiltre = new ArrayList<>();
+		lienFiltre.add(str);
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).withFiltre(str).BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		assertTrue(controlRequeteSujet.filtrageDesliens("Carol", "Dawn", lienFiltre, new ArrayList<>()));
+	}
+	
+	@Test
+	void testFiltreDirectionFaux() {
+		String[] str = {"Friend","<"};
+		ArrayList<String[]> lienFiltre = new ArrayList<>();
+		lienFiltre.add(str);
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).withFiltre(str).BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		assertFalse(controlRequeteSujet.filtrageDesliens("Carol", "Dawn", lienFiltre, new ArrayList<>()));
+	}
 }
