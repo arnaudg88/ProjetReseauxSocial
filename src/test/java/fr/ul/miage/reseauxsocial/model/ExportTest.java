@@ -2,6 +2,9 @@ package fr.ul.miage.reseauxsocial.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,8 +59,10 @@ class ExportTest {
 	}
 	
 	@Test
-	void reseauAvecMultipleProprieteSimple() {
-		Date date = new Date();
+	void reseauAvecMultipleProprieteSimple() throws ParseException {
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = dateFormat.parse(dateFormat.format(new Date()));
+		String strDate = dateFormat.format(date);  
 		Paire paire = new Paire("Thomas","Charles");
 		EmployeeOf ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete((new Hired("Oui",date)),(new Role("Oui","Dev"))).BuildEmployee();
 		this.listeLien.add(ami);
@@ -65,7 +70,7 @@ class ExportTest {
 		this.reseaux.setReseau(this.valReseaux);
 		ExportReseau export = new ExportReseau(this.reseaux);
 		String test = export.exportReseau();
-		String expected = "(Thomas --EmployeeOf[Hired=" + date + ",Role=Dev]--> Charles)\n";
+		String expected = "(Thomas --EmployeeOf[Hired=" + strDate + ",Role=Dev]--> Charles)\n";
 		assertEquals(expected, test);
 	}
 	
