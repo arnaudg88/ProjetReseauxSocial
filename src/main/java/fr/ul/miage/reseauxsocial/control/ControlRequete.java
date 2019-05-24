@@ -136,32 +136,33 @@ public class ControlRequete {
 				
 				if (listeLienDA != null) {
 					for (Lien l : listeLienDA) {
-						if (filtre[0] == l.getClass().getSimpleName()) {
+						if (filtre[0].equals(getClass().getSimpleName())) {
+				
 							ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
 
-							if ((filtre[1] == ">") || (filtre[1] == "")) {
+							if ((filtre[1].equals(">")) || (filtre[1].equals(""))) {
 								if (listeProprietes.size() == 0) {
 									res = true;
 								} else {
 									for (String[] proprietes : listeProprietes) {
 										for (Propriete p : listeProprietesTemp) {
-											if (proprietes[0] == p.getClass().getSimpleName()
-													&& proprietes[1] == p.getAttribut()) {
+											if (proprietes[0].equals(p.getClass().getSimpleName())
+													&& proprietes[1].equals(p.getAttribut())) {
 												res = true;
 											}
 										}
 									}
 								}
 
-							} else if ((filtre[1] == "<>")) {
+							} else if ((filtre[1].equals("<>"))) {
 
 								if (listeProprietes.size() == 0) {
 									res = true;
 								} else {
 									for (String[] proprietes : listeProprietes) {
 										for (Propriete p : listeProprietesTemp) {
-											if (proprietes[0] == p.getClass().getSimpleName()
-													&& proprietes[1] == p.getAttribut()) {
+											if (proprietes[0].equals(p.getClass().getSimpleName())
+													&& proprietes[1].equals(p.getAttribut())) {
 												res = true;
 											}
 										}
@@ -174,16 +175,16 @@ public class ControlRequete {
 				if (listeLienAD != null) {
 					for (Lien l : listeLienAD) {
 						ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
-						if (filtre[0] == l.getClass().getSimpleName()) {
-							if ((filtre[1] == "<")) {
+						if (filtre[0].equals(l.getClass().getSimpleName())) {
+							if ((filtre[1].equals("<"))) {
 
 								if (listeProprietes.size() == 0) {
 									res = true;
 								} else {
 									for (String[] proprietes : listeProprietes) {
 										for (Propriete p : listeProprietesTemp) {
-											if (proprietes[0] == p.getClass().getSimpleName()
-													&& proprietes[1] == p.getAttribut()) {
+											if (proprietes[0].equals(p.getClass().getSimpleName())
+													&& proprietes[1].equals(p.getAttribut())) {
 												res = true;
 											}
 										}

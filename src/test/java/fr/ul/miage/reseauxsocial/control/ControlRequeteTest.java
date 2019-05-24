@@ -1,6 +1,7 @@
 package fr.ul.miage.reseauxsocial.control;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class ControlRequeteTest {
 		irSujet.importFile("src/test/ressource/reseauSujetRequete");
 	}
 	
-	@Test
+	//@Test
 	void requeteExemple1() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
 		resultatPrevu.add("Barbara");
@@ -54,7 +55,7 @@ public class ControlRequeteTest {
 		assertEquals(resultatPrevu, actual);
 	}
 	
-	//@Test
+	@Test
 	void filtreTypeFriendSensDroite() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
 		resultatPrevu.add("Dawn");
@@ -67,4 +68,19 @@ public class ControlRequeteTest {
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);
 	}
+	
+	@Test
+	void filtreTypeLien() {
+		String[] str = {"Friend",""};
+		ArrayList<String[]> arr1 = new ArrayList<>();
+		arr1.add(str);
+		
+		ArrayList<String[]> arr2 = new ArrayList<>();
+		Requete requete = new ConstructeurRequete().BuildRequete();
+		
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		assertTrue(controlRequeteSujet.filtrageDesliens("Carol","Dawn", arr1, arr2));
+	}
+	
+	
 }
