@@ -63,8 +63,9 @@ public class ImportReseau {
 				for (int y = 0; y < properties.length; y++) {
 					String propertie = "";
 					if(relations[i].indexOf("=") != -1)
-						propertie = properties[y].substring(0, relations[i].indexOf("="));
-					String value = properties[y].substring(relations[i].indexOf("=") + 1, relations[i].length());
+					propertie = properties[y].substring(0, properties[y].indexOf("="));
+					String value = properties[y].substring(properties[y].indexOf("=") + 1, properties[y].length());
+					
 					switch (propertie) {
 					case "Hired":
 						Hired h = new Hired("Hired", new Date(value));
