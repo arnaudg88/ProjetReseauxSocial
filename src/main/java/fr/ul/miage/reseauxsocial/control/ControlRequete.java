@@ -42,9 +42,13 @@ public class ControlRequete {
 	public ArrayList<String> executeRequete(Requete requete) {
 		if (requete.getMode() == 0)
 			return parcoursRequeteProfondeurNoeudGlobal(requete).getResultat();
-		else if (requete.getMode() == 1)
-			return parcoursRequeteLargeur(requete).getResultat();
-		else
+		else if (requete.getMode() == 1) {
+			if(requete.getUnicite() == 0) {
+				return parcoursRequeteLargeurNoeudGlobal(requete).getResultat();
+			} else  {
+				return parcoursRequeteLargeurLienGlobal(requete).getResultat();
+			}
+		} else
 			return new ArrayList<String>();
 	}
 
@@ -99,9 +103,60 @@ public class ControlRequete {
 		}
 		return requeteCourante;
 	}
+	
+	private Requete parcoursRequeteLargeurNoeudGlobal(Requete requeteCourante) {
+		ArrayList<String> voisins;
+		if(requeteCourante.getNiveau() == 0) { // gestion des niveaux
+			voisins = new ArrayList<>();
+		} else {
+			voisins = reseaux.getVoisins(requeteCourante.getNoeudDepart());
+		}
+		
+		for(String noeudVoisin : voisins) {
+			if(!requeteCourante.getNoeudsAParcourir().contains(noeudVoisin)) {
+				requeteCourante.getNoeudsAParcourir().add(noeudVoisin);
+			}
+		}
+		
+		ArrayList<String> noeudsAParcourir = new ArrayList<>();
+		noeudsAParcourir.addAll(requeteCourante.getNoeudsAParcourir());
 
-	public Requete parcoursRequeteLargeur(Requete requeteCourante) {
+		for (String noeudVoisin : noeudsAParcourir) { //parcours ses voisins
+			if (possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin, requete.getLiensAParcourir())
+					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeFiltres(), requeteCourante.getListeProprietes())
+					&& !estDejaParcouru(noeudVoisin, requeteCourante.getDejaParcouruNoeud()))
+			{ //filtrage et direction vers les liens voulus 
 
+				requeteCourante.getResultat().add(noeudVoisin);
+				requeteCourante.getDejaParcouruNoeud().add(noeudVoisin);
+				requeteCourante.getNoeudsAParcourir().remove(noeudVoisin);
+
+				Requete sousRequete = parcoursRequeteProfondeurNoeudGlobal(requeteCourante.requeteDuVoisin(noeudVoisin)); //execution de la requete vers les voisins 
+
+				// recuperation des donn�es pour les sous requetes suivantes
+				for(String noeudParcouru:sousRequete.getDejaParcouruNoeud()) {
+					if(!requeteCourante.getDejaParcouruNoeud().contains(noeudParcouru)) {
+						requeteCourante.getDejaParcouruNoeud().add(noeudParcouru);
+					}
+				}
+
+				for(String noeudResultat:sousRequete.getResultat()) {
+					if(!requeteCourante.getResultat().contains(noeudResultat)) {
+						requeteCourante.getResultat().add(noeudResultat);
+					}
+				}
+
+				for(String noeudAParcourir:sousRequete.getNoeudsAParcourir()) {
+					if(!requeteCourante.getNoeudsAParcourir().contains(noeudAParcourir) && !requeteCourante.getDejaParcouruNoeud().contains(noeudAParcourir)) {
+						requeteCourante.getNoeudsAParcourir().add(noeudAParcourir);
+					}
+				}
+			}
+		}
+		return requeteCourante;
+	}
+
+	public Requete parcoursRequeteLargeurLienGlobal(Requete requeteCourante) {
 		return requeteCourante;
 	}
 

@@ -9,6 +9,7 @@ public class Requete {
 	private int niveau;
 	private int unicite; //0 noeudGlobal, 1 lienGlobal
 	private ArrayList<String> liensAParcourir;
+	private ArrayList<String> noeudsAParcourir;
 	
 	private ArrayList<String[]> listeTypesFiltres;
 	
@@ -25,6 +26,7 @@ public class Requete {
 		this.niveau = Integer.MAX_VALUE;
 		this.unicite = 0;
 		this.liensAParcourir = new ArrayList<>();
+		this.noeudsAParcourir = new ArrayList<>();
 		this.resultat = new ArrayList<>();
 		this.dejaParcouruNoeud = new ArrayList<>();
 		this.dejaParcouruLien = new ArrayList<>();
@@ -34,13 +36,14 @@ public class Requete {
 		this.listeProprietes = new ArrayList<>();
 	}
 	
-	public Requete(String noeudDepart, int mode, int niveau, int unicite, ArrayList<String> liensAParcourir, ArrayList<String> resultat, ArrayList<String> dejaParcouruNoeud, ArrayList<Integer> dejaParcouruLien, ArrayList<String[]> filtres, ArrayList<String[]> proprietes) {
+	public Requete(String noeudDepart, int mode, int niveau, int unicite, ArrayList<String> liensAParcourir, ArrayList<String> noeudsAParcourir, ArrayList<String> resultat, ArrayList<String> dejaParcouruNoeud, ArrayList<Integer> dejaParcouruLien, ArrayList<String[]> filtres, ArrayList<String[]> proprietes) {
 
 		this.noeudDepart = noeudDepart;
 		this.mode = mode;
 		this.niveau = niveau;
 		this.unicite = unicite;
 		this.liensAParcourir = liensAParcourir;
+		this.noeudsAParcourir = noeudsAParcourir;
 		this.resultat = resultat;
 		this.dejaParcouruNoeud = dejaParcouruNoeud;
 		this.dejaParcouruLien = dejaParcouruLien;
@@ -59,7 +62,7 @@ public class Requete {
 	}
 
 	public Requete requeteDuVoisin(String noeudVoisin) {
-		return new Requete(noeudVoisin, this.getMode(), this.getNiveau()-1, this.getUnicite(), this.getLiensAParcourir(), this.getResultat(), this.getDejaParcouruNoeud(), this.getDejaParcouruLien(), this.listeTypesFiltres, this.listeProprietes); 
+		return new Requete(noeudVoisin, this.getMode(), this.getNiveau()-1, this.getUnicite(), this.getLiensAParcourir(), this.getNoeudsAParcourir(), this.getResultat(), this.getDejaParcouruNoeud(), this.getDejaParcouruLien(), this.listeTypesFiltres, this.listeProprietes); 
 	}
 
 	public ArrayList<Integer> getDejaParcouruLien() {
@@ -76,6 +79,14 @@ public class Requete {
 
 	public void setDejaParcouruNoeud(ArrayList<String> dejaParcouru) {
 		this.dejaParcouruNoeud = dejaParcouru;
+	}
+
+	public ArrayList<String> getNoeudsAParcourir() {
+		return noeudsAParcourir;
+	}
+
+	public void setNoeudsAParcourir(ArrayList<String> noeudsAParcourir) {
+		this.noeudsAParcourir = noeudsAParcourir;
 	}
 
 	public String getNoeudDepart() {

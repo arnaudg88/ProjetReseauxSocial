@@ -52,6 +52,26 @@ public class ControlRequeteTest {
 	}
 	
 	@Test
+	void requeteExemple1Largeur() {
+		ArrayList<String> resultatPrevu = new ArrayList<>();
+
+		resultatPrevu.add("Carol");
+		resultatPrevu.add("Dawn");
+		resultatPrevu.add("Jill");
+		resultatPrevu.add("Elizabeth");
+		resultatPrevu.add("Barbara");
+		resultatPrevu.add("Anna");
+
+		String[] filtre1 = {"Likes", "<"};
+		String[] filtre2 = {"Friend", ""};
+
+		Requete requete = new ConstructeurRequete().withNoeudDepart("NoSQLDistilled").withNiveau(4).withFiltre(filtre1, filtre2).withLargeurMode().BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		ArrayList<String> actual = controlRequeteSujet.executeRequete();
+		assertEquals(resultatPrevu, actual);
+	}
+	
+	@Test
 	void requeteExemple3() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
 
@@ -171,7 +191,7 @@ public class ControlRequeteTest {
 
 		String[] filtre1 = {"Friend", ""};
 
-		Requete requete = new ConstructeurRequete().withNoeudDepart("NoSQLDistilled").withFiltre(filtre1).withUnicite(1).withProfondeurMode().BuildRequete();
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withFiltre(filtre1).withUnicite(1).withProfondeurMode().BuildRequete();
 		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);
@@ -186,7 +206,7 @@ public class ControlRequeteTest {
 		
 		String[] filtre1 = {"Friend", ""};
 
-		Requete requete = new ConstructeurRequete().withNoeudDepart("NoSQLDistilled").withFiltre(filtre1).withNiveau(1).withUnicite(1).withProfondeurMode().BuildRequete();
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withFiltre(filtre1).withNiveau(1).withUnicite(1).withProfondeurMode().BuildRequete();
 		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);
