@@ -50,4 +50,18 @@ public class ControlRequeteTest {
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);
 	}
+	
+	@Test
+	void filtreTypeFriendSensDroite() {
+		ArrayList<String> resultatPrevu = new ArrayList<>();
+		resultatPrevu.add("Dawn");
+		resultatPrevu.add("Barbara");
+		String[] str = {"Friend",""};
+		ArrayList<String[]> lienFiltre = new ArrayList<>();
+		lienFiltre.add(str);
+		Requete requete = new ConstructeurRequete().withNoeudDepart("Carol").withNiveau(1).withFiltre(str).BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		ArrayList<String> actual = controlRequeteSujet.executeRequete();
+		assertEquals(resultatPrevu, actual);
+	}
 }
