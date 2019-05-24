@@ -51,7 +51,7 @@ public class ImportReseau {
 	
 				String secondNoeud = relations[i].substring(relations[i].indexOf(" ") + 1, relations[i].indexOf(")"));
 				
-				relations[i] = relations[i].substring(0, relations[i].indexOf(" "));
+				relations[i] = relations[i].substring(0, relations[i].lastIndexOf(" "));
 				
 				String lien = relations[i].substring(0, relations[i].indexOf("["));
 				relations[i] = relations[i].substring(relations[i].indexOf("[") + 1, relations[i].indexOf("]"));
