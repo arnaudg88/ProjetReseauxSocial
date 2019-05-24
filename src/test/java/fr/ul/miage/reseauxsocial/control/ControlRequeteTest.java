@@ -39,9 +39,12 @@ public class ControlRequeteTest {
 		resultatPrevu.add("Barbara");
 		resultatPrevu.add("Anna");
 		
+		
+		
+
 		String[] filtre1 = {"Likes", "<"};
 		String[] filtre2 = {"Friend", ""};
-		
+
 		Requete requete = new ConstructeurRequete().withNoeudDepart("NoSQLDistilled").withNiveau(4).withFiltre(filtre1, filtre2).BuildRequete();
 		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
@@ -74,7 +77,7 @@ public class ControlRequeteTest {
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);
 	}
-	
+
 	@Test
 	void filtreTypeFriendSensDroite() {
 		ArrayList<String> resultatPrevu = new ArrayList<>();
@@ -87,16 +90,16 @@ public class ControlRequeteTest {
 		ArrayList<String> actual = controlRequeteSujet.executeRequete();
 		assertEquals(resultatPrevu, actual);
 	}
-	
+
 	@Test
 	void filtreTypeLien() {
 		String[] str = {"Friend",""};
 		ArrayList<String[]> arr1 = new ArrayList<>();
 		arr1.add(str);
-		
+
 		ArrayList<String[]> arr2 = new ArrayList<>();
 		Requete requete = new ConstructeurRequete().BuildRequete();
-		
+
 		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
 		assertTrue(controlRequeteSujet.filtrageDesliens("Carol","Dawn", arr1, arr2));
 	}
@@ -155,6 +158,41 @@ public class ControlRequeteTest {
 		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
 		assertFalse(controlRequeteSujet.filtrageDesliens("Carol", "Dawn", lienFiltre, new ArrayList<>()));
 	}
+
+	@Test
+	void requeteExemple21() {
+		ArrayList<String> resultatPrevu = new ArrayList<>();
+		resultatPrevu.add("Barbara");
+		resultatPrevu.add("Anna");
+		resultatPrevu.add("Carol");
+		resultatPrevu.add("Dawn");
+		resultatPrevu.add("Elizabeth");
+		resultatPrevu.add("Jill");
+
+		String[] filtre1 = {"Friend", ""};
+
+		Requete requete = new ConstructeurRequete().withNoeudDepart("NoSQLDistilled").withFiltre(filtre1).withUnicite(1).withProfondeurMode().BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		ArrayList<String> actual = controlRequeteSujet.executeRequete();
+		assertEquals(resultatPrevu, actual);
+	}
+
+	@Test
+	void requeteExemple22() {
+		ArrayList<String> resultatPrevu = new ArrayList<>();
+		
+		resultatPrevu.add("Dawn");
+		resultatPrevu.add("Barbara");
+		
+		String[] filtre1 = {"Friend", ""};
+
+		Requete requete = new ConstructeurRequete().withNoeudDepart("NoSQLDistilled").withFiltre(filtre1).withNiveau(1).withUnicite(1).withProfondeurMode().BuildRequete();
+		ControlRequete controlRequeteSujet = new ControlRequete(irSujet.importReseau(), requete);
+		ArrayList<String> actual = controlRequeteSujet.executeRequete();
+		assertEquals(resultatPrevu, actual);
+	}
+
+
 	
 	@Test
 	void testProprieteSimple() {
