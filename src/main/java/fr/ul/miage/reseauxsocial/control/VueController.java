@@ -112,6 +112,8 @@ public class VueController {
 	
 	String filepath;
 	
+	ConstructeurRequete cr;
+	
 	@FXML
     public void initialize() {
 		this.filepath = "";
@@ -316,12 +318,28 @@ public class VueController {
 		if(this.choiceMode.getValue() == "Lien Global") {
 			unicite = 1;
 		}
-		String props = this.props.getText().trim();
-		String filtres = this.filter.getText().trim();
 		
+		if(this.props.getText() != null && this.filter.getText() != null) {
+			String props = this.props.getText().trim();
+			String filtres = this.filter.getText().trim();
+			this.cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite).withPropriete(Requete.splitProprietes(props)).withLiens(Requete.splitLiens(filtres));
+			
+		}else if(this.props.getText() != null) {
+			String props = this.props.getText().trim();
+			this.cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite).withPropriete(Requete.splitProprietes(props));
+			
+		}else if(this.filter.getText() != null) {
+			String filtres = this.filter.getText().trim();
+			this.cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite).withLiens(Requete.splitLiens(filtres));
+		}else {
+			this.cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite);	
+		}
 		
-		
-		ConstructeurRequete cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite).withPropriete(Requete.splitProprietes(props)).withLiens(Requete.splitLiens(filtres));
-		 
+		ControlRequete crr = new ControlRequete(this.reseaux,cr.BuildRequete());
+		ArrayList<String> res = crr.executeRequete();
+		listview.getItems().add("Résultat :");
+		for(int i = 0; i < res.size();i++) {
+			listview.getItems().add(res.get(i));
+		}
 	}
 }

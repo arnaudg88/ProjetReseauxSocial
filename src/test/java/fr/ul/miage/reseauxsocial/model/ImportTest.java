@@ -15,6 +15,7 @@ class ImportTest {
 	
 	Reseaux reseaux;
 	HashMap<Paire, ArrayList<Lien>> valReseaux;
+	HashMap<String,Noeud> listeNoeuds;
 	ArrayList<Lien> listeLien;
 
 	@BeforeEach
@@ -22,6 +23,7 @@ class ImportTest {
 		this.reseaux = new Reseaux();
 		this.valReseaux = new HashMap<>();
 		this.listeLien = new ArrayList<Lien>();
+		this.listeNoeuds = new HashMap<String,Noeud>();
 	}
 	
 	@Test
@@ -29,6 +31,11 @@ class ImportTest {
 		Paire paire = new Paire("Thomas","Charles");
 		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).BuildFriend();
 		this.listeLien.add(ami);
+		
+		this.listeNoeuds.put("Thomas", new Noeud("Thomas"));
+		this.listeNoeuds.put("Charles", new Noeud("Charles"));
+		this.reseaux.setNoeuds(listeNoeuds);
+		
 		this.valReseaux.put(paire, this.listeLien);
 		this.reseaux.setReseau(this.valReseaux);
 		
@@ -50,7 +57,15 @@ class ImportTest {
 		this.listeLien = new ArrayList<Lien>();
 		this.listeLien.add(ami2);
 		this.valReseaux.put(paire2, this.listeLien);
-		
+		Paire paire3 = new Paire("Arnaud","Thomas");
+		Friend ami3 = new ConstructeurLien().withParam("Arnaud",true,"Thomas").withPropriete(new Since("Ami",2000)).BuildFriend();
+		this.listeLien = new ArrayList<Lien>();
+		this.listeLien.add(ami3);
+		this.valReseaux.put(paire3, this.listeLien);
+		this.listeNoeuds.put("Thomas", new Noeud("Thomas"));
+		this.listeNoeuds.put("Charles", new Noeud("Charles"));
+		this.listeNoeuds.put("Arnaud", new Noeud("Arnaud"));
+		this.reseaux.setNoeuds(listeNoeuds);
 		this.reseaux.setReseau(this.valReseaux);
 		
 		ImportReseau importRes = new ImportReseau("(Thomas --Friend[Since=2000]--> Charles)\n(Thomas <--Friend[Since=2000]--> Arnaud)\n");
