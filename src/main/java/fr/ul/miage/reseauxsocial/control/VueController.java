@@ -319,10 +319,9 @@ public class VueController {
 		String props = this.props.getText().trim();
 		String filtres = this.filter.getText().trim();
 		
-		Requete.splitLiens(filtres);
-		Requete.splitProprietes(props);
 		
-		ConstructeurRequete cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite).withFiltre(props);
+		
+		ConstructeurRequete cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite).withPropriete(Requete.splitProprietes(props)).withLiens(Requete.splitLiens(filtres));
 		 
 	}
 }
