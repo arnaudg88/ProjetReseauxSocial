@@ -129,30 +129,37 @@ public class ControlRequete {
 
 				requeteCourante.getResultat().add(noeudVoisin);
 				requeteCourante.getDejaParcouruNoeud().add(noeudVoisin);
+			} else {
 				requeteCourante.getNoeudsAParcourir().remove(noeudVoisin);
-
-				Requete sousRequete = parcoursRequeteProfondeurNoeudGlobal(requeteCourante.requeteDuVoisin(noeudVoisin)); //execution de la requete vers les voisins 
-
-				// recuperation des donn�es pour les sous requetes suivantes
-				for(String noeudParcouru:sousRequete.getDejaParcouruNoeud()) {
-					if(!requeteCourante.getDejaParcouruNoeud().contains(noeudParcouru)) {
-						requeteCourante.getDejaParcouruNoeud().add(noeudParcouru);
-					}
+			}
+		}
+		
+		ArrayList<String> voisinsAParcourir = new ArrayList<>();
+		voisinsAParcourir.addAll(requeteCourante.getNoeudsAParcourir());
+		
+		for(String noeudVoisin:voisinsAParcourir) {
+			requeteCourante.getNoeudsAParcourir().remove(noeudVoisin);
+			Requete sousRequete = parcoursRequeteLargeurNoeudGlobal(requeteCourante.requeteDuVoisin(noeudVoisin)); //execution de la requete vers les voisins
+			// recuperation des donn�es pour les sous requetes suivantes
+			for(String noeudParcouru:sousRequete.getDejaParcouruNoeud()) {
+				if(!requeteCourante.getDejaParcouruNoeud().contains(noeudParcouru)) {
+					requeteCourante.getDejaParcouruNoeud().add(noeudParcouru);
 				}
+			}
 
-				for(String noeudResultat:sousRequete.getResultat()) {
-					if(!requeteCourante.getResultat().contains(noeudResultat)) {
-						requeteCourante.getResultat().add(noeudResultat);
-					}
+			for(String noeudResultat:sousRequete.getResultat()) {
+				if(!requeteCourante.getResultat().contains(noeudResultat)) {
+					requeteCourante.getResultat().add(noeudResultat);
 				}
+			}
 
-				for(String noeudAParcourir:sousRequete.getNoeudsAParcourir()) {
-					if(!requeteCourante.getNoeudsAParcourir().contains(noeudAParcourir) && !requeteCourante.getDejaParcouruNoeud().contains(noeudAParcourir)) {
-						requeteCourante.getNoeudsAParcourir().add(noeudAParcourir);
-					}
+			for(String noeudAParcourir:sousRequete.getNoeudsAParcourir()) {
+				if(!requeteCourante.getNoeudsAParcourir().contains(noeudAParcourir) && !requeteCourante.getDejaParcouruNoeud().contains(noeudAParcourir)) {
+					requeteCourante.getNoeudsAParcourir().add(noeudAParcourir);
 				}
 			}
 		}
+		
 		return requeteCourante;
 	}
 
