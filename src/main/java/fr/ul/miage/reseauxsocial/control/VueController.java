@@ -43,6 +43,14 @@ import javafx.stage.Stage;
 
 public class VueController {
 	
+	private static final String VERIFIEVOSPARAMETRES = "Vérifiez vos paramètres !";
+	private static final String EMPLOYEEOF = "EmployeeOf";
+	private static final String FRIEND = "Friend";
+	private static final String AUTHOR = "Author";
+	private static final String CATEGORY = "Category";
+	private static final String LIKES = "Likes";
+	private static final String LIENAJOUTE = "Lien ajouté !";
+
 	private static final Logger LOG = Logger.getLogger(VueController.class.getName());
 
 	@FXML
@@ -117,13 +125,7 @@ public class VueController {
 	
 	ConstructeurRequete cr;
 	
-	private static String employeeOf = "EmployeeOf";
-	private static String friend = "Friend";
-	private static String author = "Author";
-	private static String category = "Category";
-	private static String likes = "Likes";
-	private static String lienAjoute = "Lien ajouté !";
-	private static String verifieVosParametre = "Vérifiez vos paramètres !";
+	
 	
 	@FXML
     public void initialize() {
@@ -134,7 +136,7 @@ public class VueController {
 		this.reseaux = ir.importReseau();
 		ExportReseau er = new ExportReseau(this.reseaux);
 		listview.getItems().add(er.exportReseau());
-		this.choiceLien.setItems(FXCollections.observableArrayList(employeeOf, friend,author,category,likes));
+		this.choiceLien.setItems(FXCollections.observableArrayList(EMPLOYEEOF, FRIEND,AUTHOR,CATEGORY,LIKES));
 		this.choiceLien.getSelectionModel().selectFirst();
 		SpinnerValueFactory<Integer> valueFactory = //
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0);
@@ -148,12 +150,12 @@ public class VueController {
 	}
 	
 	public void newRelationChoice() {
-		if(this.choiceLien.getValue() == employeeOf) {
+		if(this.choiceLien.getValue() == EMPLOYEEOF) {
 			this.shareBool.setDisable(true);
 			this.sinceBool.setDisable(true);
 			this.hiredBool.setDisable(false);
 			this.roleBool.setDisable(false);
-		}else if(this.choiceLien.getValue() == friend) {
+		}else if(this.choiceLien.getValue() == FRIEND) {
 			this.shareBool.setDisable(false);
 			this.sinceBool.setDisable(false);
 			this.hiredBool.setDisable(true);
@@ -169,19 +171,19 @@ public class VueController {
 	public void ajouterLien() {
 		String choice = this.choiceLien.getValue();
 		switch(choice) {
-		case "EmployeeOf" : 
+		case EMPLOYEEOF : 
 			this.ajouterLienEmployeeOf();
 		break;
-		case "Friend" :
+		case FRIEND :
 			this.ajouterLienFriend();
 		break;
-		case "Author" :
+		case AUTHOR :
 			this.ajouterLienAuthor();
 		break;
-		case "Likes" :
+		case LIKES :
 			this.ajouterLienLikes();
 		break;
-		case "Category" :
+		case CATEGORY :
 			this.ajouterLienCategory();
 		break;
 		default:
@@ -198,24 +200,21 @@ public class VueController {
 			this.afficherReseau();
 			this.selectNoeud();
 		}else {
-			listview.getItems().add(verifieVosParametre);
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
 		}
 	}
 	
 	public boolean checkNodes(String source, String destination) {
-		if(source.equals("") || destination.equals("")){
-			return false;
-		}
-		return true;
+		return !(source.equals("") || destination.equals(""));
 	}
 	
 	public void ajouterLienCategory() {
 		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText())) {
 			Category c = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).buildCategory();
 			this.reseaux.addLien(c);
-			listview.getItems().add("Lien ajouté !");
+			listview.getItems().add(LIENAJOUTE);
 		}else {
-			listview.getItems().add("Vérifiez vos paramètres !");
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
 		}
 	}
 	
@@ -223,9 +222,9 @@ public class VueController {
 		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText())) {
 			Author a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).buildAuthor();
 			this.reseaux.addLien(a);
-			listview.getItems().add("Lien ajouté !");
+			listview.getItems().add(LIENAJOUTE);
 		}else {
-			listview.getItems().add("Vérifiez vos paramètres !");
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
 		}
 	}
 	
@@ -233,15 +232,14 @@ public class VueController {
 		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText())) {
 			Likes a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).buildLikes();
 			this.reseaux.addLien(a);
-			listview.getItems().add("Lien ajouté !");
+			listview.getItems().add(LIENAJOUTE);
 		}else {
-			listview.getItems().add("Vérifiez vos paramètres !");
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
 		}
 	}
 	
 	public void ajouterLienFriend() {
-		ArrayList<Propriete> myProps = new ArrayList<Propriete>();
-		Boolean error = false;
+		ArrayList<Propriete> myProps = new ArrayList<>();
 		if(this.sinceBool.isSelected()) {
 			int since = Integer.parseInt(this.sinceInput.getText());
 			Since r = new Since("Since",since);
@@ -249,27 +247,25 @@ public class VueController {
 		}
 		if(this.shareBool.isSelected()) {
 			String share = this.shareInput.getText();
-			if(share == null) {
-				error = false;
-			}else {
+			if(share != null) {
 				Share s = new Share("Share",Arrays.asList(share.split(";")));
 				myProps.add(s);
 			}
 		}
 		
-		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText()) && error == false) {
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText())) {
 			Propriete[] myPropsArray = new Propriete[myProps.size()];
 			myPropsArray = myProps.toArray(myPropsArray);
 			Friend e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).buildFriend();
 			this.reseaux.addLien(e);
-			listview.getItems().add("Lien ajouté !");
+			listview.getItems().add(LIENAJOUTE);
 		}else {
-			listview.getItems().add("Vérifiez vos paramètres !");
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
 		}
 	}
 	
 	public void ajouterLienEmployeeOf() {
-		ArrayList<Propriete> myProps = new ArrayList<Propriete>();
+		ArrayList<Propriete> myProps = new ArrayList<>();
 		Boolean error = false;
 		if(this.hiredBool.isSelected()) {
 			if(this.hiredInput.getValue() == null) {
@@ -299,14 +295,14 @@ public class VueController {
 			}
 		}
 		
-		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText()) && error == false) {
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText()) && !error) {
 			Propriete[] myPropsArray = new Propriete[myProps.size()];
 			myPropsArray = myProps.toArray(myPropsArray);
 			EmployeeOf e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).buildEmployee();
 			this.reseaux.addLien(e);
-			listview.getItems().add("Lien ajouté !");
+			listview.getItems().add(LIENAJOUTE);
 		}else {
-			listview.getItems().add("Vérifiez vos paramètres !");
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
 		}
 	}
 	
@@ -331,7 +327,7 @@ public class VueController {
 	}
 	
 	public void importReseau() {
-		if(this.filepath.equals("")) {
+		if(!this.filepath.equals("")) {
 			ImportReseau ir = new ImportReseau();
 			ir.importFile(this.filepath);
 			this.reseaux = ir.importReseau();

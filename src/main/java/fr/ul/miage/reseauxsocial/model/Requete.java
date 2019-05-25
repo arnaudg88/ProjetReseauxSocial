@@ -171,7 +171,7 @@ public class Requete {
 		ArrayList<String[]> proprietesResultat = new ArrayList<>();
 		
 		if(filtre.length() > 0) {
-			String[] proprietes = filtre.split(";"); //split sur ;
+			String[] proprietes = filtre.split(";"); 
 			for(String propriete:proprietes) { //pour chaque liens
 				String[] infosPropriete = propriete.trim().split("="); //split sur espace
 				String[] nomPropriete = new String[2];

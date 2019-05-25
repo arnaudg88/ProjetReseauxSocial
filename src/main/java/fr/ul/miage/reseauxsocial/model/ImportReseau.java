@@ -73,36 +73,7 @@ public class ImportReseau {
 				ArrayList<Propriete> myProps = new ArrayList<>();
 
 				for (int y = 0; y < properties.length; y++) {
-					String propertie = "";
-					if(relations[i].indexOf('=') != -1)
-						propertie = properties[y].substring(0, properties[y].indexOf('='));
-					String value = properties[y].substring(properties[y].indexOf('=') + 1, properties[y].length());
-					switch (propertie) {
-						case "Hired":
-							SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyy"); 
-							try {
-								Date date1 =formatter.parse(value);
-								Hired h = new Hired("Hired", date1);
-								myProps.add(h);
-							} catch (ParseException e1) {
-								LOG.severe(e1.getMessage());
-							}  
-							break;
-						case "Role":
-							Role r = new Role("Role", value);
-							myProps.add(r);
-							break;
-						case "Share":
-							Share sh = new Share("Share",Arrays.asList(value.split(";")));
-							myProps.add(sh);
-							break;
-						case "Since":
-							Since si = new Since("Since", Integer.parseInt(value));
-							myProps.add(si);
-							break;
-						default:
-							break;
-					}
+					importGestionProperties(relations, i, properties, myProps, y);
 				}
 
 				Propriete[] myPropsArray = new Propriete[myProps.size()];
@@ -131,11 +102,45 @@ public class ImportReseau {
 					reseaux.addLien(likes);
 					break;
 				default:
-					// code block
+					break;
 				}
 			}
 		}
 		return reseaux;
+	}
+
+	private void importGestionProperties(String[] relations, int i, String[] properties, ArrayList<Propriete> myProps,
+			int y) {
+		String propertie = "";
+		if(relations[i].indexOf('=') != -1)
+			propertie = properties[y].substring(0, properties[y].indexOf('='));
+		String value = properties[y].substring(properties[y].indexOf('=') + 1, properties[y].length());
+		switch (propertie) {
+			case "Hired":
+				SimpleDateFormat formatter=new SimpleDateFormat("dd/MM/yyyy"); 
+				try {
+					Date date1 =formatter.parse(value);
+					Hired h = new Hired("Hired", date1);
+					myProps.add(h);
+				} catch (ParseException e1) {
+					LOG.severe(e1.getMessage());
+				}  
+				break;
+			case "Role":
+				Role r = new Role("Role", value);
+				myProps.add(r);
+				break;
+			case "Share":
+				Share sh = new Share("Share",Arrays.asList(value.split(";")));
+				myProps.add(sh);
+				break;
+			case "Since":
+				Since si = new Since("Since", Integer.parseInt(value));
+				myProps.add(si);
+				break;
+			default:
+				break;
+		}
 	}
 
 	public void importFile(String filename) {

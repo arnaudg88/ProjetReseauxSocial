@@ -8,8 +8,6 @@ public abstract class Lien {
 	private boolean doubleSens; // true <>, false >
 	private String noeudDepart;
 	private String noeudDestination;
-	
-	private String idLien; 
 
 	public Lien(String noeudDepart, boolean sens, String noeudDestination) {
 		this.doubleSens = sens;
@@ -99,18 +97,21 @@ public abstract class Lien {
 		if (noeudDepart == null) {
 			if (other.noeudDepart != null)
 				return false;
-		} else if (!noeudDepart.equals(other.noeudDepart))
-			return false;
+		} else 
+			if (!noeudDepart.equals(other.noeudDepart))
+				return false;
 		if (noeudDestination == null) {
 			if (other.noeudDestination != null)
 				return false;
-		} else if (!noeudDestination.equals(other.noeudDestination))
-			return false;
+		} else 
+			if (!noeudDestination.equals(other.noeudDestination))
+				return false;
 		if (proprietes == null) {
 			if (other.proprietes != null)
 				return false;
-		} else if (!proprietes.equals(other.proprietes))
-			return false;
+		} else 
+			if (!proprietes.equals(other.proprietes))
+				return false;
 		return true;
 	}
 

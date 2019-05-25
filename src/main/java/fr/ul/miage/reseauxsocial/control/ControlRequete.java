@@ -52,7 +52,7 @@ public class ControlRequete {
 				return parcoursRequeteLargeurLienGlobal(requete).getResultat();
 			}
 		} else {
-			return new ArrayList<String>();
+			return new ArrayList<>();
 
 		}
 	}
@@ -67,9 +67,7 @@ public class ControlRequete {
 		}
 
 		for (String noeudVoisin : voisins) { //parcours ses voisins
-			if (possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin)
-					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeTypesFiltres(), requeteCourante.getListeProprietes())
-					&& !estDejaParcouru(noeudVoisin, requeteCourante.getDejaParcouruNoeud()))
+			if (conditionsFiltre(requeteCourante, noeudVoisin))
 			{ //filtrage et direction vers les liens voulus 
 
 				requeteCourante.getResultat().add(noeudVoisin);
@@ -78,21 +76,29 @@ public class ControlRequete {
 				Requete sousRequete = parcoursRequeteProfondeurNoeudGlobal(requeteCourante.requeteDuVoisin(noeudVoisin)); //execution de la requete vers les voisins 
 
 				// recuperation des donn�es pour les sous requetes suivantes
-				for(String noeudParcouru:sousRequete.getDejaParcouruNoeud()) {
-					if(!requeteCourante.getDejaParcouruNoeud().contains(noeudParcouru)) {
-						requeteCourante.getDejaParcouruNoeud().add(noeudParcouru);
-					}
-				}
+				recupereNoeudParcouru(requeteCourante, sousRequete);
 
-				for(String noeudResultat:sousRequete.getResultat()) {
-					if(!requeteCourante.getResultat().contains(noeudResultat)) {
-						requeteCourante.getResultat().add(noeudResultat);
-					}
-				}
+				recupereNoeudResultat(requeteCourante, sousRequete);
 
 			}
 		}
 		return requeteCourante;
+	}
+
+	private void recupereNoeudResultat(Requete requeteCourante, Requete sousRequete) {
+		for(String noeudResultat:sousRequete.getResultat()) {
+			if(!requeteCourante.getResultat().contains(noeudResultat)) {
+				requeteCourante.getResultat().add(noeudResultat);
+			}
+		}
+	}
+
+	private void recupereNoeudParcouru(Requete requeteCourante, Requete sousRequete) {
+		for(String noeudParcouru:sousRequete.getDejaParcouruNoeud()) {
+			if(!requeteCourante.getDejaParcouruNoeud().contains(noeudParcouru)) {
+				requeteCourante.getDejaParcouruNoeud().add(noeudParcouru);
+			}
+		}
 	}
 
 	public Requete parcoursRequeteProfondeurLienGlobal(Requete requeteCourante) {
@@ -103,43 +109,37 @@ public class ControlRequete {
 		} else {
 			voisins = reseaux.getVoisins(requeteCourante.getNoeudDepart());
 		}
-		//ArrayList<String> voisins = reseaux.getVoisins(requeteCourante.getNoeudDepart());
 		for (String noeudVoisin : voisins) {
 			
 			String typeLienTemp = possedeLiensAParcourirLienGlobal(requeteCourante.getNoeudDepart(), noeudVoisin);
-			if (typeLienTemp != null ) {
-				if(filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeTypesFiltres(), requeteCourante.getListeProprietes())) {
-					
-					requeteCourante.getResultat().add(noeudVoisin);
+			if (typeLienTemp != null && filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeTypesFiltres(), requeteCourante.getListeProprietes())) {
+				requeteCourante.getResultat().add(noeudVoisin);
 
-					System.out.println(reseaux.findLien(requeteCourante.getNoeudDepart(), typeLienTemp, noeudVoisin));
-					
-					if(reseaux.findLien(requeteCourante.getNoeudDepart(), typeLienTemp, noeudVoisin)==null) {
-						requeteCourante.getDejaParcouruLien().add(reseaux.findLien(noeudVoisin, typeLienTemp, requeteCourante.getNoeudDepart()));
-					}else {
-						requeteCourante.getDejaParcouruLien().add(reseaux.findLien(requeteCourante.getNoeudDepart(), typeLienTemp, noeudVoisin));
-					}
-					
-
-					Requete sousRequete = parcoursRequeteProfondeurLienGlobal(requeteCourante.requeteDuVoisin(noeudVoisin));
-
-
-					// recuperation des donn�es pour les sous requetes suivantes
-					for(Lien lienParcouru:sousRequete.getDejaParcouruLien()) {
-						if(!requeteCourante.getDejaParcouruLien().contains(lienParcouru)) {
-							requeteCourante.getDejaParcouruLien().add(lienParcouru);
-						}
-					}
-
-					for(String noeudResultat:sousRequete.getResultat()) {
-						if(!requeteCourante.getResultat().contains(noeudResultat)) {
-							requeteCourante.getResultat().add(noeudResultat);
-						}
-					}
+				if (reseaux.findLien(requeteCourante.getNoeudDepart(), typeLienTemp, noeudVoisin) == null) {
+					requeteCourante.getDejaParcouruLien()
+							.add(reseaux.findLien(noeudVoisin, typeLienTemp, requeteCourante.getNoeudDepart()));
+				} else {
+					requeteCourante.getDejaParcouruLien()
+							.add(reseaux.findLien(requeteCourante.getNoeudDepart(), typeLienTemp, noeudVoisin));
 				}
+
+				Requete sousRequete = parcoursRequeteProfondeurLienGlobal(requeteCourante.requeteDuVoisin(noeudVoisin));
+
+				// recuperation des donn�es pour les sous requetes suivantes
+				recupereLienParcouru(requeteCourante, sousRequete);
+
+				recupereNoeudResultat(requeteCourante, sousRequete);
 			}
 		}
 		return requeteCourante;
+	}
+
+	private void recupereLienParcouru(Requete requeteCourante, Requete sousRequete) {
+		for(Lien lienParcouru:sousRequete.getDejaParcouruLien()) {
+			if(!requeteCourante.getDejaParcouruLien().contains(lienParcouru)) {
+				requeteCourante.getDejaParcouruLien().add(lienParcouru);
+			}
+		}
 	}
 	
 	private Requete parcoursRequeteLargeurNoeudGlobal(Requete requeteCourante) {
@@ -150,19 +150,13 @@ public class ControlRequete {
 			voisins = reseaux.getVoisins(requeteCourante.getNoeudDepart());
 		}
 		
-		for(String noeudVoisin : voisins) {
-			if(!requeteCourante.getNoeudsAParcourir().contains(noeudVoisin)) {
-				requeteCourante.getNoeudsAParcourir().add(noeudVoisin);
-			}
-		}
+		recupereNoeudVoisin(requeteCourante, voisins);
 		
 		ArrayList<String> noeudsAParcourir = new ArrayList<>();
 		noeudsAParcourir.addAll(requeteCourante.getNoeudsAParcourir());
 
 		for (String noeudVoisin : noeudsAParcourir) { //parcours ses voisins
-			if (possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin)
-					&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeTypesFiltres(), requeteCourante.getListeProprietes())
-					&& !estDejaParcouru(noeudVoisin, requeteCourante.getDejaParcouruNoeud()))
+			if (conditionsFiltre(requeteCourante, noeudVoisin))
 			{ //filtrage et direction vers les liens voulus 
 
 				requeteCourante.getResultat().add(noeudVoisin);
@@ -178,39 +172,43 @@ public class ControlRequete {
 		for(String noeudVoisin:voisinsAParcourir) {
 			requeteCourante.getNoeudsAParcourir().remove(noeudVoisin);
 			Requete sousRequete = parcoursRequeteLargeurNoeudGlobal(requeteCourante.requeteDuVoisin(noeudVoisin)); //execution de la requete vers les voisins
-			// recuperation des donn�es pour les sous requetes suivantes
-			for(String noeudParcouru:sousRequete.getDejaParcouruNoeud()) {
-				if(!requeteCourante.getDejaParcouruNoeud().contains(noeudParcouru)) {
-					requeteCourante.getDejaParcouruNoeud().add(noeudParcouru);
-				}
-			}
+			recupereNoeudParcouru(requeteCourante, sousRequete);
 
-			for(String noeudResultat:sousRequete.getResultat()) {
-				if(!requeteCourante.getResultat().contains(noeudResultat)) {
-					requeteCourante.getResultat().add(noeudResultat);
-				}
-			}
+			recupereNoeudResultat(requeteCourante, sousRequete);
 
-			for(String noeudAParcourir:sousRequete.getNoeudsAParcourir()) {
-				if(!requeteCourante.getNoeudsAParcourir().contains(noeudAParcourir) && !requeteCourante.getDejaParcouruNoeud().contains(noeudAParcourir)) {
-					requeteCourante.getNoeudsAParcourir().add(noeudAParcourir);
-				}
-			}
+			recupereNoeudAParcourir(requeteCourante, sousRequete);
 		}
 		
 		return requeteCourante;
+	}
+
+	private void recupereNoeudVoisin(Requete requeteCourante, ArrayList<String> voisins) {
+		for(String noeudVoisin : voisins) {
+			if(!requeteCourante.getNoeudsAParcourir().contains(noeudVoisin)) {
+				requeteCourante.getNoeudsAParcourir().add(noeudVoisin);
+			}
+		}
+	}
+
+	private boolean conditionsFiltre(Requete requeteCourante, String noeudVoisin) {
+		return possedeLiensAParcourir(requeteCourante.getNoeudDepart(), noeudVoisin)
+				&& filtrageDesliens(requeteCourante.getNoeudDepart(), noeudVoisin, requeteCourante.getListeTypesFiltres(), requeteCourante.getListeProprietes())
+				&& !estDejaParcouru(noeudVoisin, requeteCourante.getDejaParcouruNoeud());
+	}
+
+	private void recupereNoeudAParcourir(Requete requeteCourante, Requete sousRequete) {
+		for(String noeudAParcourir:sousRequete.getNoeudsAParcourir()) {
+			if(!requeteCourante.getNoeudsAParcourir().contains(noeudAParcourir) && !requeteCourante.getDejaParcouruNoeud().contains(noeudAParcourir)) {
+				requeteCourante.getNoeudsAParcourir().add(noeudAParcourir);
+			}
+		}
 	}
 
 	public Requete parcoursRequeteLargeurLienGlobal(Requete requeteCourante) {
 		return requeteCourante;
 	}
 
-	// public boolean estDejaParcouru(String noeudDepart, String noeudArrive)
-
 	public boolean possedeLiensAParcourir(String noeudDepart, String noeudArrive) {
-		// change les paramètres si besoins
-		// regarde les liensAParcourir avec ceux enregistré dans le réseaux
-		// si l'un correspond on renvoie vrai
 		boolean res = false;
 		if(reseaux.paireExist(noeudDepart, noeudArrive)) {
 			res=true;
@@ -223,7 +221,7 @@ public class ControlRequete {
 
 	public String possedeLiensAParcourirLienGlobal(String noeudDepart, String noeudArrive) {
 
-		ArrayList<Lien> listeLien1 = new ArrayList<>();
+		ArrayList<Lien> listeLien1;
 		if(reseaux.paireExist(noeudDepart, noeudArrive)) {
 			listeLien1 = reseaux.getReseau().get(new Paire(noeudDepart, noeudArrive));
 			for(Lien l:listeLien1) {
@@ -244,7 +242,7 @@ public class ControlRequete {
 
 	public boolean filtrageDesliens(String noeudDepart, String noeudArrive, ArrayList<String[]> listeTypeLien, ArrayList<String[]> listeProprietes) {
 		boolean res = false;
-		if(listeTypeLien.size()==0) {
+		if(listeTypeLien.isEmpty()) {
 			res=true;
 		}else {
 
@@ -256,72 +254,64 @@ public class ControlRequete {
 			for(String[] filtre:listeTypeLien) {
 
 				if (listeLienDA != null) {
-					for (Lien lDA : listeLienDA) {
-						if (filtre[0].equals((lDA.getClass()).getSimpleName())) {
-
-							ArrayList<Propriete> listeProprietesTemp = lDA.getProprietes();
-
-							if ((filtre[1].equals(">")) || (filtre[1].equals(""))) {
-								if (listeProprietes.size() == 0) {
-									res = true;
-								} else {
-									for (String[] proprietes : listeProprietes) {
-										for (Propriete p : listeProprietesTemp) {
-											if (proprietes[0].equals(p.getClass().getSimpleName())
-													&& proprietes[1].equals(p.getAttribut())) {
-												res = true;
-											}
-										}
-									}
-								}
-
-							} else if ((filtre[1].equals("<>"))) {
-								if (listeLienAD != null) {
-									for (Lien lienAD : listeLienAD) {
-										if((lDA.getNoeudDepart().equals(lienAD.getNoeudDestination()))&&(lDA.getNoeudDestination().equals(lienAD.getNoeudDepart()))) {
-											if (listeProprietes.size() == 0) {
-												res = true;
-											} else {
-												for (String[] proprietes : listeProprietes) {
-													for (Propriete p : listeProprietesTemp) {
-														if (proprietes[0].equals(p.getClass().getSimpleName())
-																&& proprietes[1].equals(p.getAttribut())) {
-															res = true;
-														}
-													}
-												}
-											}
-										}
-
-									}
-								}
-							}
-						}
-					}
+					res = parcoursLienDA(listeProprietes, res, listeLienDA, listeLienAD, filtre);
 				}
 				if (listeLienAD != null) {
-					for (Lien l : listeLienAD) {
-						ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
-						if (filtre[0].equals(l.getClass().getSimpleName())) {
-							if ((filtre[1].equals("<")) || filtre[1].equals("") ) {
+					res = parcoursLienAD(listeProprietes, res, listeLienAD, filtre);
+				}
+			}
+		}
+		return res;
+	}
 
-								if (listeProprietes.size() == 0) {
-									res = true;
-								} else {
-									for (String[] proprietes : listeProprietes) {
-										for (Propriete p : listeProprietesTemp) {
-											if (proprietes[0].equals(p.getClass().getSimpleName())
-													&& proprietes[1].equals(p.getAttribut())) {
-												res = true;
-											}
-										}
-									}
-								}
+	private boolean parcoursLienAD(ArrayList<String[]> listeProprietes, boolean res, ArrayList<Lien> listeLienAD,
+			String[] filtre) {
+		for (Lien l : listeLienAD) {
+			ArrayList<Propriete> listeProprietesTemp = l.getProprietes();
+			if (filtre[0].equals(l.getClass().getSimpleName()) && (filtre[1].equals("<")) || filtre[1].equals("")) {
+				res = testCroisementPropriete(listeProprietes, res, listeProprietesTemp);
+			}
+		}
+		return res;
+	}
 
-							}
+	private boolean parcoursLienDA(ArrayList<String[]> listeProprietes, boolean res, ArrayList<Lien> listeLienDA,
+			ArrayList<Lien> listeLienAD, String[] filtre) {
+		for (Lien lDA : listeLienDA) {
+			if (filtre[0].equals((lDA.getClass()).getSimpleName())) {
+				ArrayList<Propriete> listeProprietesTemp = lDA.getProprietes();
 
-						}
+				if ((filtre[1].equals(">")) || (filtre[1].equals(""))) {
+					res = testCroisementPropriete(listeProprietes, res, listeProprietesTemp);
+				} else if ((filtre[1].equals("<>")) && listeLienAD != null) {
+					res = parcoursLienDALienAD(listeProprietes, res, listeLienAD, lDA, listeProprietesTemp);
+				}
+			}
+		}
 
+		return res;
+	}
+
+	private boolean parcoursLienDALienAD(ArrayList<String[]> listeProprietes, boolean res,
+			ArrayList<Lien> listeLienAD, Lien lDA, ArrayList<Propriete> listeProprietesTemp) {
+		for (Lien lienAD : listeLienAD) {
+			if ((lDA.getNoeudDepart().equals(lienAD.getNoeudDestination()))
+					&& (lDA.getNoeudDestination().equals(lienAD.getNoeudDepart()))) {
+				res = testCroisementPropriete(listeProprietes, res, listeProprietesTemp);
+			}
+		}
+		return res;
+	}
+
+	private boolean testCroisementPropriete(ArrayList<String[]> listeProprietes, boolean res,
+			ArrayList<Propriete> listeProprietesTemp) {
+		if (listeProprietes.isEmpty()) {
+			res = true;
+		} else {
+			for (String[] proprietes : listeProprietes) {
+				for (Propriete p : listeProprietesTemp) {
+					if (proprietes[0].equals(p.getClass().getSimpleName()) && proprietes[1].equals(p.getAttribut())) {
+						res = true;
 					}
 				}
 			}
