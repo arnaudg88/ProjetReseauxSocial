@@ -9,12 +9,12 @@ public class ConstructeurRequete {
 	private int niveau = Integer.MAX_VALUE;
 	private int unicite = 0; //0 noeudGlobal, 1 lienGlobal
 	private ArrayList<String> liensAParcourir = new ArrayList<>();
-	private ArrayList<String[]> listeTypeLien = new ArrayList<>();
+	private ArrayList<String> noeudsAParcourir = new ArrayList<>();
 	private ArrayList<String[]> listeFiltres = new ArrayList<>();
 	private ArrayList<String[]> listeProprietes = new ArrayList<>();
 	private ArrayList<String> resultat = new ArrayList<>();
 	private ArrayList<String> dejaParcouruNoeud = new ArrayList<>();
-	private ArrayList<Integer> dejaParcouruLien = new ArrayList<>();
+	private ArrayList<Lien> dejaParcouruLien = new ArrayList<>();
 
 	public ConstructeurRequete withNoeudDepart(String noeud) {
 		noeudDepart = noeud;
@@ -73,23 +73,7 @@ public class ConstructeurRequete {
 		return this;
 	}
 
-	/*ConstructeurLien withLien(String... args) {
-		if(proprietes == null) {
-			proprietes = new ArrayList<Propriete>();
-		}
-		
-		for(Propriete p:args) {
-			this.proprietes.add(p);
-		}
-		
-
-		return this;
-
-	}*/
-
-
-
-	public Requete BuildRequete() {
-		return new Requete(noeudDepart, mode, niveau, unicite, liensAParcourir, resultat, dejaParcouruNoeud, dejaParcouruLien, listeFiltres, listeProprietes);
+	public Requete buildRequete() {
+		return new Requete(noeudDepart, mode, niveau, unicite, liensAParcourir, noeudsAParcourir, resultat, dejaParcouruNoeud, dejaParcouruLien, listeFiltres, listeProprietes);
 	}
 }

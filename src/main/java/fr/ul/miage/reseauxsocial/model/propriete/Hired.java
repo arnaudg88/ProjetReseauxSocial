@@ -1,11 +1,17 @@
 package fr.ul.miage.reseauxsocial.model.propriete;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import fr.ul.miage.reseauxsocial.model.Propriete;
 
 public class Hired extends Propriete {
+	
+	private static final Logger LOG = Logger.getLogger(Hired.class.getName());
 
 	private Date valeur;
 	private static final String[] TYPE_POSSIBLE = {};
@@ -42,9 +48,13 @@ public class Hired extends Propriete {
 
 	@Override
 	public String toString() {
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			Date date = dateFormat.parse(dateFormat.format(valeur));
+			return "Hired=" + dateFormat.format(date);
+		} catch (ParseException e) {
+			LOG.severe(e.getMessage());
+		}
 		return "Hired=" + valeur;
 	}
-	
-	
-
 }

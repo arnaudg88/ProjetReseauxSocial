@@ -26,7 +26,7 @@ public class ConstructeurLien {
 
 	public ConstructeurLien withPropriete(Propriete... args) {
 		if(proprietes == null) {
-			proprietes = new ArrayList<Propriete>();
+			proprietes = new ArrayList<>();
 		}
 		
 		for(Propriete p:args) {
@@ -40,23 +40,23 @@ public class ConstructeurLien {
 
 
 
-	public EmployeeOf BuildEmployee() {
+	public EmployeeOf buildEmployee() {
 		return new EmployeeOf(depart, sens, destination, proprietes );
 	}
 
-	public Friend BuildFriend() {
+	public Friend buildFriend() {
 		return new Friend(depart, sens, destination, proprietes);
 	}
 	
-	public Author BuildAuthor() {
+	public Author buildAuthor() {
 		return new Author(depart, sens, destination, proprietes);
 	}
 
-	public Category BuildCategory() {
+	public Category buildCategory() {
 		return new Category(depart, sens, destination, proprietes);
 	}
 	
-	public Likes BuildLikes() {
+	public Likes buildLikes() {
 		return new Likes(depart, sens, destination, proprietes);
 	}
 }

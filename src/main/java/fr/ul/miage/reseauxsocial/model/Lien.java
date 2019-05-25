@@ -29,7 +29,7 @@ public abstract class Lien {
 
 	public void addPropriete(Propriete p) {
 		if(proprietes == null) {
-			proprietes = new ArrayList<Propriete>();
+			proprietes = new ArrayList<>();
 		}
 		proprietes.add(p);
 	}
@@ -97,24 +97,21 @@ public abstract class Lien {
 		if (noeudDepart == null) {
 			if (other.noeudDepart != null)
 				return false;
-		} else {
+		} else 
 			if (!noeudDepart.equals(other.noeudDepart))
 				return false;
-		}
 		if (noeudDestination == null) {
 			if (other.noeudDestination != null)
 				return false;
-		} else {
+		} else 
 			if (!noeudDestination.equals(other.noeudDestination))
 				return false;
-		}
 		if (proprietes == null) {
 			if (other.proprietes != null)
 				return false;
-		} else {
+		} else 
 			if (!proprietes.equals(other.proprietes))
 				return false;
-		}
 		return true;
 	}
 

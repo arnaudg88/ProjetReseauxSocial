@@ -52,7 +52,7 @@
             <DatePicker fx:id="hiredInput" maxWidth="1.7976931348623157E308" promptText="Date" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <TextField fx:id="shareInput" promptText="separateur ;" GridPane.rowIndex="2" />
             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#afficherReseau" text="Afficher le reseau" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportReseau" text="Lancer la requete" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#lancerRequete" text="Lancer la requete" GridPane.columnIndex="3" GridPane.rowIndex="5" />
             <ChoiceBox fx:id="choiceMode" maxWidth="1.7976931348623157E308" onAction="#newRelationChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Spinner fx:id="spinner" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <ChoiceBox fx:id="choiceUnicite" maxWidth="1.7976931348623157E308" onAction="#newRelationChoice" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />

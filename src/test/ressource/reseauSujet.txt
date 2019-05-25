@@ -1,0 +1,7 @@
+(Anna --EmployeeOf[Role=Developer,Hired=Mar 06]--> BigCo)
+(Barbara --Friend[Since=2011]--> Anna)
+(Barbara --EmployeeOf[Role=Architect,Hired=Feb 04]--> BigCo)
+(Barbara --Friend[Since=1989,Share=books;movies;tweets]--> Elizabeth)
+(Barbara --Friend[Since=1999]--> Carol)
+(Carol --Friend[Since=2005]--> Dawn)
+(Carol --EmployeeOf[Role=Research,Hired=Oct 08]--> BigCo)

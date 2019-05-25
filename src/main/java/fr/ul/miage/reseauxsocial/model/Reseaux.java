@@ -3,8 +3,6 @@ package fr.ul.miage.reseauxsocial.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javafx.util.Pair;
-
 public class Reseaux {
 
 	private HashMap<Paire, ArrayList<Lien>> reseau;
@@ -55,7 +53,7 @@ public class Reseaux {
 	}
 	
 	public ArrayList<String> getFils(String noeud) {
-		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<String> result = new ArrayList<>();
 		for(String n:noeuds.keySet()) {
 			if(paireExist(noeud, n)) {
 				result.add(n);
@@ -65,12 +63,12 @@ public class Reseaux {
 	}
 	
 	public ArrayList<String> getVoisins(String noeud) {
-		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<String> result = new ArrayList<>();
 		ArrayList<String> listeNoeudsFils = getFils(noeud);
 		result.addAll(getParents(noeud));
 		for(String n:listeNoeudsFils) {
 			if(!result.contains(n)) {
-				result.add(noeud);
+				result.add(n);
 			}
 		}
 		return result;
@@ -80,14 +78,13 @@ public class Reseaux {
 	//a tester
 	//voir si péter le noeud suffit ou s'il faut egalement defoncer le lien ou les liens associés au noeud
 	public void supprimerNoeud(String noeud) {
-		ArrayList<String> listeLien = new ArrayList<String>();
-		ArrayList<String> listTemp = new ArrayList<String>();
+		ArrayList<String> listeLien = new ArrayList<>();
+		ArrayList<String> listTemp = new ArrayList<>();
 		listTemp.add(noeud);
 		
 		listeLien.addAll(getVoisins(noeud));
 		for(String n:listeLien) {
-			if(nombreDeLien(n)==1) {
-				//noeuds.remove(n);
+			if(nombreDeLien(n)<=1) {
 				listTemp.add(n);
 			}
 		}
@@ -112,7 +109,7 @@ public class Reseaux {
 	
 	//@Charles
 	public ArrayList<String> getParents(String noeud) {
-		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<String> result = new ArrayList<>();
 		for(String n:noeuds.keySet()) {
 			if(paireExist(n, noeud)) {
 				result.add(n);
@@ -191,6 +188,19 @@ public class Reseaux {
 				return false;
 		}
 		return true;
+	}
+	
+	public Lien findLien(String depart, String lienClass, String arrive) {
+		ArrayList<Lien> listeLien = this.getLiens(depart, arrive);
+		if(listeLien!=null) {
+			for(Lien l:listeLien) {
+				if(l.getClass().getSimpleName().equals(lienClass)) {
+					return l;
+				}
+			}
+		}
+		
+		return null;
 	}
 
 	@Override

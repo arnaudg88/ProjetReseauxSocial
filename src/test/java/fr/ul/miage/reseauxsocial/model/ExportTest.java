@@ -2,6 +2,9 @@ package fr.ul.miage.reseauxsocial.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,7 +34,7 @@ class ExportTest {
 	@Test
 	void reseauSansProprieteSimpleUnidirectionnel() {
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").buildFriend();
 		this.listeLien.add(ami);
 		this.valReseaux.put(paire, this.listeLien);
 		this.reseaux.setReseau(this.valReseaux);
@@ -45,7 +48,7 @@ class ExportTest {
 	void reseauAvecProprieteSimpleUnidirectionnel() {
 		Date date = new Date();
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).buildFriend();
 		this.listeLien.add(ami);
 		this.valReseaux.put(paire, this.listeLien);
 		this.reseaux.setReseau(this.valReseaux);
@@ -56,23 +59,25 @@ class ExportTest {
 	}
 	
 	@Test
-	void reseauAvecMultipleProprieteSimple() {
-		Date date = new Date();
+	void reseauAvecMultipleProprieteSimple() throws ParseException {
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = dateFormat.parse(dateFormat.format(new Date()));
+		String strDate = dateFormat.format(date);  
 		Paire paire = new Paire("Thomas","Charles");
-		EmployeeOf ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete((new Hired("Oui",date)),(new Role("Oui","Dev"))).BuildEmployee();
+		EmployeeOf ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete((new Hired("Oui",date)),(new Role("Oui","Dev"))).buildEmployee();
 		this.listeLien.add(ami);
 		this.valReseaux.put(paire, this.listeLien);
 		this.reseaux.setReseau(this.valReseaux);
 		ExportReseau export = new ExportReseau(this.reseaux);
 		String test = export.exportReseau();
-		String expected = "(Thomas --EmployeeOf[Hired=" + date + ",Role=Dev]--> Charles)\n";
+		String expected = "(Thomas --EmployeeOf[Hired=" + strDate + ",Role=Dev]--> Charles)\n";
 		assertEquals(expected, test);
 	}
 	
 	@Test
 	void reseauSansProprieteSimpleBidirectionnel() {
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",true,"Charles").BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",true,"Charles").buildFriend();
 		this.listeLien.add(ami);
 		this.valReseaux.put(paire, this.listeLien);
 		this.reseaux.setReseau(this.valReseaux);
@@ -86,7 +91,7 @@ class ExportTest {
 	void reseauAvecProprieteSimpleBidirectionnel() {
 		Date date = new Date();
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",true,"Charles").withPropriete(new Since("Ami",2000)).BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",true,"Charles").withPropriete(new Since("Ami",2000)).buildFriend();
 		this.listeLien.add(ami);
 		this.valReseaux.put(paire, this.listeLien);
 		this.reseaux.setReseau(this.valReseaux);
@@ -99,8 +104,8 @@ class ExportTest {
 	@Test
 	void reseauSansProprieteMultiple() {
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").BuildFriend();
-		Friend ami2 = new ConstructeurLien().withParam("Thomas",false,"Arnaud").BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").buildFriend();
+		Friend ami2 = new ConstructeurLien().withParam("Thomas",false,"Arnaud").buildFriend();
 		this.listeLien.add(ami);
 		this.listeLien.add(ami2);
 		this.valReseaux.put(paire, this.listeLien);
@@ -114,8 +119,8 @@ class ExportTest {
 	@Test
 	void reseauAvecProprieteMultiple() {
 		Paire paire = new Paire("Thomas","Charles");
-		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).BuildFriend();
-		Friend ami2 = new ConstructeurLien().withParam("Thomas",true,"Arnaud").withPropriete(new Since("Ami",2000)).BuildFriend();
+		Friend ami = new ConstructeurLien().withParam("Thomas",false,"Charles").withPropriete(new Since("Ami",2000)).buildFriend();
+		Friend ami2 = new ConstructeurLien().withParam("Thomas",true,"Arnaud").withPropriete(new Since("Ami",2000)).buildFriend();
 		this.listeLien.add(ami);
 		this.listeLien.add(ami2);
 		this.valReseaux.put(paire, this.listeLien);

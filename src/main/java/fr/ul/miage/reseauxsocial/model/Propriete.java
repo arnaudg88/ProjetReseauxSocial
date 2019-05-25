@@ -25,13 +25,17 @@ public abstract class Propriete {
 		if (attribut == null) {
 			if (other.attribut != null)
 				return false;
-		} else if (!attribut.equals(other.attribut))
-			return false;
+		} else {
+			if (!attribut.equals(other.attribut))
+				return false;
+		}
 		if (typePossible == null) {
 			if (other.typePossible != null)
 				return false;
-		} else if (!typePossible.equals(other.typePossible))
-			return false;
+		} else {
+			if (!typePossible.equals(other.typePossible))
+				return false;
+		}
 		return true;
 	}
 	protected String attribut;

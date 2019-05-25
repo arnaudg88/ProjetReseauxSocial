@@ -1,18 +1,21 @@
 package fr.ul.miage.reseauxsocial.control;
 
-import java.time.ZoneId;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import fr.ul.miage.reseauxsocial.model.ConstructeurLien;
 import fr.ul.miage.reseauxsocial.model.ConstructeurRequete;
 import fr.ul.miage.reseauxsocial.model.ExportReseau;
 import fr.ul.miage.reseauxsocial.model.ImportReseau;
 import fr.ul.miage.reseauxsocial.model.Noeud;
-import fr.ul.miage.reseauxsocial.model.Paire;
 import fr.ul.miage.reseauxsocial.model.Propriete;
 import fr.ul.miage.reseauxsocial.model.Requete;
 import fr.ul.miage.reseauxsocial.model.Reseaux;
@@ -26,9 +29,7 @@ import fr.ul.miage.reseauxsocial.model.propriete.Role;
 import fr.ul.miage.reseauxsocial.model.propriete.Share;
 import fr.ul.miage.reseauxsocial.model.propriete.Since;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
@@ -41,6 +42,16 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class VueController {
+	
+	private static final String VERIFIEVOSPARAMETRES = "Vérifiez vos paramètres !";
+	private static final String EMPLOYEEOF = "EmployeeOf";
+	private static final String FRIEND = "Friend";
+	private static final String AUTHOR = "Author";
+	private static final String CATEGORY = "Category";
+	private static final String LIKES = "Likes";
+	private static final String LIENAJOUTE = "Lien ajouté !";
+
+	private static final Logger LOG = Logger.getLogger(VueController.class.getName());
 
 	@FXML
 	private ListView<String> listview;
@@ -112,19 +123,23 @@ public class VueController {
 	
 	String filepath;
 	
+	ConstructeurRequete cr;
+	
+	
+	
 	@FXML
     public void initialize() {
 		this.filepath = "";
 		listview.getItems().add("Reseau :");
-		ImportReseau ir = new ImportReseau("(Thomas --Friend[Since=2000]--> Charles)\n(Thomas <--Friend[Since=2000]--> Arnaud)\n");
+		ImportReseau ir = new ImportReseau();
+		ir.importFile("test");
 		this.reseaux = ir.importReseau();
 		ExportReseau er = new ExportReseau(this.reseaux);
 		listview.getItems().add(er.exportReseau());
-		this.choiceLien.setItems(FXCollections.observableArrayList("EmployeeOf", "Friend","Author","Category","Likes"));
+		this.choiceLien.setItems(FXCollections.observableArrayList(EMPLOYEEOF, FRIEND,AUTHOR,CATEGORY,LIKES));
 		this.choiceLien.getSelectionModel().selectFirst();
 		SpinnerValueFactory<Integer> valueFactory = //
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(0, Integer.MAX_VALUE, 0);
- 
         spinner.setValueFactory(valueFactory);
         this.choiceMode.setItems(FXCollections.observableArrayList("Profondeur", "Largeur"));
         this.choiceMode.getSelectionModel().selectFirst();
@@ -135,12 +150,12 @@ public class VueController {
 	}
 	
 	public void newRelationChoice() {
-		if(this.choiceLien.getValue() == "EmployeeOf") {
+		if(this.choiceLien.getValue() == EMPLOYEEOF) {
 			this.shareBool.setDisable(true);
 			this.sinceBool.setDisable(true);
 			this.hiredBool.setDisable(false);
 			this.roleBool.setDisable(false);
-		}else if(this.choiceLien.getValue() == "Friend") {
+		}else if(this.choiceLien.getValue() == FRIEND) {
 			this.shareBool.setDisable(false);
 			this.sinceBool.setDisable(false);
 			this.hiredBool.setDisable(true);
@@ -154,103 +169,140 @@ public class VueController {
 	}
 	
 	public void ajouterLien() {
-		ArrayList<Propriete> myProps = new ArrayList<Propriete>();
-		Boolean error = false;
 		String choice = this.choiceLien.getValue();
 		switch(choice) {
-		case "EmployeeOf" : 
-			if(this.hiredBool.isSelected()) {
-				if(this.hiredInput.getValue() == null) {
-					error = true;
-				}else {
-					Date date = Date.from(this.hiredInput.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-					Hired h = new Hired("Hired",date);
-					myProps.add(h);
-				}
-			}
-			if(this.roleBool.isSelected()) {
-				String role = this.roleInput.getText();
-				if(role == null) {
-					error = true;
-				}else {
-					Role r = new Role("Role",role);
-					myProps.add(r);
-				}
-			}
-			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null) && error == false) {
-				Propriete[] myPropsArray = new Propriete[myProps.size()];
-				myPropsArray = myProps.toArray(myPropsArray);
-				EmployeeOf e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).BuildEmployee();
-				this.reseaux.addLien(e);
-				listview.getItems().add("Lien ajouté !");
-			}else {
-				listview.getItems().add("Vérifiez vos paramètres !");
-			}
+		case EMPLOYEEOF : 
+			this.ajouterLienEmployeeOf();
 		break;
-		case "Friend" :
-			if(this.sinceBool.isSelected()) {
-				int since = Integer.parseInt(this.sinceInput.getText());
-				Since r = new Since("Since",since);
-				myProps.add(r);
-			}
-			if(this.shareBool.isSelected()) {
-				String share = this.shareInput.getText();
-				if(share == null) {
-					error = false;
-				}else {
-					Share s = new Share("Share",Arrays.asList(share.split(";")));
-					myProps.add(s);
-				}
-			}
-			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null) && error == false) {
-				Propriete[] myPropsArray = new Propriete[myProps.size()];
-				myPropsArray = myProps.toArray(myPropsArray);
-				Friend e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).BuildFriend();
-				this.reseaux.addLien(e);
-				listview.getItems().add("Lien ajouté !");
-			}else {
-				listview.getItems().add("Vérifiez vos paramètres !");
-			}
+		case FRIEND :
+			this.ajouterLienFriend();
 		break;
-		case "Author" :
-			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null)) {
-				Author a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildAuthor();
-				this.reseaux.addLien(a);
-				listview.getItems().add("Lien ajouté !");
-			}else {
-				listview.getItems().add("Vérifiez vos paramètres !");
-			}
+		case AUTHOR :
+			this.ajouterLienAuthor();
 		break;
-		
-		case "Likes" :
-			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null)) {
-				Likes a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildLikes();
-				this.reseaux.addLien(a);
-				listview.getItems().add("Lien ajouté !");
-			}else {
-				listview.getItems().add("Vérifiez vos paramètres !");
-			}
+		case LIKES :
+			this.ajouterLienLikes();
 		break;
-		case "Category" :
-			if(!(this.noeudSource.getText() == null) && !(this.noeudDestination.getText() == null)) {
-				Category c = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).BuildCategory();
-				this.reseaux.addLien(c);
-				listview.getItems().add("Lien ajouté !");
-			}else {
-				listview.getItems().add("Vérifiez vos paramètres !");
-			}
+		case CATEGORY :
+			this.ajouterLienCategory();
 		break;
+		default:
+			break;
 		}
 	}
 	
+	
+	
 	public void supprimerNoeud() {
-		if(this.suppInput.getText() != null) {
+		if(!this.suppInput.getText().equals("")) {
 			this.reseaux.supprimerNoeud(this.suppInput.getText());
 			listview.getItems().add("Noeud supprimé !");
 			this.afficherReseau();
 			this.selectNoeud();
 		}else {
-			listview.getItems().add("Vérifiez vos paramètres !");
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
+		}
+	}
+	
+	public boolean checkNodes(String source, String destination) {
+		return !(source.equals("") || destination.equals(""));
+	}
+	
+	public void ajouterLienCategory() {
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText())) {
+			Category c = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).buildCategory();
+			this.reseaux.addLien(c);
+			listview.getItems().add(LIENAJOUTE);
+		}else {
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
+		}
+	}
+	
+	public void ajouterLienAuthor() {
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText())) {
+			Author a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).buildAuthor();
+			this.reseaux.addLien(a);
+			listview.getItems().add(LIENAJOUTE);
+		}else {
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
+		}
+	}
+	
+	public void ajouterLienLikes() {
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText())) {
+			Likes a = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).buildLikes();
+			this.reseaux.addLien(a);
+			listview.getItems().add(LIENAJOUTE);
+		}else {
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
+		}
+	}
+	
+	public void ajouterLienFriend() {
+		ArrayList<Propriete> myProps = new ArrayList<>();
+		if(this.sinceBool.isSelected()) {
+			int since = Integer.parseInt(this.sinceInput.getText());
+			Since r = new Since("Since",since);
+			myProps.add(r);
+		}
+		if(this.shareBool.isSelected()) {
+			String share = this.shareInput.getText();
+			if(share != null) {
+				Share s = new Share("Share",Arrays.asList(share.split(";")));
+				myProps.add(s);
+			}
+		}
+		
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText())) {
+			Propriete[] myPropsArray = new Propriete[myProps.size()];
+			myPropsArray = myProps.toArray(myPropsArray);
+			Friend e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).buildFriend();
+			this.reseaux.addLien(e);
+			listview.getItems().add(LIENAJOUTE);
+		}else {
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
+		}
+	}
+	
+	public void ajouterLienEmployeeOf() {
+		ArrayList<Propriete> myProps = new ArrayList<>();
+		Boolean error = false;
+		if(this.hiredBool.isSelected()) {
+			if(this.hiredInput.getValue() == null) {
+				error = true;
+			}else {
+				
+				try {
+					LocalDate localDate = this.hiredInput.getValue();
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+					String date = localDate.format(formatter);
+					SimpleDateFormat formatter2=new SimpleDateFormat("dd/MM/yyyy"); 
+					Date date1 = formatter2.parse(date);
+					Hired h = new Hired("Hired",date1);
+					myProps.add(h);
+				} catch (ParseException e) {
+					LOG.severe(e.getMessage());
+				}
+			}
+		}
+		if(this.roleBool.isSelected()) {
+			String role = this.roleInput.getText();
+			if(role == null) {
+				error = true;
+			}else {
+				Role r = new Role("Role",role);
+				myProps.add(r);
+			}
+		}
+		
+		if(this.checkNodes(this.noeudSource.getText(), this.noeudDestination.getText()) && !error) {
+			Propriete[] myPropsArray = new Propriete[myProps.size()];
+			myPropsArray = myProps.toArray(myPropsArray);
+			EmployeeOf e = new ConstructeurLien().withParam(this.noeudSource.getText(),this.doubleSensBool.isSelected(),this.noeudDestination.getText()).withPropriete(myPropsArray).buildEmployee();
+			this.reseaux.addLien(e);
+			listview.getItems().add(LIENAJOUTE);
+		}else {
+			listview.getItems().add(VERIFIEVOSPARAMETRES);
 		}
 	}
 	
@@ -260,7 +312,7 @@ public class VueController {
 		listview.getItems().add(er.exportReseau());
 	}
 	
-	public void searchFile(ActionEvent e) {
+	public void searchFile() {
 		Stage stage = (Stage) window.getScene().getWindow();
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(
@@ -275,7 +327,7 @@ public class VueController {
 	}
 	
 	public void importReseau() {
-		if(this.filepath != "") {
+		if(!this.filepath.equals("")) {
 			ImportReseau ir = new ImportReseau();
 			ir.importFile(this.filepath);
 			this.reseaux = ir.importReseau();
@@ -288,16 +340,14 @@ public class VueController {
 	}
 	
 	public void exportReseau() {
-		ExportReseau er = new ExportReseau(this.reseaux);
+		new ExportReseau(this.reseaux);
 		listview.getItems().add("Exportation terminée !");
 	}
 	
 	public void selectNoeud() {
 		HashMap<String, Noeud> noeuds = this.reseaux.getNoeuds();
-		ArrayList<String> listeNoeuds = new ArrayList<String>();
+		ArrayList<String> listeNoeuds = new ArrayList<>();
 		for(Map.Entry<String, Noeud> entry : noeuds.entrySet()) {
-		    String key = entry.getKey();
-		    Noeud value = entry.getValue();
 		    listeNoeuds.add(entry.getKey());
 		}
 		this.choiceNode.setItems(FXCollections.observableArrayList(listeNoeuds));
@@ -305,7 +355,6 @@ public class VueController {
 	}
 	
 	public void lancerRequete() {
-		boolean error = false;
 		String source = this.choiceNode.getValue();
 		int mode = 0;
 		if(this.choiceMode.getValue() == "Largeur") {
@@ -316,13 +365,28 @@ public class VueController {
 		if(this.choiceMode.getValue() == "Lien Global") {
 			unicite = 1;
 		}
-		String props = this.props.getText().trim();
-		String filtres = this.filter.getText().trim();
 		
-		Requete.splitLiens(filtres);
-		Requete.splitProprietes(props);
+		if(this.props.getText() != null && this.filter.getText() != null) {
+			String properties = this.props.getText().trim();
+			String filtres = this.filter.getText().trim();
+			this.cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite).withPropriete(Requete.splitProprietes(properties)).withLiens(Requete.splitLiens(filtres));
+			
+		}else if(this.props.getText() != null) {
+			String properties = this.props.getText().trim();
+			this.cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite).withPropriete(Requete.splitProprietes(properties));
+			
+		}else if(this.filter.getText() != null) {
+			String filtres = this.filter.getText().trim();
+			this.cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite).withLiens(Requete.splitLiens(filtres));
+		}else {
+			this.cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite);	
+		}
 		
-		ConstructeurRequete cr = new ConstructeurRequete().withNoeudDepart(source).withMode(mode).withNiveau(niveau).withUnicite(unicite).withFiltre(props);
-		 
+		ControlRequete crr = new ControlRequete(this.reseaux,cr.buildRequete());
+		ArrayList<String> res = crr.executeRequete();
+		listview.getItems().add("Résultat :");
+		for(int i = 0; i < res.size();i++) {
+			listview.getItems().add(res.get(i));
+		}
 	}
 }
