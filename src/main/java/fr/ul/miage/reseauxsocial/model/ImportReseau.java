@@ -48,7 +48,7 @@ public class ImportReseau {
 		Reseaux reseaux = new Reseaux();
 		for (int i = 0; i < relations.length; i++) {
 			relations[i] = relations[i].trim();
-			if (relations[i].equals("")) {
+			if (!relations[i].equals("")) {
 				// INIT
 				Boolean direction = false;
 
